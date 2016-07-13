@@ -35,23 +35,23 @@ detect_platform:
 release:
 	mkdir -p $(BUILD_DIR)
 	mkdir -p $(BUILD_DIR)/libBitIO
-	mkdir -p $(BUILD_DIR)/BitIO
+	mkdir -p $(BUILD_DIR)/test
 	$(CC) $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_DIR)/libBitIO/libBitIO.o
-	$(CC) $(REL_FLAGS) -c $(CURDIR)/test/main.c -o $(BUILD_DIR)/test/main.o
+	$(CC) $(REL_FLAGS) -c $(CURDIR)/test/test.c -o $(BUILD_DIR)/test/main.o
 	ar -crsu $(BUILD_DIR)/libBitIO/libBitIO$(LIB_EXTENSION) $(BUILD_DIR)/libBitIO/libBitIO.o
-	$(CC) -o $(BUILD_DIR)/BitIO/BitIO $(BUILD_DIR)/test/main.o $(BUILD_DIR)/libBitIO/libBitIO$(LIB_EXTENSION)
-	strip $(BUILD_DIR)/BitIO/BitIO
+	$(CC) -o $(BUILD_DIR)/test/Test-BitIO $(BUILD_DIR)/test/main.o $(BUILD_DIR)/libBitIO/libBitIO$(LIB_EXTENSION)
+	strip $(BUILD_DIR)/test/Test-BitIO
 debug:
 	mkdir -p $(BUILD_DIR)
 	mkdir -p $(BUILD_DIR)/libBitIO
-	mkdir -p $(BUILD_DIR)/BitIO
+	mkdir -p $(BUILD_DIR)/test
 	$(CC) $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_DIR)/libBitIO/libBitIO.o
-	$(CC) $(DEB_FLAGS) -c $(CURDIR)/test/main.c -o $(BUILD_DIR)/test/main.o
-	$(CC) -o $(BUILD_DIR)/BitIO/BitIO $(BUILD_DIR)/test/main.o $(BUILD_DIR)/libBitIO/libBitIO.o
+	$(CC) $(DEB_FLAGS) -c $(CURDIR)/test/test.c -o $(BUILD_DIR)/test/main.o
+	$(CC) -o $(BUILD_DIR)/test/Test-BitIO $(BUILD_DIR)/test/main.o $(BUILD_DIR)/libBitIO/libBitIO.o
 	ar -crsu $(BUILD_DIR)/libBitIO$(LIB_EXTENSION) $(BUILD_DIR)/libBitIO.o
 fuzz:
 	mkdir -p $(BUILD_DIR)
-	$(FUZZER) $(DEB_FLAGS) -c $(CURDIR)/src/BitIO.c -o $(BUILD_DIR)/BitIO.o
+	$(FUZZER) $(DEB_FLAGS) -c $(CURDIR)/src/BitIO.c -o $(BUILD_DIR)/test/Test-BitIO.o
 	ar -crsu $(BUILD_DIR)/BitIO$(LIB_EXTENSION) $(BUILD_DIR)/BitIO.o
 install:
 	install -d -m 777 $(DESTINATION)/lib
@@ -65,16 +65,16 @@ install:
 uninstall:
 	rmdir -f $(DESTINATION)
 clean:
-	rm -f -v -r $(BUILD_DIR)/test/main$(OBJ_EXTENSION)
-	rm -f -v -r $(BUILD_DIR)/BitIO/BitIO
+	rm -f -v -r $(BUILD_DIR)/test/test$(OBJ_EXTENSION)
+	rm -f -v -r $(BUILD_DIR)/test/Test-BitIO
+	rm -f -v -r $(BUILD_DIR)/test/.DS_Store
+	rm -f -v -r $(BUILD_DIR)/test/Thumbs.db
 	rm -f -v -r $(BUILD_DIR)/libBitIO/libBitIO.o
 	rm -f -v -r $(BUILD_DIR)/libBitIO/libBitIO.a
-	rm -f -v -r $(BUILD_DIR)/BitIO/.DS_Store
-	rm -f -v -r $(BUILD_DIR)/BitIO/Thumbs.db
-	rmdir $(BUILD_DIR)/BitIO
 	rm -f -v -r $(BUILD_DIR)/libBitIO/.DS_Store
 	rm -f -v -r $(BUILD_DIR)/libBitIO/Thumbs.db
-	rmdir $(BUILD_DIR)/libBitIO
 	rm -f -v -r $(BUILD_DIR)/.DS_Store
 	rm -f -v -r $(BUILD_DIR)/Thumbs.db
+	rmdir $(BUILD_DIR)/test
+	rmdir $(BUILD_DIR)/libBitIO
 	rmdir $(BUILD_DIR)
