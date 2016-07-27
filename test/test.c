@@ -1,12 +1,31 @@
 #include "../libBitIO/include/BitIO.h"
 
 int main(int argc, const char *argv[]) {
-    BitInput  *BitI = malloc(sizeof(BitInput));
+    //BitInput  *BitI = malloc(sizeof(BitInput));
     BitOutput *BitO = malloc(sizeof(BitOutput));
     
-    InitBitInput(BitI, argc, argv);
+    //InitBitInput(BitI, argc, argv);
     InitBitOutput(BitO, argc, argv);
     
+    uint8_t ArrayTest[25][25] = {{0},{0}};
+    for (uint8_t Row1 = 0; Row1 < 25; Row1++) {
+        for (uint8_t Row2 = 0; Row2 < 25; Row2++) {
+            ArrayTest[Row1][Row2] = Row2;
+            printf("ArrayTest: Row1 = %d, Row2 = %d, ArrayTest = %d\n", Row1, Row2, ArrayTest[Row1][Row2]);
+        }
+    }
+    
+    uint8_t ArrayTest2[24] = {0};
+    for (size_t Element = 0; Element < 12; Element++) {
+        ArrayTest2[Element] = (uint8_t)rand();
+    }
+    
+    printf("Size of ArrayTest2 (24 elements, 12 used): %lu\n", sizeof(ArrayTest2));
+    
+    // Sizeof isn't intelligent enough to measure the number of used bytes, so I'll have to write my own function.
+    
+    
+    /*
     BitI->BitsAvailable   = 32762;
     BitI->BitsUnavailable = 6;
     
@@ -25,6 +44,7 @@ int main(int argc, const char *argv[]) {
     // Those input files will be chosen by glob searching the directory for all files ending with .png, and ordering them by number.
     // Each file will have a second partnering file, the file names varying by wether they end in _Right or _Left.
     // in order to do this glob needs a variable to hold the current file num, and the max file num.
+     */
     /*
     uint64_t ReedBits = ReadBits(BitI, 7);
     printf("ReedBits 7: %llu\n", ReedBits);
