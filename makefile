@@ -57,7 +57,7 @@ install:
 	install -C -v -m 444 $(BUILD_DIR)/../libBitIO/include/BitIO.h $(DESTINATION)/include/BitIO.h
 	install -C -v -m 444 $(BUILD_DIR)/test/Test-BitIO$(EXE_EXT) $(DESTINATION)/bin/Test-BitIO$(EXE_EXT)
 	chmod +x $(DESTINATION)/bin/Test-BitIO$(EXE_EXT)
-	ln -i $(DESTINATION)/bin/Test-BitIO$(EXE_EXT) /usr/bin/
+	ln -i $(DESTINATION)/bin/Test-BitIO$(EXE_EXT) /usr/bin/Test-BitIO
 	chmod +x /usr/bin/Test-BitIO$(EXE_EXT)
 uninstall:
 	rmdir -f $(DESTINATION)
