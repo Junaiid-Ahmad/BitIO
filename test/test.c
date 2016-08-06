@@ -1,11 +1,16 @@
 #include "../libBitIO/include/BitIO.h"
 
 int main(int argc, const char *argv[]) {
-    //BitInput  *BitI = malloc(sizeof(BitInput));
-    BitOutput *BitO = malloc(sizeof(BitOutput));
+    BitInput  *BitI = calloc(sizeof(BitInput), 1);
+    BitOutput *BitO = calloc(sizeof(BitOutput), 1);
+    ErrorStatus *ES = calloc(sizeof(ErrorStatus), 1);
     
-    //InitBitInput(BitI, argc, argv);
-    InitBitOutput(BitO, argc, argv);
+    ES->AlignBits2Byte = 42;
+    
+    InitBitInput(BitI, ES, argc, argv);
+    InitBitOutput(BitO, ES, argc, argv);
+    
+    
     
     uint8_t ArrayTest[25][25] = {{0},{0}};
     for (uint8_t Row1 = 0; Row1 < 25; Row1++) {
