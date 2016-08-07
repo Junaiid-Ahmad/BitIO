@@ -7,11 +7,23 @@ int main(int argc, const char *argv[]) {
     
     ES->AlignBits2Byte = 42;
     
-    InitBitInput(BitI, ES, argc, argv);
+    //InitBitInput(BitI, ES, argc, argv);
     InitBitOutput(BitO, ES, argc, argv);
     
     
     
+    typedef struct TwelveBitColor { // uint16_t
+        unsigned int Red   : 12;
+        unsigned int Green : 12;
+        unsigned int Blue  : 12;
+    } TwelveBitColor;
+    
+    TwelveBitColor *Color12 = malloc(sizeof(TwelveBitColor));
+    Color12->Red = 0xF7FF;
+    printf("TwelveBitColor Size: %lu\n", sizeof(TwelveBitColor));
+    printf("Red: %d\n", Color12->Red);
+    
+    /*
     uint8_t ArrayTest[25][25] = {{0},{0}};
     for (uint8_t Row1 = 0; Row1 < 25; Row1++) {
         for (uint8_t Row2 = 0; Row2 < 25; Row2++) {
@@ -28,7 +40,7 @@ int main(int argc, const char *argv[]) {
     printf("Size of ArrayTest2 (24 elements, 12 used): %lu\n", sizeof(ArrayTest2));
     
     // Sizeof isn't intelligent enough to measure the number of used bytes, so I'll have to write my own function.
-    
+    */
     
     /*
     BitI->BitsAvailable   = 32762;
