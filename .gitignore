@@ -1,0 +1,15 @@
+.DS_Store
+thumbs.db
+._*
+*.o
+*.a
+*.exe
+*.lib
+/BUILD/*
+libBitIO/src/OldCode.c
+libBitIO/FreeBSD/*
+*.html
+*.xcuserstate
+*.xcbkptlist
+project.xcworkspace/
+xcuserdata/
