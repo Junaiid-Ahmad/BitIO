@@ -5,21 +5,24 @@ int main(int argc, const char *argv[]) {
     BitOutput *BitO = calloc(sizeof(BitOutput), 1);
     ErrorStatus *ES = calloc(sizeof(ErrorStatus), 1);
     
-    ES->AlignBits2Byte = 42;
+	//ES->AlignBits2Byte = 42;
     
-    //InitBitInput(BitI, ES, argc, argv);
-    InitBitOutput(BitO, ES, argc, argv);
-    
-    
+	//InitBitInput(BitI, ES, argc, argv);
+	//InitBitOutput(BitO, ES, argc, argv);
     
     typedef struct TwelveBitColor { // uint16_t
-        unsigned int Red   : 12;
-        unsigned int Green : 12;
-        unsigned int Blue  : 12;
+		/*
+        uint16_t   Red : 12;
+        uint16_t Green : 12;
+        uint16_t  Blue : 12;
+		 */
+		
+		unsigned Red : 12, Green : 12, Blue : 12;
+		
     } TwelveBitColor;
     
     TwelveBitColor *Color12 = malloc(sizeof(TwelveBitColor));
-    Color12->Red = 0xF7FF;
+    Color12->Red = 0xFFF;
     printf("TwelveBitColor Size: %lu\n", sizeof(TwelveBitColor));
     printf("Red: %d\n", Color12->Red);
     

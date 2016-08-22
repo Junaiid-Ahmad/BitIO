@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C1866071D64F0D000D28BC8 /* test.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C7CA9731D58564B005B07AC /* test.c */; };
 		2C4D08BD1D585897002AB9B5 /* libBitIO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C1989D71D58560500E948F7 /* libBitIO.a */; };
-		2C7CA9741D58564B005B07AC /* test.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C7CA9731D58564B005B07AC /* test.c */; };
 		2C7CA9761D585660005B07AC /* BitIO.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C7CA9751D585660005B07AC /* BitIO.c */; };
 		2C7CA9781D585675005B07AC /* BitIO.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C7CA9771D585675005B07AC /* BitIO.h */; };
 /* End PBXBuildFile section */
@@ -26,6 +26,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2C1865F41D64CF6100D28BC8 /* UnitTests.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = UnitTests.c; path = libBitIO/test/UnitTests.c; sourceTree = "<group>"; };
 		2C1989C71D5855B800E948F7 /* Test-BitIO */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Test-BitIO"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C1989D71D58560500E948F7 /* libBitIO.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBitIO.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C7CA9731D58564B005B07AC /* test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = test.c; path = test/test.c; sourceTree = SOURCE_ROOT; };
@@ -52,9 +53,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C1865F31D64CF5500D28BC8 /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				2C1865F41D64CF6100D28BC8 /* UnitTests.c */,
+			);
+			name = UnitTests;
+			sourceTree = "<group>";
+		};
 		2C1989BE1D5855B800E948F7 = {
 			isa = PBXGroup;
 			children = (
+				2C1865F31D64CF5500D28BC8 /* UnitTests */,
 				2C1989DB1D58560B00E948F7 /* libBitIO */,
 				2C1989C91D5855B800E948F7 /* BitIO */,
 				2C1989C81D5855B800E948F7 /* Products */,
@@ -179,7 +189,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C7CA9741D58564B005B07AC /* test.c in Sources */,
+				2C1866071D64F0D000D28BC8 /* test.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

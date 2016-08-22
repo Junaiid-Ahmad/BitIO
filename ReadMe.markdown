@@ -44,7 +44,7 @@ In order to use BitIO, you need to include BitIO.h (obviously).
 
 * You can have as many instances of either BitInput or BitOutput as you want, they all use seperate copies of the structs involved.  
 
-* After you calloc BitInput or BitOutput, you need to call InitBitInput or InitBitOutput to set it up.
+* After you calloc (Do NOT use malloc!) BitInput or BitOutput, you need to call InitBitInput or InitBitOutput to set it up.
 
 * At the end of your main function, call CloseBitInput and CloseBitOutput to dealloc your instances of BitInput and BitOutput.  
 
