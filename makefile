@@ -36,27 +36,19 @@ detect_platform:
 release:
 	mkdir -p $(BUILD_DIR)
 	mkdir -p $(BUILD_DIR)/libBitIO
-	mkdir -p $(BUILD_DIR)/BitIO
 	$(CC) $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_DIR)/libBitIO/libBitIO.$(OBJ_EXT)
-	$(CC) $(REL_FLAGS) -c $(CURDIR)/BitIO/BitIO.c -o $(BUILD_DIR)/BitIO/BitIO.$(OBJ_EXT)
 	ar -crsu $(BUILD_DIR)/libBitIO/libBitIO.$(LIB_EXT) $(BUILD_DIR)/libBitIO/libBitIO.$(OBJ_EXT)
-	$(CC) -o $(BUILD_DIR)/BitIO/BitIO$(EXE_EXT) $(BUILD_DIR)/BitIO/BitIO.$(OBJ_EXT) $(BUILD_DIR)/libBitIO/libBitIO.$(LIB_EXT)
-	strip $(BUILD_DIR)/BitIO/BitIO$(EXE_EXT)
 
 debug:
 	mkdir -p $(BUILD_DIR)
 	mkdir -p $(BUILD_DIR)/libBitIO
-	mkdir -p $(BUILD_DIR)/BitIO
 	$(CC) $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_DIR)/libBitIO/libBitIO.$(OBJ_EXT)
-	$(CC) $(DEB_FLAGS) -c $(CURDIR)/BitIO/BitIO.c -o $(BUILD_DIR)/BitIO/BitIO.$(OBJ_EXT)
-	$(CC) -o $(BUILD_DIR)/BitIO/Test-BitIO$(EXE_EXT) $(BUILD_DIR)/BitIO/BitIO.$(OBJ_EXT) $(BUILD_DIR)/libBitIO/libBitIO.$(OBJ_EXT)
-	ar -crsu $(BUILD_DIR)/libBitIO.$(LIB_EXT) $(BUILD_DIR)/libBitIO.$(OBJ_EXT)
+	ar -crsu $(BUILD_DIR)/libBitIO/libBitIO.$(LIB_EXT) $(BUILD_DIR)/libBitIO/libBitIO.$(OBJ_EXT)
 
 test:
-	mkdir -p $(BUILD_DIR)/UnitTest
-	$(CC) $(REL_FLAGS) -c $(CURDIR)/libBitIO/test/UnitTest.c -o $(BUILD_DIR)/UnitTest/UnitTest.$(OBJ_EXT)
-	$(CC) -o $(BUILD_DIR)/UnitTest/UnitTest$(EXE_EXT) $(BUILD_DIR)/UnitTest/UnitTest.$(OBJ_EXT)
-	$(BUILD_DIR)/UnitTest/UnitTest$(EXE_EXT) -i ./FF.bin
+	mkdir -p $(BUILD_DIR)/test
+	$(CC) $(DEB_FLAGS) -c $(CURDIR)/test/UnitTest.c -o $(BUILD_DIR)/test/UnitTest.$(OBJ_EXT)
+	$(CC) $(BUILD_DIR)/test/UnitTest.$(OBJ_EXT) $(BUILD_DIR)/libBitIO/libBitIO.$(LIB_EXT) -o $(BUILD_DIR)/test/UnitTest$(EXE_EXT)
 
 install:
 	install -d -m 777 $(DESTINATION)/lib

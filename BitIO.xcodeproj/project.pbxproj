@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2C1866071D64F0D000D28BC8 /* test.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C7CA9731D58564B005B07AC /* test.c */; };
 		2C4D08BD1D585897002AB9B5 /* libBitIO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C1989D71D58560500E948F7 /* libBitIO.a */; };
 		2C7CA9761D585660005B07AC /* BitIO.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C7CA9751D585660005B07AC /* BitIO.c */; };
 		2C7CA9781D585675005B07AC /* BitIO.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C7CA9771D585675005B07AC /* BitIO.h */; };
+		2C989A141D6B6D890016C086 /* UnitTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C989A121D6AD5D50016C086 /* UnitTest.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,6 +32,7 @@
 		2C7CA9731D58564B005B07AC /* test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = test.c; path = test/test.c; sourceTree = SOURCE_ROOT; };
 		2C7CA9751D585660005B07AC /* BitIO.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BitIO.c; path = libBitIO/src/BitIO.c; sourceTree = SOURCE_ROOT; };
 		2C7CA9771D585675005B07AC /* BitIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BitIO.h; path = libBitIO/include/BitIO.h; sourceTree = SOURCE_ROOT; };
+		2C989A121D6AD5D50016C086 /* UnitTest.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = UnitTest.c; path = test/UnitTest.c; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +85,7 @@
 		2C1989C91D5855B800E948F7 /* BitIO */ = {
 			isa = PBXGroup;
 			children = (
+				2C989A121D6AD5D50016C086 /* UnitTest.c */,
 				2C7CA9731D58564B005B07AC /* test.c */,
 			);
 			path = BitIO;
@@ -189,7 +191,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C1866071D64F0D000D28BC8 /* test.c in Sources */,
+				2C989A141D6B6D890016C086 /* UnitTest.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

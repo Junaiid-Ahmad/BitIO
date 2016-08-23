@@ -1,4 +1,4 @@
-#include "../include/BitIO.h"
+#include "../libBitIO/include/BitIO.h"
 
 void Test_All(BitInput *Input, BitOutput *Output) {
 	
@@ -8,7 +8,7 @@ void Test_PeekBits(BitInput *Input) {
 	for (uint8_t Bits2Peek = 0; Bits2Peek < 64; Bits2Peek++) {
 		uint64_t PeekedData = PeekBits(Input, Bits2Peek);
 		if (PeekedData != Power2Mask(Bits2Peek)) {
-			Log(Input->ErrorStatus, Testing, libBitIO, PeekBits, <#char Description#>, <#uint8_t ESError#>);
+			Log(SYSCritical, Input->ErrorStatus->PeekBits, InvalidData, "BitIO", "PeekBits", "PeekBits fucked up big time on %d", Bits2Peek);
 		}
 	}
 }
@@ -29,7 +29,7 @@ int main(int argc, const char *argv[]) {
 			argv[Argument] = "-i";
 		}
 		if (Argument == 2) {
-			argv[Argument] = "/dev/null"
+			argv[Argument] = "/dev/null";
 		}
 		if (Argument == 3) {
 			argv[Argument] = "-o";
