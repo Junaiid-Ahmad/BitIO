@@ -5,16 +5,16 @@ DESTINATION     := /usr/local/Packages/$(PACKAGE_NAME)
 BUILD_DIR       := $(CURDIR)/BUILD
 CFLAGS          := -std=c11 -march=native
 LDFLAGS         := -flto
-ERROR_OPTIONS	:= -Weverything -Wunreachable-code
+ERROR_OPTIONS   := -Weverything -Wunreachable-code
 DEB_FLAGS       := $(CFLAGS) -g -o0 -fsanitize=undefined $(ERROR_OPTIONS) $(LDFLAGS)
 REL_FLAGS       := $(CFLAGS) -ofast $(ERROR_OPTIONS) $(LDFLAGS)
 EXE_EXT         :=
 LIB_EXT         := a
 OBJ_EXT         := o
 
-.PHONY: all detect_platform release debug install uninstall clean
+.PHONY: all detect_platform Release Debug install uninstall clean
 
-all: release
+all: Release
 
 detect_platform:
 	ifeq ($(OS),(Darwin|FreeBSD|OpenBSD|GhostBSD|PC-BSD))
@@ -33,20 +33,20 @@ detect_platform:
 		$(DESTINATION)    := %ProgramFiles%\$(PACKAGE_NAME)
 	endif
 
-release:
+Release:
 	mkdir -p $(BUILD_DIR)
 	mkdir -p $(BUILD_DIR)/libBitIO
 	$(CC) $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_DIR)/libBitIO/libBitIO.$(OBJ_EXT)
 	ar -crsu $(BUILD_DIR)/libBitIO/libBitIO.$(LIB_EXT) $(BUILD_DIR)/libBitIO/libBitIO.$(OBJ_EXT)
 
-debug:
+Debug:
 	mkdir -p $(BUILD_DIR)
 	mkdir -p $(BUILD_DIR)/libBitIO
 	$(CC) $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_DIR)/libBitIO/libBitIO.$(OBJ_EXT)
 	ar -crsu $(BUILD_DIR)/libBitIO/libBitIO.$(LIB_EXT) $(BUILD_DIR)/libBitIO/libBitIO.$(OBJ_EXT)
 
 test:
-	$(debug)
+	$(Debug)
 	mkdir -p $(BUILD_DIR)/test
 	$(CC) $(DEB_FLAGS) -c $(CURDIR)/test/UnitTest.c -o $(BUILD_DIR)/test/UnitTest.$(OBJ_EXT)
 	$(CC) $(BUILD_DIR)/test/UnitTest.$(OBJ_EXT) $(BUILD_DIR)/libBitIO/libBitIO.$(LIB_EXT) -o $(BUILD_DIR)/test/UnitTest$(EXE_EXT)
