@@ -6,7 +6,7 @@ BUILD_DIR       := $(CURDIR)/BUILD
 CFLAGS          := -std=c11 -march=native
 LDFLAGS         := -flto
 ERROR_OPTIONS	:= -Weverything -Wunreachable-code
-DEB_FLAGS       := $(CFLAGS) -g -o0 $(ERROR_OPTIONS) $(LDFLAGS)
+DEB_FLAGS       := $(CFLAGS) -g -o0 -fsanitize=undefined $(ERROR_OPTIONS) $(LDFLAGS)
 REL_FLAGS       := $(CFLAGS) -ofast $(ERROR_OPTIONS) $(LDFLAGS)
 EXE_EXT         :=
 LIB_EXT         := a
@@ -46,6 +46,7 @@ debug:
 	ar -crsu $(BUILD_DIR)/libBitIO/libBitIO.$(LIB_EXT) $(BUILD_DIR)/libBitIO/libBitIO.$(OBJ_EXT)
 
 test:
+	$(debug)
 	mkdir -p $(BUILD_DIR)/test
 	$(CC) $(DEB_FLAGS) -c $(CURDIR)/test/UnitTest.c -o $(BUILD_DIR)/test/UnitTest.$(OBJ_EXT)
 	$(CC) $(BUILD_DIR)/test/UnitTest.$(OBJ_EXT) $(BUILD_DIR)/libBitIO/libBitIO.$(LIB_EXT) -o $(BUILD_DIR)/test/UnitTest$(EXE_EXT)
