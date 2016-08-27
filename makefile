@@ -1,5 +1,6 @@
 PACKAGE_NAME    := BitIO
-VERSION         := 1.0
+FILE			:= $(CURDIR)/libBitIO/include/BitIO.h
+VERSION         := $(shell cat ${FILE} | grep -e "@version")
 CC              := cc
 DESTINATION     := /usr/local/Packages/$(PACKAGE_NAME)
 BUILD_DIR       := $(CURDIR)/BUILD
@@ -12,40 +13,36 @@ EXE_EXT         :=
 LIB_EXT         := a
 OBJ_EXT         := o
 
-.PHONY: all detect_platform Release Debug install uninstall clean
+.PHONY: all detect_platform Release Debug Install Uninstall Clean distclean
 
-all: Release
+all: 
+	$(release)
+check: 
+	$(test)
+distclean: 
+	$(clean)
 
-detect_platform:
-	ifeq ($(OS),(Darwin|FreeBSD|OpenBSD|GhostBSD|PC-BSD))
-		$(CC)             := clang
-		$(LIB_EXT)        := a
-		$(OBJ_EXT)        := o
-	elif ($(OS),Linux)
-		$(CC)             := gcc
-		$(LIB_EXT)        := a
-		$(OBJ_EXT)        := o
-	elif ($(OS),(Windows_NT|CYGWIN_NT|MINGW32_NT|MSYS_NT))
-		$(CC)             := msvc.exe
-		$(EXE_EXT)        := .exe
-		$(LIB_EXT)        := lib
-		$(OBJ_EXT)        := obj
-		$(DESTINATION)    := %ProgramFiles%\$(PACKAGE_NAME)
-	endif
+CHECK_VERS:
+	$(shell echo ${VERSION})
 
-Release:
+
+$(BUILD_DIR)/libBitIO.o: $(CURDIR)/libBitIO/src/BitIO.c $(CURDIR)/libBitIO/include/BitIO.h
+
+
+
+release: $(CURDIR)/libBitIO/src/BitIO.c
 	mkdir -p $(BUILD_DIR)
 	mkdir -p $(BUILD_DIR)/libBitIO
 	$(CC) $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_DIR)/libBitIO/libBitIO.$(OBJ_EXT)
 	ar -crsu $(BUILD_DIR)/libBitIO/libBitIO.$(LIB_EXT) $(BUILD_DIR)/libBitIO/libBitIO.$(OBJ_EXT)
 
-Debug:
+debug: $(CURDIR)/libBitIO/src/BitIO.c
 	mkdir -p $(BUILD_DIR)
 	mkdir -p $(BUILD_DIR)/libBitIO
 	$(CC) $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_DIR)/libBitIO/libBitIO.$(OBJ_EXT)
 	ar -crsu $(BUILD_DIR)/libBitIO/libBitIO.$(LIB_EXT) $(BUILD_DIR)/libBitIO/libBitIO.$(OBJ_EXT)
 
-test:
+test: $(CURDIR)/libBitIO/src/BitIO.c $(CURDIR)/test/UnitTest.c
 	$(Debug)
 	mkdir -p $(BUILD_DIR)/test
 	$(CC) $(DEB_FLAGS) -c $(CURDIR)/test/UnitTest.c -o $(BUILD_DIR)/test/UnitTest.$(OBJ_EXT)
