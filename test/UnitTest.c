@@ -4,13 +4,17 @@ void Test_All(BitInput *Input, BitOutput *Output) {
 	
 }
 
-void Test_PeekBits(BitInput *Input) {
+void Test_PeekBits(BitInput *Input) { // This should cover basically everything dealing with BitInput
 	for (uint8_t Bits2Peek = 0; Bits2Peek < 64; Bits2Peek++) {
 		uint64_t PeekedData = PeekBits(Input, Bits2Peek);
 		if (PeekedData != Power2Mask(Bits2Peek)) {
 			Log(SYSCritical, Input->ErrorStatus->PeekBits, InvalidData, "BitIO", "PeekBits", "PeekBits fucked up big time on %d", Bits2Peek);
 		}
 	}
+}
+
+void Test_ReadExpGolomb(BitInput *Input) {
+	
 }
 
 int main(int argc, const char *argv[]) {

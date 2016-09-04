@@ -15,7 +15,7 @@ OBJ_EXT         := o
 
 .PHONY: all detect_platform Release Debug Install Uninstall Clean distclean
 
-all: 
+all: release
 	$(release)
 check: 
 	$(test)
@@ -26,7 +26,7 @@ CHECK_VERS:
 	$(shell echo ${VERSION})
 
 
-$(BUILD_DIR)/libBitIO.o: $(CURDIR)/libBitIO/src/BitIO.c $(CURDIR)/libBitIO/include/BitIO.h
+libBitIO.o: $(CURDIR)/libBitIO/src/BitIO.c $(CURDIR)/libBitIO/include/BitIO.h
 
 
 
