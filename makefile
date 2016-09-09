@@ -25,11 +25,6 @@ distclean:
 CHECK_VERS:
 	$(shell echo ${VERSION})
 
-
-libBitIO.o: $(CURDIR)/libBitIO/src/BitIO.c $(CURDIR)/libBitIO/include/BitIO.h
-
-
-
 release: $(CURDIR)/libBitIO/src/BitIO.c
 	mkdir -p $(BUILD_DIR)
 	mkdir -p $(BUILD_DIR)/libBitIO
