@@ -1,17 +1,18 @@
-PACKAGE_NAME    := BitIO
-FILE			:= $(CURDIR)/libBitIO/include/BitIO.h
-VERSION         := $(shell cat ${FILE} | grep -e "@version")
-CC              := cc
-DESTINATION     := /usr/local/Packages/$(PACKAGE_NAME)
-BUILD_DIR       := $(CURDIR)/BUILD
-CFLAGS          := -std=c11 -march=native
-LDFLAGS         := -flto
-ERROR_OPTIONS   := -Weverything -Wunreachable-code
-DEB_FLAGS       := $(CFLAGS) -g -o0 -fsanitize=undefined $(ERROR_OPTIONS) $(LDFLAGS)
-REL_FLAGS       := $(CFLAGS) -ofast $(ERROR_OPTIONS) $(LDFLAGS)
-EXE_EXT         :=
-LIB_EXT         := a
-OBJ_EXT         := o
+PACKAGE_NAME        := BitIO
+FILE                := $(CURDIR)/libBitIO/include/BitIO.h
+VERSION             := $(shell cat ${FILE} | grep -e "@version")
+CC                  := cc
+DESTINATION         := /usr/local/Packages/$(PACKAGE_NAME)
+BUILD_DIR           := $(CURDIR)/BUILD
+CFLAGS              := -std=c11 -march=native
+LDFLAGS             := -flto=thin
+DEB_ERROR_OPTIONS   := -Wno-unused-parameter -Wno-unused-variable -Wno-int-conversion
+REL_ERROR_OPTIONS   := -Weverything -Wunreachable-code -Wno-conversion
+DEB_FLAGS           := $(CFLAGS) -g -o0 -fsanitize=undefined $(DEB_ERROR_OPTIONS) $(LDFLAGS)
+REL_FLAGS           := $(CFLAGS) -ofast $(REL_ERROR_OPTIONS) $(LDFLAGS)
+EXE_EXT             :=
+LIB_EXT             := a
+OBJ_EXT             := o
 
 .PHONY: all detect_platform Release Debug Install Uninstall Clean distclean
 

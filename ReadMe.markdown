@@ -53,11 +53,16 @@ In order to use BitIO, you need to include BitIO.h (obviously).
 
 `ReadUUID`:
 
-* Use calloc to initalize a char array of 21 chars, and free it after calling `ReadUUID`.
+* Use calloc to initalize a char array of 21 chars, and free it after `ReadUUID` returns.
+
+* UUIDs and GUIDs use the same format, so `ReadUUID` can also read GUIDs. 
+* The only difference is that GUIDs are Little Endian.
+* To convert a UUID to a GUID use `ConvertUUID2GUID`.
+* To convert a GUID to a UUID use `ConvertGUID2UUID`.
 
 `Log`:
 
-* If you need to use format specifiers in *Description*, call `sprintf` or `snprintf`.
+* If you need to use format specifiers in *Description*, call `snprintf`.
 
 Warnings:
 ---------
@@ -67,9 +72,9 @@ License:
 ---------
 BitIO is released under a BSD-like license (I haven't decided on which one just yet).  
 
-Here's a tl;dr version of my license: 
+Here's a tl;dr of my license: 
 
-* **Don't** say that you wrote BitIO.  
+* **Don't** plagiarize BitIO.  
 
 * **Don't** sue me if something goes wrong, or for using patented algorithms. I'm a programmer, not a patent clerk.
 
