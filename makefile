@@ -38,7 +38,7 @@ debug: $(CURDIR)/libBitIO/src/BitIO.c
 	$(CC) $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_DIR)/libBitIO/libBitIO.$(OBJ_EXT)
 	ar -crsu $(BUILD_DIR)/libBitIO/libBitIO.$(LIB_EXT) $(BUILD_DIR)/libBitIO/libBitIO.$(OBJ_EXT)
 
-test: $(CURDIR)/libBitIO/src/BitIO.c $(CURDIR)/test/UnitTest.c
+test: $(CURDIR)/libBitIO/test/UnitTest.c $(CURDIR)/test/UnitTest.c
 	$(Debug)
 	mkdir -p $(BUILD_DIR)/test
 	$(CC) $(DEB_FLAGS) -c $(CURDIR)/test/UnitTest.c -o $(BUILD_DIR)/test/UnitTest.$(OBJ_EXT)
