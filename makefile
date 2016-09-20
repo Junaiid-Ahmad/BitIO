@@ -38,11 +38,10 @@ debug: $(CURDIR)/libBitIO/src/BitIO.c
 	$(CC) $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_DIR)/libBitIO/libBitIO.$(OBJ_EXT)
 	ar -crsu $(BUILD_DIR)/libBitIO/libBitIO.$(LIB_EXT) $(BUILD_DIR)/libBitIO/libBitIO.$(OBJ_EXT)
 
-test: $(CURDIR)/libBitIO/test/UnitTest.c $(CURDIR)/test/UnitTest.c
+test: $(CURDIR)/libBitIO/test/UnitTest.c
 	$(Debug)
-	mkdir -p $(BUILD_DIR)/test
-	$(CC) $(DEB_FLAGS) -c $(CURDIR)/test/UnitTest.c -o $(BUILD_DIR)/test/UnitTest.$(OBJ_EXT)
-	$(CC) $(BUILD_DIR)/test/UnitTest.$(OBJ_EXT) $(BUILD_DIR)/libBitIO/libBitIO.$(LIB_EXT) -o $(BUILD_DIR)/test/UnitTest$(EXE_EXT)
+	$(CC) $(DEB_FLAGS) -c $(CURDIR)/libBitIO/test/UnitTest.c -o $(BUILD_DIR)/libBitIO/UnitTest.$(OBJ_EXT)
+	$(CC) $(BUILD_DIR)/libBitIO/UnitTest.$(OBJ_EXT) -o $(BUILD_DIR)/libBitIO/UnitTest$(EXE_EXT)
 
 install:
 	install -d -m 777 $(DESTINATION)/lib
@@ -72,4 +71,3 @@ clean:
 	rmdir $(BUILD_DIR)/BitIO
 	rmdir $(BUILD_DIR)/libBitIO
 	rmdir $(BUILD_DIR)
-

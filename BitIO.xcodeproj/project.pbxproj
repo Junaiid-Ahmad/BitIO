@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		2C4D08BD1D585897002AB9B5 /* libBitIO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C1989D71D58560500E948F7 /* libBitIO.a */; };
+		2C79D6911D911F39009E91E6 /* UnitTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C79D6901D911F39009E91E6 /* UnitTest.c */; };
 		2C7CA9761D585660005B07AC /* BitIO.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C7CA9751D585660005B07AC /* BitIO.c */; };
 		2C7CA9781D585675005B07AC /* BitIO.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C7CA9771D585675005B07AC /* BitIO.h */; };
-		2C989A141D6B6D890016C086 /* UnitTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C989A121D6AD5D50016C086 /* UnitTest.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,10 +29,10 @@
 		2C1865F41D64CF6100D28BC8 /* UnitTests.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = UnitTests.c; path = libBitIO/test/UnitTests.c; sourceTree = "<group>"; };
 		2C1989C71D5855B800E948F7 /* Test-BitIO */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Test-BitIO"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C1989D71D58560500E948F7 /* libBitIO.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBitIO.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		2C7CA9731D58564B005B07AC /* test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = test.c; path = test/test.c; sourceTree = SOURCE_ROOT; };
+		2C79D6901D911F39009E91E6 /* UnitTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = UnitTest.c; path = libBitIO/test/UnitTest.c; sourceTree = SOURCE_ROOT; };
+		2C79D6921D911F42009E91E6 /* test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = test.c; path = libBitIO/test/test.c; sourceTree = SOURCE_ROOT; };
 		2C7CA9751D585660005B07AC /* BitIO.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BitIO.c; path = libBitIO/src/BitIO.c; sourceTree = SOURCE_ROOT; };
 		2C7CA9771D585675005B07AC /* BitIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BitIO.h; path = libBitIO/include/BitIO.h; sourceTree = SOURCE_ROOT; };
-		2C989A121D6AD5D50016C086 /* UnitTest.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = UnitTest.c; path = test/UnitTest.c; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,8 +85,7 @@
 		2C1989C91D5855B800E948F7 /* BitIO */ = {
 			isa = PBXGroup;
 			children = (
-				2C989A121D6AD5D50016C086 /* UnitTest.c */,
-				2C7CA9731D58564B005B07AC /* test.c */,
+				2C79D6921D911F42009E91E6 /* test.c */,
 			);
 			path = BitIO;
 			sourceTree = "<group>";
@@ -94,6 +93,7 @@
 		2C1989DB1D58560B00E948F7 /* libBitIO */ = {
 			isa = PBXGroup;
 			children = (
+				2C79D6901D911F39009E91E6 /* UnitTest.c */,
 				2C7CA9771D585675005B07AC /* BitIO.h */,
 				2C7CA9751D585660005B07AC /* BitIO.c */,
 			);
@@ -191,7 +191,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C989A141D6B6D890016C086 /* UnitTest.c in Sources */,
+				2C79D6911D911F39009E91E6 /* UnitTest.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,6 +232,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CLANG_X86_VECTOR_INSTRUCTIONS = default;
 				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
@@ -260,14 +261,14 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_OUTPUT_FORMAT = binary;
 				INSTALL_PATH = /usr/local/Packages/BitIO;
-				LLVM_LTO = YES;
+				LLVM_LTO = YES_THIN;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "-flto";
+				OTHER_LDFLAGS = "";
 				PLIST_FILE_OUTPUT_FORMAT = binary;
 				SDKROOT = macosx;
-				STRINGS_FILE_OUTPUT_ENCODING = binary;
+				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
 			};
 			name = Debug;
 		};
@@ -297,6 +298,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CLANG_X86_VECTOR_INSTRUCTIONS = default;
 				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
@@ -320,13 +322,13 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_OUTPUT_FORMAT = binary;
 				INSTALL_PATH = /usr/local/Packages/BitIO;
-				LLVM_LTO = YES;
+				LLVM_LTO = YES_THIN;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "-flto";
+				OTHER_LDFLAGS = "";
 				PLIST_FILE_OUTPUT_FORMAT = binary;
 				SDKROOT = macosx;
-				STRINGS_FILE_OUTPUT_ENCODING = binary;
+				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
 			};
 			name = Release;
 		};

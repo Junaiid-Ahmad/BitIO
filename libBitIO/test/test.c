@@ -1,4 +1,4 @@
-#include "../libBitIO/include/BitIO.h"
+#include "../include/BitIO.h"
 
 int main(int argc, const char *argv[]) {
     BitInput  *BitI = calloc(sizeof(BitInput), 1);
