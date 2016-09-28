@@ -112,11 +112,7 @@ int main(int argc, const char *argv[]) {
 	ErrorStatus *ES         = calloc(sizeof(ErrorStatus), 1);
 	
 	// Fake argv
-	for (uint64_t Byte = 0; Byte < BitInputBufferSize; Byte++) {
-		TestInput->Buffer[Byte] = 0xFF; 
-		// Init Buffer to 0xFF, so we don't have to store and load a external file.
-		// Think of it as solid state initalization. 
-	}
+	memset(TestInput->Buffer, 0xFF, BitInputBufferSize); // Think of it as solid state initalization.
 	
 	for (uint8_t Argument = 1; Argument < 4; Argument++) {
 		if (Argument == 1) {

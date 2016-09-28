@@ -58,7 +58,7 @@ uninstall:
 	rmdir -f $(DESTINATION)
 
 clean:
-	rm -f -v -r $(BUILD_DIR)/BitIO/BitIO$(OBJ_EXT)
+	rm -f -v -r $(BUILD_DIR)/BitIO/BitIO.$(OBJ_EXT)
 	rm -f -v -r $(BUILD_DIR)/libBitIO/Test-BitIO$(EXE_EXT)
 	rm -f -v -r $(BUILD_DIR)/BitIO/.DS_Store
 	rm -f -v -r $(BUILD_DIR)/BitIO/Thumbs.db
