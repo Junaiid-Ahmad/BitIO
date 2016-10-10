@@ -42,8 +42,8 @@ debug: $(CURDIR)/libBitIO/src/BitIO.c
 
 test: $(CURDIR)/libBitIO/test/UnitTest.c
 	mkdir -p    $(BUILD_DIR)/test
-	$(CC) -v -c $(CURDIR)/libBitIO/test/UnitTest.c -o $(BUILD_DIR)/test/UnitTest.o $(DEB_FLAGS)
-	$(CC) -v    $(BUILD_DIR)/test/UnitTest.o -L$(BUILD_DIR)/libBitIO -o $(BUILD_DIR)/test/Test-BitIO
+	$(CC) -v    $(DEB_FLAGS) -c $(CURDIR)/libBitIO/test/UnitTest.c -o $(BUILD_DIR)/test/UnitTest.o
+	$(CC) -v    $(BUILD_DIR)/test/UnitTest.o $(BUILD_DIR)/libBitIO/libBitIO.o -o $(BUILD_DIR)/test/Test-BitIO
 
 install:
 	install -d -m 777 $(DESTINATION)/lib
