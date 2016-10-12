@@ -181,7 +181,7 @@ bool Test_1sComplimentTo2sCompliment() {
 }
 
 bool Test_StreamAlignment() {
-	bool IsAligned = IsStreamByteAligned(7);
+	bool IsAligned = IsStreamByteAligned(7, 1);
 	if (IsAligned != false) {
 		// test failed
 		return false;
