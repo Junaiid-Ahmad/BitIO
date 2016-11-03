@@ -4,6 +4,11 @@ int main(int argc, const char *argv[]) {
     BitInput  *BitI = calloc(sizeof(BitInput), 1);
     BitOutput *BitO = calloc(sizeof(BitOutput), 1);
     ErrorStatus *ES = calloc(sizeof(ErrorStatus), 1);
+
+	InitBitInput(BitI, ES, argc, argv);
+	InitBitOutput(BitO, ES, argc, argv);
+	memset(BitI->Buffer, 0xFF, BitInputBufferSize);
+	uint8_t What = NewPeekBits(BitI, 7);
     
 	//ES->AlignBits2Byte = 42;
     

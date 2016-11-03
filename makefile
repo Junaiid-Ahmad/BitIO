@@ -9,7 +9,7 @@ LDFLAGS             := -flto=thin
 DEB_ERROR_OPTIONS   := -Wno-unused-parameter -Wno-unused-variable -Wno-int-conversion
 REL_ERROR_OPTIONS   := -Weverything -Wunreachable-code -Wno-conversion
 DEB_FLAGS           := $(CFLAGS) -g -o0 $(DEB_ERROR_OPTIONS) $(LDFLAGS)
-SANITIZER           := -fsanitize=undefined
+SANITIZER           := -fsanitize=undefined -fsanitize=address
 REL_FLAGS           := $(CFLAGS) -ofast $(REL_ERROR_OPTIONS) $(LDFLAGS)
 EXE_EXT             :=
 LIB_EXT             := a

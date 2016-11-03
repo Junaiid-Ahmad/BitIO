@@ -62,11 +62,11 @@ uint8_t RandomData[64] = { // Data for verifying hashing functions
 bool Test_PeekBits(BitInput *Input) { // This should cover basically everything dealing with BitInput
 	bool Passed = 0;
 	for (uint8_t Bits2Peek = 0; Bits2Peek < 64; Bits2Peek++) {
-		uint64_t PeekedData = PeekBits(Input, Bits2Peek);
+		uint64_t PeekedData = NewPeekBits(Input, Bits2Peek);
 		if (PeekedData != Power2Mask(Bits2Peek)) {
 			char Description[BitIOStringSize];
 			snprintf(Description, BitIOStringSize, "PeekBits fucked up big time on %d", Bits2Peek);
-			Log(SYSCritical, &Input->ErrorStatus->PeekBits, InvalidData, "BitIO", "PeekBits", Description);
+			Log(SYSCritical, NULL, InvalidData, "BitIO", "PeekBits", Description); // Input->ErrorStatus->PeekBits
 			Passed = false;
 		} else {
 			Passed = true;
@@ -239,29 +239,39 @@ void Test_All(BitInput *Input, BitOutput *Output) {
 }
 
 int main(int argc, const char *argv[]) {
-	BitInput    *TestInput  = calloc(sizeof(BitInput), 1);
-	BitOutput   *TestOutput = calloc(sizeof(BitOutput), 1);
-	ErrorStatus *ES         = calloc(sizeof(ErrorStatus), 1);
-	
-	// Fake argv
-	memset(TestInput->Buffer, 0xFF, BitInputBufferSize); // Think of it as solid state initalization.
-	
-	for (uint8_t Argument = 1; Argument < 4; Argument++) {
-		if (Argument == 1) {
+	if (argc < 4) {
+		printf("Usage: -i INPUT -o OUTPUT\n");
+		exit(EXIT_FAILURE);
+	} else {
+		BitInput    *TestInput  = calloc(sizeof(BitInput), 1);
+		BitOutput   *TestOutput = calloc(sizeof(BitOutput), 1);
+		ErrorStatus *ES         = calloc(sizeof(ErrorStatus), 1);
+		InitBitInput(TestInput, ES, argc, argv);
+
+		// Fake argv
+		//
+
+		/*
+		 for (uint8_t Argument = 1; Argument < 4; Argument++) {
+		 if (Argument == 0) {
 			argv[Argument] = "-i";
-		} else if (Argument == 2) {
+		 } else if (Argument == 1) {
 			argv[Argument] = "/dev/null";
-		} else if (Argument == 3) {
+		 } else if (Argument == 2) {
 			argv[Argument] = "-o";
-		} else if (Argument == 4) {
+		 } else if (Argument == 3) {
 			argv[Argument] = "/dev/null";
-		}
+		 }
+		 }
+		 */
+
+		InitBitInput(TestInput, ES, argc, argv);
+		memset(TestInput->Buffer, 0xFF, BitInputBufferSize); // Think of it as solid state initalization.
+		InitBitOutput(TestOutput, ES, argc, argv);
+
+		//Test_All(TestInput, TestOutput);
+		Test_PeekBits(TestInput);
 	}
-	
-	InitBitInput(TestInput, ES, argc, argv);
-	InitBitOutput(TestOutput, ES, argc, argv);
-	
-	Test_All(TestInput, TestOutput);
 	
 	return 0;
 }
