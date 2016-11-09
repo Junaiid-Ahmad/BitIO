@@ -59,17 +59,47 @@ uint8_t RandomData[64] = { // Data for verifying hashing functions
 	0xB2, 0xE2, 0xEB, 0x42, 0xC6, 0x8F, 0x14, 0xBB
 };
 
+uint8_t RandomBits2Peek[64] = {
+     6, 61, 20, 57, 28,  9, 37, 33, 42, 62, 18, 43, 53, 62, 61, 13,
+    14, 50, 37, 37, 53, 62, 15, 35,  1, 14, 43, 46, 61,  8, 24, 45,
+    38, 24,  2, 38, 43, 48, 39, 37, 48,  7, 59, 47, 44,  6,  9, 53,
+    31, 63, 56,  6, 61, 59, 42, 26, 36, 63, 43, 21, 48, 43, 10, 42
+};
+
+uint16_t RandomBitsAvailable[64] = {
+    0x3b1a, 0x5968, 0x5edd, 0x51ec, 0x6faf, 0x2cd1, 0x491a, 0x230a,
+    0x5a3f, 0x35ca, 0x25a3, 0x08ee, 0x5b96, 0x1d02, 0x21ac, 0x1b57,
+    0x75d8, 0x358b, 0x0f51, 0x70bf, 0x6921, 0x571c, 0x35e0, 0x3cfa,
+    0x0b22, 0x639c, 0x3f1d, 0x5756, 0x59ec, 0x05bc, 0x63db, 0x6b37,
+    0x1fd0, 0x4b96, 0x526e, 0x47bf, 0x4c9c, 0x4c5f, 0x6e60, 0x5308,
+    0x09c2, 0x04d1, 0x464e, 0x61dd, 0x4f60, 0x45fb, 0x60d8, 0x3ea6,
+    0x56ad, 0x403c, 0x28e5, 0x794a, 0x6c87, 0x699f, 0x5090, 0x761e,
+    0x2b09, 0x05d3, 0x053c, 0x79a0, 0x11a5, 0x3585, 0x7d20, 0x17e3
+};
+
 bool Test_PeekBits(BitInput *Input) { // This should cover basically everything dealing with BitInput
 	bool Passed = 0;
-	for (uint8_t Bits2Peek = 0; Bits2Peek < 64; Bits2Peek++) {
-		uint64_t PeekedData = NewPeekBits(Input, Bits2Peek);
-		if (PeekedData != Power2Mask(Bits2Peek)) {
+    uint64_t Correct = 0LLU;
+    uint8_t Bits2Read; // = MyRand(1, 64);
+
+    Input->BitsAvailable   -= RandomBitsAvailable[Bits2Read]; // 4
+    Input->BitsUnavailable += RandomBitsAvailable[Bits2Read];
+
+	for (uint8_t Bits2Peek = 64; Bits2Peek < 65; Bits2Peek++) {
+        Bits2Read = RandomBits2Peek[Bits2Peek];
+        uint64_t PeekedData = ReadBits(Input, Bits2Read); // NewPeekBits3
+        Correct = Power2Mask(Bits2Read);
+		if (PeekedData != Correct) {
 			char Description[BitIOStringSize];
-			snprintf(Description, BitIOStringSize, "PeekBits fucked up big time on %d", Bits2Peek);
+			snprintf(Description, BitIOStringSize, "PeekBits fucked up big time on %d\n", Bits2Peek);
 			Log(SYSCritical, NULL, InvalidData, "BitIO", "PeekBits", Description); // Input->ErrorStatus->PeekBits
 			Passed = false;
+            printf("\nERROR! \n");
+            printf("Bits2Peek: %d, BitsAvailable: %llU, Result: 0x%llX, Correct: 0x%llX\n", Bits2Read, Input->BitsAvailable, PeekedData, Correct);
+            printf("!ERROR \n");
 		} else {
 			Passed = true;
+            printf("Bits2Peek: %d, BitsAvailable: %llU, Result: 0x%llX\n", Bits2Read, Input->BitsAvailable, PeekedData);
 		}
 	}
 	return Passed;
@@ -266,7 +296,7 @@ int main(int argc, const char *argv[]) {
 		 */
 
 		InitBitInput(TestInput, ES, argc, argv);
-		memset(TestInput->Buffer, 0xFF, BitInputBufferSize); // Think of it as solid state initalization.
+        //memset(TestInput->Buffer, 0xFF, BitInputBufferSize); // Think of it as solid state initalization.
 		InitBitOutput(TestOutput, ES, argc, argv);
 
 		//Test_All(TestInput, TestOutput);

@@ -1,15 +1,48 @@
 #include "../include/BitIO.h"
 
+/*
+uint64_t MyRand(uint64_t Minimum, uint64_t Maximum) {
+	uint64_t Hole;
+	uintptr_t *HolePointer = Hole;
+	if (Hole == 0) {
+		HolePointer += 8;
+		Hole = *HolePointer;
+	}
+	return Hole;
+}
+ */
+
 int main(int argc, const char *argv[]) {
     BitInput  *BitI = calloc(sizeof(BitInput), 1);
     BitOutput *BitO = calloc(sizeof(BitOutput), 1);
     ErrorStatus *ES = calloc(sizeof(ErrorStatus), 1);
 
-	InitBitInput(BitI, ES, argc, argv);
-	InitBitOutput(BitO, ES, argc, argv);
-	memset(BitI->Buffer, 0xFF, BitInputBufferSize);
-	uint8_t What = NewPeekBits(BitI, 7);
-    
+
+    InitBitInput(BitI, ES, argc, argv);
+    InitBitOutput(BitO, ES, argc, argv);
+
+    /*
+    BitI->BitsAvailable   = (BitInputBufferSize * 8) - 3;
+    BitI->BitsUnavailable = 2;
+     */
+
+    uint64_t Data = 0;
+
+    for (uint8_t Wat = 1; Wat < 64; Wat++) {
+        Data = ReadBits(BitI, Wat);
+        printf("BitsAvailable: %llu, BitsUnavailable: %llu, Bits2Read: %d, Result: 0x%llx\n", BitI->BitsAvailable, BitI->BitsUnavailable, Wat, Data);
+    }
+
+    /*
+	//memset(BitI->Buffer, 0xFF, BitInputBufferSize);
+	uint64_t What[8] = {0};
+	for (uint8_t Run = 0; Run < 8; Run++) { // Loop over ReadBits to test it.
+		uint8_t Bits2Read = MyRand(1, 64);
+		uint64_t OutputData = ReadBits(BitI, Bits2Read);
+		printf("ReadBits Test: Bits2Read = %d, OutputData = 0x%llx", Bits2Read, What[Run]);
+	}
+    */
+    /*
 	//ES->AlignBits2Byte = 42;
     
 	//InitBitInput(BitI, ES, argc, argv);
@@ -20,7 +53,7 @@ int main(int argc, const char *argv[]) {
         uint16_t   Red : 12;
         uint16_t Green : 12;
         uint16_t  Blue : 12;
-		 */
+		 
 		
 		unsigned Red : 12, Green : 12, Blue : 12;
 		
