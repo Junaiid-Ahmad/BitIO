@@ -77,7 +77,7 @@ uint16_t RandomBitsAvailable[64] = {
     0x2b09, 0x05d3, 0x053c, 0x79a0, 0x11a5, 0x3585, 0x7d20, 0x17e3
 };
 
-bool Test_PeekBits(BitInput *Input) { // This should cover basically everything dealing with BitInput
+bool Test_ReadBits(BitInput *Input) { // This should cover basically everything dealing with BitInput
 	bool Passed = 0;
     uint64_t Correct = 0LLU;
     uint8_t Bits2Read; // = MyRand(1, 64);
@@ -87,19 +87,19 @@ bool Test_PeekBits(BitInput *Input) { // This should cover basically everything 
 
 	for (uint8_t Bits2Peek = 64; Bits2Peek < 65; Bits2Peek++) {
         Bits2Read = RandomBits2Peek[Bits2Peek];
-        uint64_t PeekedData = ReadBits(Input, Bits2Read); // NewPeekBits3
+        uint64_t PeekedData = ReadBits(Input, Bits2Read);
         Correct = Power2Mask(Bits2Read);
 		if (PeekedData != Correct) {
-			char Description[BitIOStringSize];
-			snprintf(Description, BitIOStringSize, "PeekBits fucked up big time on %d\n", Bits2Peek);
-			Log(SYSCritical, NULL, InvalidData, "BitIO", "PeekBits", Description); // Input->ErrorStatus->PeekBits
 			Passed = false;
-            printf("\nERROR! \n");
-            printf("Bits2Peek: %d, BitsAvailable: %llU, Result: 0x%llX, Correct: 0x%llX\n", Bits2Read, Input->BitsAvailable, PeekedData, Correct);
+
+			char Description[BitIOStringSize];
+			snprintf(Description, BitIOStringSize, "ReadBits fucked up big time on %d\n", Bits2Peek);
+			Log(SYSCritical, "BitIO", "ReadBits", Description);
+            printf("\nERROR!\n");
+            printf("Bits2Peek: %d, BitsUnavailable: %llU, Result: 0x%llX, Correct: 0x%llX\n", Bits2Read, Input->BitsUnavailable, PeekedData, Correct);
             printf("!ERROR \n");
 		} else {
 			Passed = true;
-            printf("Bits2Peek: %d, BitsAvailable: %llU, Result: 0x%llX\n", Bits2Read, Input->BitsAvailable, PeekedData);
 		}
 	}
 	return Passed;
@@ -109,16 +109,14 @@ bool Test_ReadExpGolomb(BitInput *Input) {
 	return false;
 }
 
-bool Test_Adler32(BitInput *Input) { // This will test both GenerateAdler32 and VerifyAdler32
-									 // FIXME: I may need to swap endian...
-	
+bool Test_Adler32(BitInput *Input) { // FIXME: I may need to swap endian...
 	uint32_t ConfirmedAdler32 = 0xF6532055;
 	
 	uint32_t GeneratedAdler32 = GenerateAdler32(&RandomData[64], 64);
 	if (GeneratedAdler32 != ConfirmedAdler32) {
 		char ErrorString[BitIOStringSize] = {0};
 		snprintf(ErrorString, BitIOStringSize, "Adler32 failed, generated: %x, should've been: %x", GeneratedAdler32, ConfirmedAdler32);
-		Log(SYSError, NULL, NULL, "BitIO", "Test_Adler32", ErrorString);
+		Log(SYSError, "BitIO", "Test_Adler32", ErrorString);
 		return false;
 	} else {
 		return true;
@@ -131,9 +129,10 @@ bool Test_CRC(BitInput *Input) { // This will test both GenerateCRC and VerifyCR
 	// Loop throught a variety of polys, and put the log if inside the loop
 	uint32_t GeneratedCRC = GenerateCRC(&RandomData[64], 64, 0x82608EDB, 0xFFFFFFFF, 32); // PNG CRC Poly
 	if (GeneratedCRC != VerifiedCRC) {
+		Input->ErrorStatus->VerifyCRC = InvalidCRC;
 		char Description[BitIOStringSize] = {0};
 		snprintf(Description, BitIOStringSize, "Poly: %x, Init: %x, CRCSize: %d\n", 0x82608EDB, 0xFFFFFFFF, 32);
-		Log(SYSError, NULL, InvalidCRC, "BitIO", "Test_CRC", Description);
+		Log(SYSError, "BitIO", "Test_CRC", Description);
 		return false; // test failed
 	} else {
 		return true;
@@ -253,7 +252,7 @@ void Test_StaticHuffman() {
 }
 
 void Test_All(BitInput *Input, BitOutput *Output) {
-	Test_PeekBits(Input);
+	Test_ReadBits(Input);
 	Test_Adler32(Input);
 	Test_CRC(Input);
 	Test_SwapEndian16();
@@ -300,7 +299,7 @@ int main(int argc, const char *argv[]) {
 		InitBitOutput(TestOutput, ES, argc, argv);
 
 		//Test_All(TestInput, TestOutput);
-		Test_PeekBits(TestInput);
+		Test_ReadBits(TestInput);
 	}
 	
 	return 0;

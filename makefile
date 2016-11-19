@@ -30,20 +30,24 @@ CHECK_VERS:
 release: $(CURDIR)/libBitIO/src/BitIO.c
 	mkdir -p   $(BUILD_DIR)
 	mkdir -p   $(BUILD_DIR)/libBitIO
-	$(CC)      $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_DIR)/libBitIO/libBitIO.o
-	ar -crsu   $(BUILD_DIR)/libBitIO/libBitIO.a $(BUILD_DIR)/libBitIO/libBitIO.o
+	$(CC)      $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_DIR)/libBitIO/BitIO.o
+	$(CC)      $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/UUID.c -o $(BUILD_DIR)/libBitIO/UUID.o
+	ar -crsu   $(BUILD_DIR)/libBitIO/libBitIO.a $(BUILD_DIR)/libBitIO/BitIO.o $(BUILD_DIR)/libBitIO/UUID.o 
+	ranlib -sf $(BUILD_DIR)/libBitIO/libBitIO.a
 
 debug: $(CURDIR)/libBitIO/src/BitIO.c
 	mkdir -p   $(BUILD_DIR)
 	mkdir -p   $(BUILD_DIR)/libBitIO
-	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_DIR)/libBitIO/libBitIO.o
-	ar -crsu   $(BUILD_DIR)/libBitIO/libBitIO.a $(BUILD_DIR)/libBitIO/libBitIO.o
+	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_DIR)/libBitIO/BitIO.o
+	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/UUID.c -o $(BUILD_DIR)/libBitIO/UUID.o
+	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/UTF8String.c -o $(BUILD_DIR)/libBitIO/UTF8String.o
+	ar -crsu   $(BUILD_DIR)/libBitIO/libBitIO.a $(BUILD_DIR)/libBitIO/BitIO.o $(BUILD_DIR)/libBitIO/UUID.o $(BUILD_DIR)/libBitIO/UTF8String.o
 	ranlib -sf $(BUILD_DIR)/libBitIO/libBitIO.a
 
 test: $(CURDIR)/libBitIO/test/UnitTest.c
 	mkdir -p    $(BUILD_DIR)/test
 	$(CC) -v    $(DEB_FLAGS) -c $(CURDIR)/libBitIO/test/UnitTest.c -o $(BUILD_DIR)/test/UnitTest.o
-	$(CC) -v    $(BUILD_DIR)/test/UnitTest.o $(BUILD_DIR)/libBitIO/libBitIO.o -o $(BUILD_DIR)/test/Test-BitIO
+	$(CC) -v    $(BUILD_DIR)/test/UnitTest.o $(BUILD_DIR)/libBitIO/libBitIO.a -o $(BUILD_DIR)/test/Test-BitIO
 
 install:
 	install -d -m 777 $(DESTINATION)/lib
@@ -61,7 +65,9 @@ uninstall:
 
 clean:
 	cd $(BUILD_DIR)/libBitIO/
-	rm -f -v -r libBitIO.o
+	rm -f -v -r BitIO.o
+	rm -f -v -r UUID.o
+	rm -f -v -r UTF8String.o
 	rm -f -v -r libBitIO.a
 	rm -f -v -r .DS_Store
 	rm -f -v -r Thumbs.db
