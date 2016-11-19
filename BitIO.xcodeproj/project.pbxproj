@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C0AE9CF1DD90BE000627B92 /* UnitTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C80D7951DCEC805007D0607 /* UnitTest.c */; };
+		2C0AE9D01DD9AEAE00627B92 /* UTF8String.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C0CC93D1DD36B1E00549106 /* UTF8String.c */; };
+		2C0CC93F1DD397C700549106 /* UUID.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C0CC93A1DD36AD000549106 /* UUID.c */; };
 		2C4D08BD1D585897002AB9B5 /* libBitIO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C1989D71D58560500E948F7 /* libBitIO.a */; };
-		2C79D6911D911F39009E91E6 /* UnitTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C79D6901D911F39009E91E6 /* UnitTest.c */; };
 		2C7CA9761D585660005B07AC /* BitIO.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C7CA9751D585660005B07AC /* BitIO.c */; };
 		2C7CA9781D585675005B07AC /* BitIO.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C7CA9771D585675005B07AC /* BitIO.h */; };
 /* End PBXBuildFile section */
@@ -26,13 +28,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2C1865F41D64CF6100D28BC8 /* UnitTests.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = UnitTests.c; path = libBitIO/test/UnitTests.c; sourceTree = "<group>"; };
+		2C0CC93A1DD36AD000549106 /* UUID.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = UUID.c; path = libBitIO/src/UUID.c; sourceTree = SOURCE_ROOT; };
+		2C0CC93D1DD36B1E00549106 /* UTF8String.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = UTF8String.c; path = libBitIO/src/UTF8String.c; sourceTree = SOURCE_ROOT; };
 		2C1989C71D5855B800E948F7 /* Test-BitIO */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Test-BitIO"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C1989D71D58560500E948F7 /* libBitIO.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBitIO.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		2C79D6901D911F39009E91E6 /* UnitTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = UnitTest.c; path = libBitIO/test/UnitTest.c; sourceTree = SOURCE_ROOT; };
-		2C79D6921D911F42009E91E6 /* test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = test.c; path = libBitIO/test/test.c; sourceTree = SOURCE_ROOT; };
 		2C7CA9751D585660005B07AC /* BitIO.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BitIO.c; path = libBitIO/src/BitIO.c; sourceTree = SOURCE_ROOT; };
 		2C7CA9771D585675005B07AC /* BitIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BitIO.h; path = libBitIO/include/BitIO.h; sourceTree = SOURCE_ROOT; };
+		2C80D7951DCEC805007D0607 /* UnitTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = UnitTest.c; path = libBitIO/test/UnitTest.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,20 +56,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2C1865F31D64CF5500D28BC8 /* UnitTests */ = {
+		2C0CC93C1DD36AEA00549106 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				2C1865F41D64CF6100D28BC8 /* UnitTests.c */,
+				2C0CC93A1DD36AD000549106 /* UUID.c */,
+				2C7CA9751D585660005B07AC /* BitIO.c */,
+				2C0CC93D1DD36B1E00549106 /* UTF8String.c */,
 			);
-			name = UnitTests;
+			name = Source;
+			sourceTree = "<group>";
+		};
+		2C1865F31D64CF5500D28BC8 /* UnitTest */ = {
+			isa = PBXGroup;
+			children = (
+				2C80D7951DCEC805007D0607 /* UnitTest.c */,
+			);
+			name = UnitTest;
 			sourceTree = "<group>";
 		};
 		2C1989BE1D5855B800E948F7 = {
 			isa = PBXGroup;
 			children = (
-				2C1865F31D64CF5500D28BC8 /* UnitTests */,
+				2C1865F31D64CF5500D28BC8 /* UnitTest */,
 				2C1989DB1D58560B00E948F7 /* libBitIO */,
-				2C1989C91D5855B800E948F7 /* BitIO */,
 				2C1989C81D5855B800E948F7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -82,20 +93,11 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		2C1989C91D5855B800E948F7 /* BitIO */ = {
-			isa = PBXGroup;
-			children = (
-				2C79D6921D911F42009E91E6 /* test.c */,
-			);
-			path = BitIO;
-			sourceTree = "<group>";
-		};
 		2C1989DB1D58560B00E948F7 /* libBitIO */ = {
 			isa = PBXGroup;
 			children = (
-				2C79D6901D911F39009E91E6 /* UnitTest.c */,
 				2C7CA9771D585675005B07AC /* BitIO.h */,
-				2C7CA9751D585660005B07AC /* BitIO.c */,
+				2C0CC93C1DD36AEA00549106 /* Source */,
 			);
 			name = libBitIO;
 			path = BitIO;
@@ -191,7 +193,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C79D6911D911F39009E91E6 /* UnitTest.c in Sources */,
+				2C0AE9CF1DD90BE000627B92 /* UnitTest.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,6 +201,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C0AE9D01DD9AEAE00627B92 /* UTF8String.c in Sources */,
+				2C0CC93F1DD397C700549106 /* UUID.c in Sources */,
 				2C7CA9761D585660005B07AC /* BitIO.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -251,6 +255,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				GCC_UNROLL_LOOPS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -316,6 +321,7 @@
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_UNROLL_LOOPS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -362,6 +368,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				EXECUTABLE_PREFIX = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "include/$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
@@ -371,6 +378,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				EXECUTABLE_PREFIX = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "include/$(TARGET_NAME)";
 			};
 			name = Release;
 		};
