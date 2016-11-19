@@ -30,23 +30,23 @@ CHECK_VERS:
 release: $(CURDIR)/libBitIO/src/BitIO.c
 	mkdir -p   $(BUILD_DIR)
 	mkdir -p   $(BUILD_DIR)/libBitIO
-	$(CC)      $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_DIR)/libBitIO/BitIO.o
-	$(CC)      $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/UUID.c -o $(BUILD_DIR)/libBitIO/UUID.o
+	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/BitIO.c -o $(BUILD_DIR)/libBitIO/BitIO.o
+	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/UUID.c -o $(BUILD_DIR)/libBitIO/UUID.o
 	ar -crsu   $(BUILD_DIR)/libBitIO/libBitIO.a $(BUILD_DIR)/libBitIO/BitIO.o $(BUILD_DIR)/libBitIO/UUID.o 
 	ranlib -sf $(BUILD_DIR)/libBitIO/libBitIO.a
 
 debug: $(CURDIR)/libBitIO/src/BitIO.c
 	mkdir -p   $(BUILD_DIR)
 	mkdir -p   $(BUILD_DIR)/libBitIO
-	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_DIR)/libBitIO/BitIO.o
-	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/UUID.c -o $(BUILD_DIR)/libBitIO/UUID.o
-	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/UTF8String.c -o $(BUILD_DIR)/libBitIO/UTF8String.o
-	ar -crsu   $(BUILD_DIR)/libBitIO/libBitIO.a $(BUILD_DIR)/libBitIO/BitIO.o $(BUILD_DIR)/libBitIO/UUID.o $(BUILD_DIR)/libBitIO/UTF8String.o
+	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/BitIO.c -o $(BUILD_DIR)/libBitIO/BitIO.o
+	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/UUID.c -o $(BUILD_DIR)/libBitIO/UUID.o
+	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/UTF8String.c -o $(BUILD_DIR)/libBitIO/UTF8String.o
+	ar -crsu   $(BUILD_DIR)/libBitIO/libBitIO.a $(BUILD_DIR)/BitIO.o $(BUILD_DIR)/UUID.o $(BUILD_DIR)/UTF8String.o
 	ranlib -sf $(BUILD_DIR)/libBitIO/libBitIO.a
 
 test: $(CURDIR)/libBitIO/test/UnitTest.c
 	mkdir -p    $(BUILD_DIR)/test
-	$(CC) -v    $(DEB_FLAGS) -c $(CURDIR)/libBitIO/test/UnitTest.c -o $(BUILD_DIR)/test/UnitTest.o
+	$(CC) -v    $(DEB_FLAGS) -c $(CURDIR)/test/UnitTest.c -o $(BUILD_DIR)/test/UnitTest.o
 	$(CC) -v    $(BUILD_DIR)/test/UnitTest.o $(BUILD_DIR)/libBitIO/libBitIO.a -o $(BUILD_DIR)/test/Test-BitIO
 
 install:
@@ -54,7 +54,7 @@ install:
 	install -d -m 777 $(DESTINATION)/bin
 	install -d -m 777 $(DESTINATION)/include
 	install -C -v -m 444 $(BUILD_DIR)/libBitIO/libBitIO.a $(DESTINATION)/lib/libBitIO.a
-	install -C -v -m 444 $(BUILD_DIR)/../libBitIO/include/BitIO.h $(DESTINATION)/include/BitIO.h
+	install -C -v -m 444 $(BUILD_DIR)/../include/BitIO.h $(DESTINATION)/include/BitIO.h
 	install -C -v -m 444 $(BUILD_DIR)/test/Test-BitIO $(DESTINATION)/bin/Test-BitIO
 	chmod +x $(DESTINATION)/bin/Test-BitIO
 	ln -i $(DESTINATION)/bin/Test-BitIO /usr/bin/Test-BitIO
