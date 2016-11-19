@@ -27,7 +27,7 @@ distclean:
 CHECK_VERS:
 	$(shell echo ${VERSION})
 
-release: $(CURDIR)/libBitIO/src/BitIO.c
+release: $(CURDIR)/src/BitIO.c
 	mkdir -p   $(BUILD_DIR)
 	mkdir -p   $(BUILD_DIR)/libBitIO
 	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/BitIO.c -o $(BUILD_DIR)/libBitIO/BitIO.o
@@ -35,7 +35,7 @@ release: $(CURDIR)/libBitIO/src/BitIO.c
 	ar -crsu   $(BUILD_DIR)/libBitIO/libBitIO.a $(BUILD_DIR)/libBitIO/BitIO.o $(BUILD_DIR)/libBitIO/UUID.o 
 	ranlib -sf $(BUILD_DIR)/libBitIO/libBitIO.a
 
-debug: $(CURDIR)/libBitIO/src/BitIO.c
+debug: $(CURDIR)/src/BitIO.c
 	mkdir -p   $(BUILD_DIR)
 	mkdir -p   $(BUILD_DIR)/libBitIO
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/BitIO.c -o $(BUILD_DIR)/libBitIO/BitIO.o
@@ -44,7 +44,7 @@ debug: $(CURDIR)/libBitIO/src/BitIO.c
 	ar -crsu   $(BUILD_DIR)/libBitIO/libBitIO.a $(BUILD_DIR)/BitIO.o $(BUILD_DIR)/UUID.o $(BUILD_DIR)/UTF8String.o
 	ranlib -sf $(BUILD_DIR)/libBitIO/libBitIO.a
 
-test: $(CURDIR)/libBitIO/test/UnitTest.c
+test: $(CURDIR)/test/UnitTest.c
 	mkdir -p    $(BUILD_DIR)/test
 	$(CC) -v    $(DEB_FLAGS) -c $(CURDIR)/test/UnitTest.c -o $(BUILD_DIR)/test/UnitTest.o
 	$(CC) -v    $(BUILD_DIR)/test/UnitTest.o $(BUILD_DIR)/libBitIO/libBitIO.a -o $(BUILD_DIR)/test/Test-BitIO
