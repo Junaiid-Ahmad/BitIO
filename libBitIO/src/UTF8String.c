@@ -23,6 +23,12 @@ extern "C" {
             String->Endian = NoBOM;
         }
     }
+	
+	UTF8String CreateString(UTF8String *String, uint8_t *StringData[], size_t DataSize) {
+		for (uint64_t Byte = 0; Byte < DataSize; Byte++) {
+			
+		}
+	}
 
     /*
     bool       CodeUnitIsStartCodePoint(UTF8String *String, uint64_t StartCodeUnit) { // Should I add support for finding the closest previous Code Point?
@@ -86,6 +92,7 @@ extern "C" {
     /*!
      Character2Remove has to be the first code point in a character to remove
      */
+	/*
     void       RemoveSubString(UTF8String *OldString, UTF8String *NewString, UTF8String String2Remove, bool RemoveAll) {
         uint32_t CurrentCodePoint = 0, CurrentCodeUnit = 0, CodePointSize = 0;
 
@@ -125,6 +132,7 @@ extern "C" {
             }
         }
     }
+	 */
 
     /*
     UTF8String RemoveBOM(UTF8String *OldString, UTF8String *NewString, uint8_t BOMType) {
@@ -153,6 +161,7 @@ extern "C" {
     }
      */
 
+	/*
     UTF8String ConcatenateStrings(UTF8String *String1, UTF8String *String2, UTF8String *NewString) {
         uint64_t CumulativeSize = String1->StringSizeInCodePoints + String2->StringSizeInCodePoints;
         if (CumulativeSize > UTF8String_MaxCodeUnits) {
@@ -200,7 +209,9 @@ extern "C" {
         }
         return *NewString;
     }
+	 */
 
+	/*
     bool       CompareUTF8Strings(UTF8String *String1, UTF8String *String2, bool CaseSensitive) {
         if (CaseSensitive == false) {
             // compare code points
@@ -209,10 +220,12 @@ extern "C" {
         }
         return 1;
     }
+	 */
 
     /*!
      @abstract    "Replace String2Find with String2Replace in String; if ReplaceAll = false only the first occurrence is replaced".
      */
+	/*
     UTF8String ReplaceCharacter(UTF8String *String, UTF8String String2Find, UTF8String String2Replace, bool ReplaceAll) {
         return *String;
     }
@@ -236,10 +249,12 @@ extern "C" {
 
         return Position;
     }
+	 */
 
     /*!
      @abstract           "Seperates String based on Seperator".
      */
+	/*
     UTF8String SeperateString(UTF8String *String, UTF8String Seperator) { // va_list Arguments
         return *String;
     }
@@ -247,7 +262,7 @@ extern "C" {
     UTF8String NormalizeString(UTF8String *String2Normalize) {
         return 0;
     }
-
+*/
     /*
      @param      SortTable       "Submit the table to sort the string with".
      */
@@ -259,7 +274,7 @@ extern "C" {
         return *String2Sort;
     }
      */
-
+/*
     void SeperateUTF8String(UTF8String *String2Split, UTF8String *Seperator) {
         // tl;dr scan each grapeme for the character to split on, when found, split the string
     }
@@ -269,7 +284,7 @@ extern "C" {
 
         Byte = ReadBits(BitI, 8);
         if ((Byte & 0x80) == ) {
-            <#statements#>
+
         }
 
 
@@ -342,7 +357,7 @@ extern "C" {
     
     // To make a Rope datastructure, I need to base it on a "linked list" aka, a 2D array where the first dimension is the value, and the second is a pointer to the next element.
     
-    
+    */
     
 #ifdef __cplusplus
 }

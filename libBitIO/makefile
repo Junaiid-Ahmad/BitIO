@@ -40,8 +40,7 @@ debug: $(CURDIR)/src/BitIO.c
 	mkdir -p   $(BUILD_DIR)/libBitIO
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/BitIO.c -o $(BUILD_DIR)/libBitIO/BitIO.o
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/UUID.c -o $(BUILD_DIR)/libBitIO/UUID.o
-	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/UTF8String.c -o $(BUILD_DIR)/libBitIO/UTF8String.o
-	ar -crsu   $(BUILD_DIR)/libBitIO/libBitIO.a $(BUILD_DIR)/BitIO.o $(BUILD_DIR)/UUID.o $(BUILD_DIR)/UTF8String.o
+	ar -crsu   $(BUILD_DIR)/libBitIO/libBitIO.a $(BUILD_DIR)/libBitIO/BitIO.o $(BUILD_DIR)/libBitIO/UUID.o
 	ranlib -sf $(BUILD_DIR)/libBitIO/libBitIO.a
 
 test: $(CURDIR)/test/UnitTest.c
@@ -67,7 +66,6 @@ clean:
 	cd $(BUILD_DIR)/libBitIO/
 	rm -f -v -r BitIO.o
 	rm -f -v -r UUID.o
-	rm -f -v -r UTF8String.o
 	rm -f -v -r libBitIO.a
 	rm -f -v -r .DS_Store
 	rm -f -v -r Thumbs.db
