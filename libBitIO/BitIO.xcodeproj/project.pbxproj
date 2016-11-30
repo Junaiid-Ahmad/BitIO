@@ -11,9 +11,18 @@
 		2C7CDA041DE26A6E00161286 /* BitIO.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C7CDA031DE26A6E00161286 /* BitIO.h */; };
 		2C7CDA061DE26A7700161286 /* UUID.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C7CDA051DE26A7700161286 /* UUID.c */; };
 		2C7CDA081DE26A7D00161286 /* BitIO.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C7CDA071DE26A7D00161286 /* BitIO.c */; };
-		2C7CDA0A1DE26A8200161286 /* UTF8String.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C7CDA091DE26A8200161286 /* UTF8String.c */; };
 		2C7CDA0C1DE26BAB00161286 /* UnitTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C7CDA0B1DE26BAB00161286 /* UnitTest.c */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2CF79E5F1DEE9EDF00F02C42 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2C1989BF1D5855B800E948F7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2C1989D61D58560500E948F7;
+			remoteInfo = libBitIO;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		2C1989C51D5855B800E948F7 /* CopyFiles */ = {
@@ -128,6 +137,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				2CF79E601DEE9EDF00F02C42 /* PBXTargetDependency */,
 			);
 			name = "Test-BitIO";
 			productName = BitIO;
@@ -202,12 +212,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C7CDA061DE26A7700161286 /* UUID.c in Sources */,
-				2C7CDA0A1DE26A8200161286 /* UTF8String.c in Sources */,
 				2C7CDA081DE26A7D00161286 /* BitIO.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2CF79E601DEE9EDF00F02C42 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2C1989D61D58560500E948F7 /* libBitIO */;
+			targetProxy = 2CF79E5F1DEE9EDF00F02C42 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		2C1989CC1D5855B800E948F7 /* Debug */ = {

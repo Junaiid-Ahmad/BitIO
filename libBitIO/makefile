@@ -1,5 +1,5 @@
 PACKAGE_NAME        := BitIO
-FILE                := $(CURDIR)/libBitIO/include/BitIO.h
+FILE                := $(CURDIR)/include/BitIO.h
 VERSION             := $(shell cat ${FILE} | grep -e "@version")
 CC                  := cc
 DESTINATION         := /usr/local/Packages/$(PACKAGE_NAME)
@@ -11,22 +11,17 @@ REL_ERROR_OPTIONS   := -Weverything -Wunreachable-code -Wno-conversion
 DEB_FLAGS           := $(CFLAGS) -g -o0 $(DEB_ERROR_OPTIONS) $(LDFLAGS)
 SANITIZER           := -fsanitize=undefined -fsanitize=address
 REL_FLAGS           := $(CFLAGS) -ofast $(REL_ERROR_OPTIONS) $(LDFLAGS)
-EXE_EXT             :=
-LIB_EXT             := a
-OBJ_EXT             := o
 
-.PHONY: all detect_platform Release Debug Install Uninstall Clean distclean
+.PHONY: all check distclean CheckVer release debug test install clean uninstall
 
 all: release
 	$(release)
-check: 
+check: test
 	$(test)
-distclean: 
+distclean: clean
 	$(clean)
-
-CHECK_VERS:
+CheckVer:
 	$(shell echo ${VERSION})
-
 release: $(CURDIR)/src/BitIO.c
 	mkdir -p   $(BUILD_DIR)
 	mkdir -p   $(BUILD_DIR)/libBitIO
@@ -34,7 +29,6 @@ release: $(CURDIR)/src/BitIO.c
 	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/UUID.c -o $(BUILD_DIR)/libBitIO/UUID.o
 	ar -crsu   $(BUILD_DIR)/libBitIO/libBitIO.a $(BUILD_DIR)/libBitIO/BitIO.o $(BUILD_DIR)/libBitIO/UUID.o 
 	ranlib -sf $(BUILD_DIR)/libBitIO/libBitIO.a
-
 debug: $(CURDIR)/src/BitIO.c
 	mkdir -p   $(BUILD_DIR)
 	mkdir -p   $(BUILD_DIR)/libBitIO
@@ -42,12 +36,11 @@ debug: $(CURDIR)/src/BitIO.c
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/UUID.c -o $(BUILD_DIR)/libBitIO/UUID.o
 	ar -crsu   $(BUILD_DIR)/libBitIO/libBitIO.a $(BUILD_DIR)/libBitIO/BitIO.o $(BUILD_DIR)/libBitIO/UUID.o
 	ranlib -sf $(BUILD_DIR)/libBitIO/libBitIO.a
-
 test: $(CURDIR)/test/UnitTest.c
-	mkdir -p    $(BUILD_DIR)/test
-	$(CC) -v    $(DEB_FLAGS) -c $(CURDIR)/test/UnitTest.c -o $(BUILD_DIR)/test/UnitTest.o
-	$(CC) -v    $(BUILD_DIR)/test/UnitTest.o $(BUILD_DIR)/libBitIO/libBitIO.a -o $(BUILD_DIR)/test/Test-BitIO
-
+	mkdir -p   $(BUILD_DIR)
+	mkdir -p   $(BUILD_DIR)/test
+	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/test/UnitTest.c -o $(BUILD_DIR)/test/UnitTest.o
+	$(CC)      $(BUILD_DIR)/test/UnitTest.o $(BUILD_DIR)/libBitIO/libBitIO.a -o $(BUILD_DIR)/test/Test-BitIO
 install:
 	install -d -m 777 $(DESTINATION)/lib
 	install -d -m 777 $(DESTINATION)/bin
@@ -58,10 +51,6 @@ install:
 	chmod +x $(DESTINATION)/bin/Test-BitIO
 	ln -i $(DESTINATION)/bin/Test-BitIO /usr/bin/Test-BitIO
 	chmod +x /usr/bin/Test-BitIO
-
-uninstall:
-	rm -d -i $(DESTINATION)
-
 clean:
 	cd $(BUILD_DIR)/libBitIO/
 	rm -f -v -r BitIO.o
@@ -77,3 +66,5 @@ clean:
 	rm -f -v -r Thumbs.db
 	rm -f -v -r desktop.ini
 	rmdir $(BUILD_DIR)
+uninstall:
+	rm -d -i $(DESTINATION)
