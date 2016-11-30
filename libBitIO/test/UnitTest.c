@@ -85,7 +85,7 @@ bool Test_ReadBits(BitInput *Input) { // This should cover basically everything 
     Input->BitsAvailable   -= RandomBitsAvailable[Bits2Read]; // 4
     Input->BitsUnavailable += RandomBitsAvailable[Bits2Read];
 
-	for (uint8_t Bits2Peek = 64; Bits2Peek < 65; Bits2Peek++) {
+	for (uint8_t Bits2Peek = 0; Bits2Peek < 65; Bits2Peek++) {
         Bits2Read = RandomBits2Peek[Bits2Peek];
         uint64_t PeekedData = ReadBits(Input, Bits2Read);
         Correct = Power2Mask(Bits2Read);
@@ -96,10 +96,11 @@ bool Test_ReadBits(BitInput *Input) { // This should cover basically everything 
 			snprintf(Description, BitIOStringSize, "ReadBits fucked up big time on %d\n", Bits2Peek);
 			Log(SYSCritical, "BitIO", "ReadBits", Description);
             printf("\nERROR!\n");
-            printf("Bits2Peek: %d, BitsUnavailable: %llU, Result: 0x%llX, Correct: 0x%llX\n", Bits2Read, Input->BitsUnavailable, PeekedData, Correct);
+            printf("Bits2Peek: %1d, BitsUnavailable: %0llU, Result: 0x%llX, Correct: 0x%llX\n", Bits2Read, Input->BitsUnavailable, PeekedData, Correct);
             printf("!ERROR \n");
 		} else {
 			Passed = true;
+			printf("Passed!\n");
 		}
 	}
 	return Passed;
