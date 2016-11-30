@@ -6,7 +6,7 @@ desktop.ini
 *.a
 *.exe
 *.lib
-/BUILD/*
+/libBitIO/BUILD/*
 libBitIO/src/OldCode.c
 *.html
 *.xcuserstate
