@@ -276,7 +276,9 @@ int main(int argc, const char *argv[]) {
 		BitOutput   *TestOutput = calloc(sizeof(BitOutput), 1);
 		ErrorStatus *ES         = calloc(sizeof(ErrorStatus), 1);
 		InitBitInput(TestInput, ES, argc, argv);
-
+		InitBitOutput(TestOutput, ES, argc, argv);
+		Test_ReadBits(TestInput);
+		
 		// Fake argv
 		//
 
@@ -292,14 +294,11 @@ int main(int argc, const char *argv[]) {
 			argv[Argument] = "/dev/null";
 		 }
 		 }
+		 
+		 memset(TestInput->Buffer, 0xFF, BitInputBufferSize); // Think of it as solid state initalization.
 		 */
 
-		InitBitInput(TestInput, ES, argc, argv);
-        //memset(TestInput->Buffer, 0xFF, BitInputBufferSize); // Think of it as solid state initalization.
-		InitBitOutput(TestOutput, ES, argc, argv);
-
 		//Test_All(TestInput, TestOutput);
-		Test_ReadBits(TestInput);
 	}
 	
 	return 0;
