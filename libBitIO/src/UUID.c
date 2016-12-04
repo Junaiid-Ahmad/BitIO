@@ -55,7 +55,7 @@ extern "C" {
         for (uint8_t UUIDByte = 0; UUIDByte < BitIOUUIDSize; UUIDByte++) {
 			if (UUIDString1[UUIDByte] != UUIDString2[UUIDByte]) {
 				UUIDsMatch = false;
-			} else if (UUIDByte == BitIOUUIDSize) {
+			} else if ((UUIDByte == BitIOUUIDSize) && (UUIDByte = BitIOUUIDSize - 1)) {
 				UUIDsMatch = true;
 			}
         }
