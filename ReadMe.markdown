@@ -47,7 +47,7 @@ In order to use BitIO, you need to include BitIO.h (obviously).
 
 * You can have as many instances of `BitInput` and `BitOutput` as you want.
 
-* After you `calloc` (**Do NOT** use `malloc`!) `BitInput`, `BitOutput`, and `ErrorStatus`, you need to call `InitBitInput`, and `InitBitOutput` to set it up.
+* After you `calloc` (**Do NOT** use `malloc`!) `BitInput`, `BitOutput`, and `ErrorStatus`, you need to call `InitBitInput`, and `InitBitOutput` to set it up. (assuming you're running on an OS, and that you're reading from files; if you are running directly on hardware, or need to access network packets, you need to call `CreateFakeFileFromAddress` first, then init like ususal).
 
 * At the end of `main`, call `CloseBitInput` and `CloseBitOutput` to dealloc your instances of `BitInput` and `BitOutput`.  
 
@@ -66,7 +66,7 @@ In order to use BitIO, you need to include BitIO.h (obviously).
 
 Warnings:
 ---------
-**Don't** touch `BitIOCurrentArgument` at all, that's used by the command line parsers.
+**Don't** touch `BitInputCurrentArgument` or `BitOutputCurrentArgument` at all, they're used by the command line parsers.
 
 License:
 ---------
@@ -74,8 +74,15 @@ BitIO is released under a BSD-like license (I haven't decided on which one just 
 
 Here's a tl;dr of my license: 
 
-* **Don't** plagiarize BitIO.  
+* **Don't** plagiarize BitIO.
+
+*  **Don't** change BitIO's license. it is perpetually under a BSD-like license.
 
 * **Don't** sue me if something goes wrong, or for using patented algorithms. I'm a programmer, not a patent clerk.
 
 * **Do** Include in your acknowledgments a link to [BitIO on Github](https://www.github.com/BumbleBritches57/BitIO)
+
+Todo:
+---------
+
+* Add a function that takes memory addresses and wraps them in Fopen-able whatever. to allow BitInput/BitOutput to be used in lower level apps, Specifically directly on the hardware.

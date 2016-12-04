@@ -1,4 +1,4 @@
-#include "../include/BitIO.h"
+#include "../include/UUID.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -20,7 +20,7 @@ extern "C" {
         }
     }
 
-	void SwapUUID(char String2Convert[BitIOUUIDSize], char Converted[BitIOUUIDSize]) {
+	void SwapUUID(char *String2Convert, char *Converted) {
 		uint8_t  Index     = 0;
 		uint64_t Data2Swap = 0, SwappedData = 0;
 

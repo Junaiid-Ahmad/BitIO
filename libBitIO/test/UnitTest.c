@@ -1,13 +1,13 @@
 #include "../include/BitIO.h"
 
-typedef struct CRC {
+typedef struct CRCTest {
 	uint64_t  Polynomial;
 	uint64_t  Initializer;
 	size_t    CRCSize;
 	bool      InputIsReflected;
 	bool      OutputIsReflected;
 	uint64_t  XOROutput;
-} CRC;
+} CRCTest;
 
 typedef enum CRCTypes {
 	CRC32          = 0,
@@ -16,7 +16,7 @@ typedef enum CRCTypes {
 	CRC16_CDMA2000 = 3,
 } CRCTypes;
 
-void InitalizeCRC(char CRCType[BitIOStringSize], CRC *CRC) {
+void InitalizeCRC(char CRCType[BitIOStringSize], CRCTest *CRC) {
 	if (strcasecmp(CRCType, "CRC16_USB") == 0) {
 		CRC->Polynomial        = 0xC002;
 		CRC->Initializer       = 0xFFFF;
@@ -100,7 +100,6 @@ bool Test_ReadBits(BitInput *Input) { // This should cover basically everything 
             printf("!ERROR \n");
 		} else {
 			Passed = true;
-			printf("Passed!\n");
 		}
 	}
 	return Passed;
@@ -124,11 +123,11 @@ bool Test_Adler32(BitInput *Input) { // FIXME: I may need to swap endian...
 	}
 }
 
-bool Test_CRC(BitInput *Input) { // This will test both GenerateCRC and VerifyCRC
+bool Test_CRC(BitInput *Input, CRC *CRCData) { // This will test both GenerateCRC and VerifyCRC
 	uint32_t VerifiedCRC = 0xBA5370DA;
 	
 	// Loop throught a variety of polys, and put the log if inside the loop
-	uint32_t GeneratedCRC = GenerateCRC(&RandomData[64], 64, 0x82608EDB, 0xFFFFFFFF, 32); // PNG CRC Poly
+	uint32_t GeneratedCRC = GenerateCRC(Input, 64, CRCData); // &RandomData[64], 64, 0x82608EDB, 0xFFFFFFFF, 32
 	if (GeneratedCRC != VerifiedCRC) {
 		Input->ErrorStatus->VerifyCRC = InvalidCRC;
 		char Description[BitIOStringSize] = {0};
@@ -163,7 +162,6 @@ bool Test_SwapEndian32() {
 bool Test_SwapEndian64() {
 	uint64_t Swapped = SwapEndian64(0xDFFFFFFFFFFFBFFF);
 	if (Swapped == 0xFFBFFFFFFFFFFFDF) {
-		// test sucessful
 		return true;
 	} else {
 		return false;
@@ -253,19 +251,68 @@ void Test_StaticHuffman() {
 }
 
 void Test_All(BitInput *Input, BitOutput *Output) {
-	Test_ReadBits(Input);
-	Test_Adler32(Input);
-	Test_CRC(Input);
-	Test_SwapEndian16();
-	Test_SwapEndian32();
-	Test_SwapEndian64();
-	Test_Signed2Unsigned();
-	Test_Unsigned2Signed();
-	Test_2sComplimentTo1sCompliment();
-	Test_1sComplimentTo2sCompliment();
-	Test_StreamAlignment();
-	Test_AlignInput(Input);
-	Test_AlignOutput(Output);
+	bool TestPassed = 0;
+	CRC *PNGCRC = calloc(sizeof(CRC), 1);
+	
+	TestPassed  = Test_ReadBits(Input);
+	if (TestPassed == false) {
+		printf("Test_ReadBits failed!!!\n");
+	}else {
+		printf("Test_ReadBits passed!\n");
+	}
+	TestPassed  = Test_Adler32(Input);
+	if (TestPassed == false) {
+		printf("Test_Adler32 failed!!!\n");
+	} else {
+		printf("Test_Adler32 passed!\n");
+	}
+	TestPassed  = Test_CRC(Input, PNGCRC);
+	if (TestPassed == false) {
+		printf("Test_CRC PNGCrc failed!!!\n");
+	}
+	TestPassed  = Test_SwapEndian16();
+	if (TestPassed == false) {
+		printf("Test_SwapEndian16 failed!!!\n");
+	}
+	TestPassed  = Test_SwapEndian32();
+	if (TestPassed == false) {
+		printf("Test_SwapEndian32 failed!!!\n");
+	}
+	TestPassed  = Test_SwapEndian64();
+	if (TestPassed == false) {
+		printf("Test_SwapEndian64 failed!!!\n");
+	}
+	TestPassed  = Test_Signed2Unsigned();
+	if (TestPassed == false) {
+		printf("Test_Signed2Unsigned failed!!!\n");
+	}
+	TestPassed  = Test_Unsigned2Signed();
+	if (TestPassed == false) {
+		printf("Test_Unsigned2Signed failed!!!\n");
+	}
+	TestPassed  = Test_2sComplimentTo1sCompliment();
+	if (TestPassed == false) {
+		printf("Test_2sComplimentTo1sCompliment failed!!!\n");
+	}
+	TestPassed  = Test_1sComplimentTo2sCompliment();
+	if (TestPassed == false) {
+		printf("Test_1sComplimentTo2sCompliment failed!!!\n");
+	}
+	TestPassed  = Test_StreamAlignment();
+	if (TestPassed == false) {
+		printf("Test_StreamAlignment failed!!!\n");
+	}
+	TestPassed  = Test_AlignInput(Input);
+	if (TestPassed == false) {
+		printf("Test_AlignInput failed!!!\n");
+	}
+	TestPassed  = Test_AlignOutput(Output);
+	if (TestPassed == false) {
+		printf("Test_AlignOutput failed!!!\n");
+	}
+	
+	
+	free(PNGCRC);
 }
 
 int main(int argc, const char *argv[]) {
@@ -278,7 +325,11 @@ int main(int argc, const char *argv[]) {
 		ErrorStatus *ES         = calloc(sizeof(ErrorStatus), 1);
 		InitBitInput(TestInput, ES, argc, argv);
 		InitBitOutput(TestOutput, ES, argc, argv);
-		Test_ReadBits(TestInput);
+		
+		Test_All(TestInput, TestOutput);
+		
+		CloseBitInput(TestInput);
+		CloseBitOutput(TestOutput);
 		
 		// Fake argv
 		//
