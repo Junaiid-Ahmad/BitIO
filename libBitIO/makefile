@@ -27,14 +27,18 @@ release: $(CURDIR)/src/BitIO.c
 	mkdir -p   $(BUILD_DIR)/libBitIO
 	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/BitIO.c -o $(BUILD_DIR)/libBitIO/BitIO.o
 	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/UUID.c -o $(BUILD_DIR)/libBitIO/UUID.o
-	ar -crsu   $(BUILD_DIR)/libBitIO/libBitIO.a $(BUILD_DIR)/libBitIO/BitIO.o $(BUILD_DIR)/libBitIO/UUID.o 
+	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/Deflate.c -o $(BUILD_DIR)/libBitIO/Deflate.o
+	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/UTF8String.c -o $(BUILD_DIR)/libBitIO/UTF8String.o
+	ar -crsu   $(BUILD_DIR)/libBitIO/libBitIO.a $(BUILD_DIR)/libBitIO/BitIO.o $(BUILD_DIR)/libBitIO/UUID.o $(BUILD_DIR)/libBitIO/Deflate.o $(BUILD_DIR)/libBitIO/UTF8String.o 
 	ranlib -sf $(BUILD_DIR)/libBitIO/libBitIO.a
 debug: $(CURDIR)/src/BitIO.c
 	mkdir -p   $(BUILD_DIR)
 	mkdir -p   $(BUILD_DIR)/libBitIO
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/BitIO.c -o $(BUILD_DIR)/libBitIO/BitIO.o
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/UUID.c -o $(BUILD_DIR)/libBitIO/UUID.o
-	ar -crsu   $(BUILD_DIR)/libBitIO/libBitIO.a $(BUILD_DIR)/libBitIO/BitIO.o $(BUILD_DIR)/libBitIO/UUID.o
+	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/Deflate.c -o $(BUILD_DIR)/libBitIO/Deflate.o
+	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/UTF8String.c -o $(BUILD_DIR)/libBitIO/UTF8String.o
+	ar -crsu   $(BUILD_DIR)/libBitIO/libBitIO.a $(BUILD_DIR)/libBitIO/BitIO.o $(BUILD_DIR)/libBitIO/UUID.o $(BUILD_DIR)/libBitIO/Deflate.o $(BUILD_DIR)/libBitIO/UTF8String.o
 	ranlib -sf $(BUILD_DIR)/libBitIO/libBitIO.a
 test: $(CURDIR)/test/UnitTest.c
 	mkdir -p   $(BUILD_DIR)

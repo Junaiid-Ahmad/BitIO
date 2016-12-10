@@ -8,7 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		2C4D08BD1D585897002AB9B5 /* libBitIO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C1989D71D58560500E948F7 /* libBitIO.a */; };
-		2C7CDA041DE26A6E00161286 /* BitIO.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C7CDA031DE26A6E00161286 /* BitIO.h */; };
+		2C4E2FD11DF41609004688D8 /* Deflate.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C4E2FD01DF41609004688D8 /* Deflate.c */; };
+		2C4E2FD31DF41C34004688D8 /* UTF8String.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C7CDA091DE26A8200161286 /* UTF8String.c */; };
+		2C62B5821DFAA9F0006BC917 /* MD5.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C62B5811DFAA9F0006BC917 /* MD5.h */; };
+		2C62B5831DFAA9F6006BC917 /* MD5.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C62B57E1DFAA9D0006BC917 /* MD5.c */; };
 		2C7CDA061DE26A7700161286 /* UUID.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C7CDA051DE26A7700161286 /* UUID.c */; };
 		2C7CDA081DE26A7D00161286 /* BitIO.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C7CDA071DE26A7D00161286 /* BitIO.c */; };
 		2C7CDA0C1DE26BAB00161286 /* UnitTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C7CDA0B1DE26BAB00161286 /* UnitTest.c */; };
@@ -39,6 +42,12 @@
 /* Begin PBXFileReference section */
 		2C1989C71D5855B800E948F7 /* Test-BitIO */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Test-BitIO"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C1989D71D58560500E948F7 /* libBitIO.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBitIO.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C4E2FCC1DF414C0004688D8 /* UTF8String.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UTF8String.h; path = include/UTF8String.h; sourceTree = SOURCE_ROOT; };
+		2C4E2FCE1DF415C9004688D8 /* Deflate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Deflate.h; path = include/Deflate.h; sourceTree = SOURCE_ROOT; };
+		2C4E2FD01DF41609004688D8 /* Deflate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Deflate.c; path = src/Deflate.c; sourceTree = SOURCE_ROOT; };
+		2C4E2FD21DF41ADA004688D8 /* UUID.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UUID.h; path = include/UUID.h; sourceTree = SOURCE_ROOT; };
+		2C62B57E1DFAA9D0006BC917 /* MD5.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MD5.c; path = src/MD5.c; sourceTree = SOURCE_ROOT; };
+		2C62B5811DFAA9F0006BC917 /* MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MD5.h; path = include/MD5.h; sourceTree = SOURCE_ROOT; };
 		2C7CDA031DE26A6E00161286 /* BitIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BitIO.h; path = include/BitIO.h; sourceTree = SOURCE_ROOT; };
 		2C7CDA051DE26A7700161286 /* UUID.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = UUID.c; path = src/UUID.c; sourceTree = SOURCE_ROOT; };
 		2C7CDA071DE26A7D00161286 /* BitIO.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BitIO.c; path = src/BitIO.c; sourceTree = SOURCE_ROOT; };
@@ -68,8 +77,10 @@
 		2C0CC93C1DD36AEA00549106 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				2C7CDA051DE26A7700161286 /* UUID.c */,
 				2C7CDA071DE26A7D00161286 /* BitIO.c */,
+				2C62B57E1DFAA9D0006BC917 /* MD5.c */,
+				2C4E2FD01DF41609004688D8 /* Deflate.c */,
+				2C7CDA051DE26A7700161286 /* UUID.c */,
 				2C7CDA091DE26A8200161286 /* UTF8String.c */,
 			);
 			name = Source;
@@ -105,7 +116,11 @@
 		2C1989DB1D58560B00E948F7 /* libBitIO */ = {
 			isa = PBXGroup;
 			children = (
+				2C62B5811DFAA9F0006BC917 /* MD5.h */,
 				2C7CDA031DE26A6E00161286 /* BitIO.h */,
+				2C4E2FD21DF41ADA004688D8 /* UUID.h */,
+				2C4E2FCE1DF415C9004688D8 /* Deflate.h */,
+				2C4E2FCC1DF414C0004688D8 /* UTF8String.h */,
 				2C0CC93C1DD36AEA00549106 /* Source */,
 			);
 			name = libBitIO;
@@ -119,7 +134,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C7CDA041DE26A6E00161286 /* BitIO.h in Headers */,
+				2C62B5821DFAA9F0006BC917 /* MD5.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,6 +228,9 @@
 			files = (
 				2C7CDA061DE26A7700161286 /* UUID.c in Sources */,
 				2C7CDA081DE26A7D00161286 /* BitIO.c in Sources */,
+				2C62B5831DFAA9F6006BC917 /* MD5.c in Sources */,
+				2C4E2FD11DF41609004688D8 /* Deflate.c in Sources */,
+				2C4E2FD31DF41C34004688D8 /* UTF8String.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
