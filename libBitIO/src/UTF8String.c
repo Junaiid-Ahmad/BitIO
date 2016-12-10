@@ -1,15 +1,16 @@
-#include "../include/BitIO.h"
+#include "../include/UTF8String.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-    void       CheckBOM(UTF8String *String) {
+    void       CheckBOM(NewUTF8String *String) {
         uint32_t BOMCheck = 0;
 
-        for (uint8_t CodeUnit = 0; CodeUnit < 3; CodeUnit++) {
-            BOMCheck += String->Graphemes[0]->CodeUnit[CodeUnit];
-            BOMCheck << 8;
+        for (uint8_t Grapheme = 0; Grapheme < String->Graphemes; Grapheme++) {
+			for (uint8_t GraphemePiece = 0; GraphemePiece < String->Grapheme[Grapheme]->GraphemeSize; GraphemePiece++) {
+				BOMCheck += String->Grapheme[Grapheme]->GraphemePart[GraphemePiece];
+			}
         }
         if (((BOMCheck & 0xFFFF00) >> 8) == UTF8String_BOM1_BE) {
             String->Endian = BOM1_BE;
@@ -24,8 +25,46 @@ extern "C" {
         }
     }
 	
-	UTF8String CreateString(UTF8String *String, uint8_t *StringData[], size_t DataSize) {
-		for (uint64_t Byte = 0; Byte < DataSize; Byte++) {
+	bool IsDiacritic(uint32_t Character) {
+		bool CharacterIsDiacritic = 0;
+		switch (Character & 0x3FF) {
+			case GraveAccent:
+				CharacterIsDiacritic = true;
+				break;
+			case AcuteAccent:
+				CharacterIsDiacritic = true;
+				break;
+			case CircumflexAccent:
+				CharacterIsDiacritic = true;
+				break;
+			case TildeAccent:
+				CharacterIsDiacritic = true;
+				break;
+			case MacronAccent:
+				CharacterIsDiacritic = true;
+				break;
+			case OverlineAccent:
+				CharacterIsDiacritic = true;
+				break;
+			case BreveAccent:
+				CharacterIsDiacritic = true;
+				break;
+			case DotAccent:
+				CharacterIsDiacritic = true;
+				break;
+			case DieresisAccent:
+				CharacterIsDiacritic = true;
+				break;
+				
+			default:
+				break;
+		}
+		return CharacterIsDiacritic;
+	}
+	
+	void CreateString(NewUTF8String *String, uint8_t *StringData, size_t DataSize) {
+		CheckBOM(String);
+		for (uint64_t Byte = 0; Byte < DataSize; Byte++) { // See how many bytes each grapheme will take up.
 			
 		}
 	}

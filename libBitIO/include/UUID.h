@@ -15,7 +15,12 @@ extern "C" {
 	 */
 	void           ReadUUID(BitInput *BitI, char *UUIDString);
 	
-	void           SwapUUID(char *String2Convert, char *Converted);
+	/*!
+	 @abstract                     "Endian swaps a UUID into a GUID and vice versa".
+	 @param UUIDString2Convert     "Pointer to a UUIDString to be converted".
+	 @param ConvertedUUIDString    "The resulting UUID or GUID".
+	 */
+	void           SwapUUID(char *UUIDString2Convert, char *ConvertedUUIDString);
 	
 	/*!
 	 @abstract                     "Write UUID/GUID string as hyphen-less blob".
@@ -26,6 +31,12 @@ extern "C" {
 	 */
 	void           WriteUUID(BitOutput *BitO, char *UUIDString);
 	
+	/*!
+	 @abstract                     "Verify two UUIDs match each other".
+	 @remark                       "Matches hyphens and NULL terminating character as well, it's pretty literal".
+	 @param    UUIDString1         "Pointer to a UUIDString to be matched against".
+	 @param    UUIDString2         "Pointer to a UUIDString to match against UUIDString1".
+	 */
 	bool           CompareUUIDs(char *UUIDString1, char *UUIDString2);
 
 #ifdef __cplusplus

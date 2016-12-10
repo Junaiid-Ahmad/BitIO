@@ -6,14 +6,9 @@
 extern "C" {
 #endif
 	
-	typedef struct UTF8String {
-		uint8_t    Endian:2;
-		uint64_t   GraphemeCount;
-		Grapheme  *Graphemes[];
-	} UTF8String;
-	
-	// If the first 2 bits in a code point = 10, it's a "data" code point.
-	// if the first 2 bits = 11, it's the first codepoint in a character, and as a result of that it will tell how many more codepoints in the character there are
+	enum GraphemeConstants {
+		BitIOMaxGraphemes = 16,
+	} GraphemeConstants;
 	
 	extern enum UTF8Constants { // UTF-8 strings are Big Endian by default, therefore 0xFEFF is correct. 0xFFFE needs to be swapped
 		UTF8String_MaxStringSize            = 65535,
@@ -34,6 +29,31 @@ extern "C" {
 		UTF8String_LineSeperator            = 0x2028,
 		UTF8String_ParagraphSeperator       = 0x2029,
 	} UTF8Constants;
+	
+	typedef struct NewGrapheme {
+		uint8_t    GraphemeSize; // Add 1, because 0 = 1
+		uint8_t    GraphemePart[];
+	} NewGrapheme;
+	
+	typedef struct NewUTF8String {
+		uint8_t      Endian;
+		size_t       Graphemes;
+		NewGrapheme *Grapheme[];
+	} NewUTF8String;
+	
+	typedef struct Grapheme { // Singular Grapheme
+		uint8_t    GraphemeSize;
+		uint8_t    Data[];
+	} Grapheme;
+	
+	typedef struct UTF8String {
+		uint8_t    Endian:2;
+		uint64_t   GraphemeCount;
+		Grapheme  *Graphemes[];
+	} UTF8String;
+	
+	// If the first 2 bits in a code point = 10, it's a "data" code point.
+	// if the first 2 bits = 11, it's the first codepoint in a character, and as a result of that it will tell how many more codepoints in the character there are
 	
 	extern enum BOMType {
 		NoBOM   = 0,
@@ -151,17 +171,6 @@ extern "C" {
 		LowestValidCodePoint = 0x1FFFF,
 	} UTF8InvalidCodePoints;
 	
-	typedef struct Grapheme { // Singular Grapheme
-		uint8_t    GraphemeSize;
-		uint8_t    Data[];
-	} Grapheme;
-	
-	typedef struct UTF8String {
-		uint8_t    Endian:2;
-		uint64_t   GraphemeCount;
-		Grapheme  *Graphemes[];
-	} UTF8String;
-	
 	void       RemoveSubString(UTF8String *OldString, UTF8String *NewString, UTF8String String2Remove, bool RemoveAll);
 	
 	bool       CodeUnitIsStartCodePoint(UTF8String *String, uint64_t StartCodeUnit);
@@ -174,11 +183,11 @@ extern "C" {
 	
 	uint64_t   LocateOccurrence(UTF8String *String, UTF8String *Character2Locate, bool StartAtEnd);
 	
-	void       CheckBOM(UTF8String *String);
+	void       CheckBOM(NewUTF8String *String);
 	
 	//void       MeasureString(UTF8String *String);
 	
-	void       CreateString(UTF8String *String2Create, char CodeUnits[]);
+	void       CreateString(NewUTF8String *String, uint8_t *StringData, size_t DataSize);
 	
 	UTF8String ReadUTF8String(BitInput *BitI, UTF8String *String, uint64_t Graphemes2Read);
 	
