@@ -1,5 +1,5 @@
-BitIO:
-======
+![BitIO](BitIOLogo.svg):
+========================
 * BitIO (Pronounced Bit Eye Oh) is a library for Reading, and Writing bits (and all the tasks associated with doing so, like Swapping endian, to Decoding DEFLATE encoded data).  
 
 * BitIO uses HeaderDoc style formatting, which should be compatible with Doxygen.  
@@ -13,7 +13,7 @@ BitIO:
 * Currently, there's no stable API, let alone ABI. I tweak the shit out of BitIO constantly to keep everything simple.
 
 Before You Compile:
---------------------
+-------------------
 * You can change the size of `BitInputBufferSize` and `BitOutputBufferSize` from 4096 bytes if you want, but keep in mind that after initialization, those constants may not reflect the true size of those arrays, because you can dynamically adjust them by calling `WriteBuffer`
 
 * In order to assess the true size of those arrays, check out `BitI->BufferSize` or `BitO->BufferSize`
@@ -37,7 +37,7 @@ Compiling:
 * Currently the Input and Output command parsers are a little finicky, and I haven't tested the globbing as much as I should.  
 
 How To Use BitIO:
-------------------
+-----------------
 
 In order to use BitIO, you need to include BitIO.h (obviously). 
 
@@ -69,8 +69,8 @@ Warnings:
 **Don't** touch `BitInputCurrentArgument` or `BitOutputCurrentArgument` at all, they're used by the command line parsers.
 
 License:
----------
-BitIO is released under a BSD-like license (I haven't decided on which one just yet).  
+--------
+BitIO is released under the 3 clause simplified BSD license..
 
 Here's a tl;dr of my license: 
 
@@ -80,9 +80,10 @@ Here's a tl;dr of my license:
 
 * **Don't** sue me if something goes wrong, or for using patented algorithms. I'm a programmer, not a patent clerk.
 
-* **Do** Include in your acknowledgments a link to [BitIO on Github](https://www.github.com/BumbleBritches57/BitIO)
+* **Do** Include in your acknowledgments a link to [BitIO on GitLab](https://www.gitlab.com/BumbleBritches57/BitIO)
 
 Todo:
----------
+-----
 
-* Add a function that takes memory addresses and wraps them in Fopen-able whatever. to allow BitInput/BitOutput to be used in lower level apps, Specifically directly on the hardware.
+* Add a function that takes memory addresses and wraps them in Fopen-able whatever. to allow BitInput/BitOutput to be used in lower level apps, directly on the hardware.
+* A better way to handle reading from/writing to memory addresses is to include a bool saying the type of "file" we're reading from, and a starting and ending memory address
