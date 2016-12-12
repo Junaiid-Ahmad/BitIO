@@ -1,4 +1,4 @@
-![BitIO](BitIOLogo.svg):
+![BitIO](./BitIOLogo.svg):
 ========================
 * BitIO (Pronounced Bit Eye Oh) is a library for Reading, and Writing bits (and all the tasks associated with doing so, like Swapping endian, to Decoding DEFLATE encoded data).  
 
