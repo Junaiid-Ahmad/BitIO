@@ -80,9 +80,9 @@ uint16_t RandomBitsAvailable[64] = {
 bool Test_ReadBits(BitInput *Input) { // This should cover basically everything dealing with BitInput
 	bool Passed = 0;
     uint64_t Correct = 0LLU;
-    uint8_t Bits2Read; // = MyRand(1, 64);
+    uint8_t Bits2Read = (rand() % 64);
 
-    Input->BitsAvailable   -= RandomBitsAvailable[Bits2Read]; // 4
+    Input->BitsAvailable   -= RandomBitsAvailable[Bits2Read];
     Input->BitsUnavailable += RandomBitsAvailable[Bits2Read];
 
 	for (uint8_t Bits2Peek = 0; Bits2Peek < 65; Bits2Peek++) {

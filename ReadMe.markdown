@@ -14,7 +14,9 @@
 
 Before You Compile:
 -------------------
-* You can change the size of `BitInputBufferSize` and `BitOutputBufferSize` from 4096 bytes if you want, but keep in mind that after initialization, those constants may not reflect the true size of those arrays, because you can dynamically adjust them by calling `WriteBuffer`
+* You can change the size of `BitInputBufferSize` and `BitOutputBufferSize` (it's currently set to'4096 bytes aka 1 page), but keep in mind that after initialization, those constants may not reflect the true size of those arrays, because we sometimes dynamically change them to fit a bit more or less data to fit.
+
+* If you are reading and writing from/to a memory address, you should change `BitInputBufferSize` and `BitOutputBufferSize` to 0.
 
 * In order to assess the true size of those arrays, check out `BitI->BufferSize` or `BitO->BufferSize`
 
@@ -24,7 +26,7 @@ Compiling:
 ----------
 * The Makefile's default installation location is: /usr/local/Packages/BitIO  
 
-* You can change that by calling `make install` with: `make install DESTINATION="/your/path/here"` 
+* You can change that by calling `make install` with: `DESTINATION="/your/path/here" make install` 
 
 * Or, you can just change the DESTINATION variable in the makefile.  
 
