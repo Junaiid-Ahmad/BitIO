@@ -11,6 +11,7 @@ REL_ERROR_OPTIONS   := -Weverything -Wunreachable-code -Wno-conversion
 DEB_FLAGS           := $(CFLAGS) -g -o0 $(DEB_ERROR_OPTIONS) $(LDFLAGS)
 SANITIZER           := -fsanitize=undefined -fsanitize=address
 REL_FLAGS           := $(CFLAGS) -ofast $(REL_ERROR_OPTIONS) $(LDFLAGS)
+BUILD_LIB	    := $(BUILD_LIB)
 
 .PHONY: all check distclean CheckVer release debug test install clean uninstall
 
@@ -24,40 +25,42 @@ CheckVer:
 	$(shell echo ${VERSION})
 release: $(CURDIR)/src/BitIO.c
 	mkdir -p   $(BUILD_DIR)
-	mkdir -p   $(BUILD_DIR)/libBitIO
-	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/BitIO.c -o $(BUILD_DIR)/libBitIO/BitIO.o
-	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/UUID.c -o $(BUILD_DIR)/libBitIO/UUID.o
-	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/Deflate.c -o $(BUILD_DIR)/libBitIO/Deflate.o
-	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/UTF8String.c -o $(BUILD_DIR)/libBitIO/UTF8String.o
-	ar -crsu   $(BUILD_DIR)/libBitIO/libBitIO.a $(BUILD_DIR)/libBitIO/BitIO.o $(BUILD_DIR)/libBitIO/UUID.o $(BUILD_DIR)/libBitIO/Deflate.o $(BUILD_DIR)/libBitIO/UTF8String.o 
-	ranlib -sf $(BUILD_DIR)/libBitIO/libBitIO.a
+	mkdir -p   $(BUILD_LIB)
+	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/BitIO.c -o $(BUILD_LIB)/BitIO.o
+	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/UUID.c -o $(BUILD_LIB)/UUID.o
+	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/Deflate.c -o $(BUILD_LIB)/Deflate.o
+	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/UTF8String.c -o $(BUILD_LIB)/UTF8String.o
+	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/MD5.c -o $(BUILD_LIB)/MD5.o
+	ar -crsu   $(BUILD_LIB)/libBitIO.a $(BUILD_LIB)/BitIO.o $(BUILD_LIB)/UUID.o $(BUILD_LIB)/Deflate.o $(BUILD_LIB)/UTF8String.o $(BUILD_LIB)/MD5.o
+	ranlib -sf $(BUILD_LIB)/libBitIO.a
 debug: $(CURDIR)/src/BitIO.c
 	mkdir -p   $(BUILD_DIR)
-	mkdir -p   $(BUILD_DIR)/libBitIO
-	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/BitIO.c -o $(BUILD_DIR)/libBitIO/BitIO.o
-	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/UUID.c -o $(BUILD_DIR)/libBitIO/UUID.o
-	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/Deflate.c -o $(BUILD_DIR)/libBitIO/Deflate.o
-	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/UTF8String.c -o $(BUILD_DIR)/libBitIO/UTF8String.o
-	ar -crsu   $(BUILD_DIR)/libBitIO/libBitIO.a $(BUILD_DIR)/libBitIO/BitIO.o $(BUILD_DIR)/libBitIO/UUID.o $(BUILD_DIR)/libBitIO/Deflate.o $(BUILD_DIR)/libBitIO/UTF8String.o
-	ranlib -sf $(BUILD_DIR)/libBitIO/libBitIO.a
+	mkdir -p   $(BUILD_LIB)
+	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/BitIO.c -o $(BUILD_LIB)/BitIO.o
+	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/UUID.c -o $(BUILD_LIB)/UUID.o
+	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/Deflate.c -o $(BUILD_LIB)/Deflate.o
+	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/UTF8String.c -o $(BUILD_LIB)/UTF8String.o
+	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/MD5.c -o $(BUILD_LIB)/MD5.o
+	ar -crsu   $(BUILD_LIB)/libBitIO.a $(BUILD_LIB)/BitIO.o $(BUILD_LIB)/UUID.o $(BUILD_LIB)/Deflate.o $(BUILD_LIB)/UTF8String.o
+	ranlib -sf $(BUILD_LIB)/libBitIO.a
 test: $(CURDIR)/test/UnitTest.c
 	mkdir -p   $(BUILD_DIR)
 	mkdir -p   $(BUILD_DIR)/test
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/test/UnitTest.c -o $(BUILD_DIR)/test/UnitTest.o
-	$(CC)      $(BUILD_DIR)/test/UnitTest.o $(BUILD_DIR)/libBitIO/libBitIO.a -o $(BUILD_DIR)/test/Test-BitIO
+	$(CC)      $(BUILD_DIR)/test/UnitTest.o $(BUILD_LIB)/libBitIO.a -o $(BUILD_DIR)/test/Test-BitIO
 install:
 	install -d -m 777 $(DESTINATION)/lib
 	install -d -m 777 $(DESTINATION)/bin
 	install -d -m 777 $(DESTINATION)/include
-	install -C -v -m 444 $(BUILD_DIR)/libBitIO/libBitIO.a $(DESTINATION)/lib/libBitIO.a
+	install -C -v -m 444 $(BUILD_LIB)/libBitIO.a $(DESTINATION)/lib/libBitIO.a
 	install -C -v -m 444 $(BUILD_DIR)/../include/BitIO.h $(DESTINATION)/include/BitIO.h
 	install -C -v -m 444 $(BUILD_DIR)/test/Test-BitIO $(DESTINATION)/bin/Test-BitIO
 	chmod +x $(DESTINATION)/bin/Test-BitIO
 	ln -i $(DESTINATION)/bin/Test-BitIO /usr/bin/Test-BitIO
 	chmod +x /usr/bin/Test-BitIO
-    install -C -v -m 444 $(BUILD_DIR)/../libBitIO.pc /usr/share/pkgconfig/libBitIO.pc
+	install -C -v -m 444 $(BUILD_DIR)/../libBitIO.pc /usr/share/pkgconfig/libBitIO.pc
 clean:
-	cd $(BUILD_DIR)/libBitIO/
+	cd $(BUILD_LIB)/
 	rm -f -v -r BitIO.o
 	rm -f -v -r UUID.o
 	rm -f -v -r libBitIO.a
