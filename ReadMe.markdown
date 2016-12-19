@@ -90,5 +90,5 @@ Todo:
 * Add a function that takes memory addresses and wraps them in Fopen-able whatever. to allow BitInput/BitOutput to be used in lower level apps, directly on the hardware.
 * A better way to handle reading from/writing to memory addresses is to include a bool saying the type of "file" we're reading from, and a starting and ending memory address
 
-[![Build Status:](https://travis-ci.org/bumblebritches57/BitIO)
--------------
+[![Build Status](https://travis-ci.org/bumblebritches57/BitIO.svg?branch=master)](https://travis-ci.org/bumblebritches57/BitIO)
+------------
