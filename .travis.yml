@@ -16,6 +16,6 @@ matrix:
       env: ARCH=i386 BUILD_CONFIGURATION=Debug
 
 script:
-bundle exec cd libBitIO
-bundle exec make debug
-bundle exec make test
+	bundle exec cd libBitIO
+	bundle exec make debug
+	bundle exec make test
