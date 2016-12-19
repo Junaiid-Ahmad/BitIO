@@ -15,7 +15,4 @@ matrix:
       compiler: gcc
       env: ARCH=i386 BUILD_CONFIGURATION=Debug
 
-script:
-	bundle exec cd libBitIO
-	bundle exec make debug
-	bundle exec make test
+script: sh -c 'cd libBitIO && bundle exec make debug && bundle exec make test'
