@@ -1,4 +1,4 @@
-![BitIO](./BitIOLogo.svg):
+BitIO:
 ========================
 * BitIO (Pronounced Bit Eye Oh) is a library for Reading, and Writing bits (and all the tasks associated with doing so, like Swapping endian, to Decoding DEFLATE encoded data).  
 
@@ -89,3 +89,6 @@ Todo:
 
 * Add a function that takes memory addresses and wraps them in Fopen-able whatever. to allow BitInput/BitOutput to be used in lower level apps, directly on the hardware.
 * A better way to handle reading from/writing to memory addresses is to include a bool saying the type of "file" we're reading from, and a starting and ending memory address
+
+[![Build Status:](https://travis-ci.org/bumblebritches57/BitIO)
+-------------
