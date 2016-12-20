@@ -14,7 +14,7 @@ BitIO: [![Build Status](https://travis-ci.org/bumblebritches57/BitIO.svg?branch=
 
 Before You Compile:
 -------------------
-* You can change the size of `BitInputBufferSize` and `BitOutputBufferSize` (it's currently set to'4096 bytes aka 1 page), but keep in mind that after initialization, those constants may not reflect the true size of those arrays, because we sometimes dynamically change them to fit a bit more or less data to fit.
+* You can change the size of `BitInputBufferSize` and `BitOutputBufferSize` (it's currently set to 4096 bytes aka 1 page), but keep in mind that after initialization, those constants may not reflect the true size of those arrays, because we sometimes dynamically change them to fit a bit more or less data.
 
 * If you are reading and writing from/to a memory address, you should change `BitInputBufferSize` and `BitOutputBufferSize` to 0.
 
@@ -32,11 +32,9 @@ Compiling:
 
 * The makefile by defaults builds the library as a static library, in release form, for the computer it's building on with -march=native.
 
-* to run the unit tests, simply call `make test`
+* to run the unit tests, simply call `make debug && make test && sudo make install` then `Test-BitIO <InputFile> <OutputFile>` if Test-BitIO doesn't print anything, all the tests passed.
 
-* On my Mac, the BitIO library is about 20kb, if that's too big for your use, enable link time optimization on your program to trim unused functions.'
-
-* Currently the Input and Output command parsers are a little finicky, and I haven't tested the globbing as much as I should.  
+* On my Mac, the BitIO library is about 39kb, if that's too big for your use, enable link time optimization on your program to trim unused functions. 
 
 How To Use BitIO:
 -----------------
@@ -49,16 +47,14 @@ In order to use BitIO, you need to include BitIO.h (obviously).
 
 * You can have as many instances of `BitInput` and `BitOutput` as you want.
 
-* After you `calloc` (**Do NOT** use `malloc`!) `BitInput`, `BitOutput`, and `ErrorStatus`, you need to call `InitBitInput`, and `InitBitOutput` to set it up. (assuming you're running on an OS, and that you're reading from files; if you are running directly on hardware, or need to access network packets, you need to call `CreateFakeFileFromAddress` first, then init like ususal).
+* After you `calloc()` (**Do NOT** use `malloc()`!) `BitInput`, `BitOutput`, and `ErrorStatus`, you need to call `InitBitInput`, and `InitBitOutput` to set it up. (assuming you're running on an OS, and that you're reading from files; if you are running directly on hardware, or need to access network packets, you need to call `CreateFakeFileFromAddress` (which hasn't been implemented yet) first, then init like ususal).
 
 * At the end of `main`, call `CloseBitInput` and `CloseBitOutput` to dealloc your instances of `BitInput` and `BitOutput`.  
 
 `ReadUUID`:
 
-* Use calloc to initalize a char array of 21 chars, and free it after `ReadUUID` returns.
-
-* UUIDs and GUIDs use the same format, so `ReadUUID` can also read GUIDs. 
-* The only difference is that GUIDs are Little Endian.
+* UUIDs and GUIDs have the same size, but use a different format, so `ReadUUID` can also read GUIDs
+* The only difference is that GUIDs are little endian.
 * To convert a UUID to a GUID use `ConvertUUID2GUID`.
 * To convert a GUID to a UUID use `ConvertGUID2UUID`.
 
@@ -78,14 +74,24 @@ Here's a tl;dr of my license:
 
 * **Don't** plagiarize BitIO.
 
-*  **Don't** change BitIO's license. it is perpetually under a BSD-like license.
+* **Don't** change BitIO's license. it is perpetually under the BSD simplified 3 clause license.
 
 * **Don't** sue me if something goes wrong, or for using patented algorithms. I'm a programmer, not a patent clerk.
 
-* **Do** Include in your acknowledgments a link to [BitIO on GitLab](https://www.gitlab.com/BumbleBritches57/BitIO)
+* **Do** Include in your acknowledgments a link to [BitIO on GitHub](https://www.github.com/BumbleBritches57/BitIO)
 
 Todo:
 -----
 
 * Add a function that takes memory addresses and wraps them in Fopen-able whatever. to allow BitInput/BitOutput to be used in lower level apps, directly on the hardware.
 * A better way to handle reading from/writing to memory addresses is to include a bool saying the type of "file" we're reading from, and a starting and ending memory address
+
+* Implement the FILE memory address wrapper.
+
+* Finish up MD5 and simplify it.
+
+* I'm going to move the arithmetic decoder/encoder to libAVC.
+
+* Make sure Exp-Golomb reading/writing works correctly.
+
+* There's still a lot of work to do, but my MacBook's screen is broken so that work is gonna slow down for the foreseeable future.
