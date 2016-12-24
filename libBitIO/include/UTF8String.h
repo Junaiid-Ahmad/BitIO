@@ -6,11 +6,28 @@
 extern "C" {
 #endif
 	
-	enum GraphemeConstants {
-		BitIOMaxGraphemes = 16,
-	} GraphemeConstants;
+	/*!
+	 @abstract               "is a Grapheme, contains the size of the grapheme in bytes, and the actual grapheme data itself".
+	 @constant     Size      "Size of this grapheme in bytes".
+	 @constant     Data      "An array that contains the actual bytes that make up the grapheme".
+	 */
+	typedef struct Grapheme {
+		uint8_t    Size;
+		uint8_t    Data[];
+	} Grapheme __attribute__((packed));
+	
+	/*!
+	 @abstract              "Contains a string of UTF-8 "characters" aka Graphemes".
+	 @constant    Graphemes "Count of Graphemes in this string".
+	 @constant    Grapheme  "Array of Grapheme type to contain the individual graphemes".
+	 */
+	typedef struct UTF8String { // UTF8Strings are ALWAYS big endian.
+		size_t     Graphemes;
+		Grapheme  *Grapheme[];
+	} UTF8String __attribute__((packed));
 	
 	extern enum UTF8Constants { // UTF-8 strings are Big Endian by default, therefore 0xFEFF is correct. 0xFFFE needs to be swapped
+		UTF8String_MaxGraphemes             = 16,
 		UTF8String_MaxStringSize            = 65535,
 		UTF8String_MinStringSize            = 255,
 		UTF8String_MaxCodeUnitsInCodePoint  = 4,
@@ -29,28 +46,6 @@ extern "C" {
 		UTF8String_LineSeperator            = 0x2028,
 		UTF8String_ParagraphSeperator       = 0x2029,
 	} UTF8Constants;
-	
-	typedef struct NewGrapheme {
-		uint8_t    GraphemeSize; // Add 1, because 0 = 1
-		uint8_t    GraphemePart[];
-	} NewGrapheme;
-	
-	typedef struct NewUTF8String {
-		uint8_t      Endian;
-		size_t       Graphemes;
-		NewGrapheme *Grapheme[];
-	} NewUTF8String;
-	
-	typedef struct Grapheme { // Singular Grapheme
-		uint8_t    GraphemeSize;
-		uint8_t    Data[];
-	} Grapheme;
-	
-	typedef struct UTF8String {
-		uint8_t    Endian:2;
-		uint64_t   GraphemeCount;
-		Grapheme  *Graphemes[];
-	} UTF8String;
 	
 	// If the first 2 bits in a code point = 10, it's a "data" code point.
 	// if the first 2 bits = 11, it's the first codepoint in a character, and as a result of that it will tell how many more codepoints in the character there are
@@ -128,6 +123,10 @@ extern "C" {
 		MacronBelow                   = 0x331,
 	} DiacriticalMarks;
 	
+	uint16_t Diacritics[64] = {
+		0x300, 0x301, 0x302, 0x303, 0x304, 0x395, 0x305, 0x306,
+	};
+	
 	extern enum PrecomposedCodePoints {
 		CapitalAcuteA = 0xC1,
 		LowerAcuteA   = 0xE1,
@@ -162,11 +161,6 @@ extern "C" {
 	 @abstract                        "The SubString can be a character, or it's own string, all that matters is that each code point is adjacent".
 	 */
 	
-	extern enum UTF8RopeConstants {
-		MaxGraphemes = 4096,
-		MaxCodeUnits = 16,
-	} UTF8RopeConstants;
-	
 	extern enum UTF8InvalidCodePoints {
 		LowestValidCodePoint = 0x1FFFF,
 	} UTF8InvalidCodePoints;
@@ -179,17 +173,19 @@ extern "C" {
 	
 	bool       CompareStrings(UTF8String *String1, UTF8String *String2, bool CaseSensitive);
 	
-	UTF8String ConcatenateStrings(UTF8String *String1, UTF8String *String2, UTF8String *NewString);
+	UTF8String ConcatenateStrings(UTF8String *String1, UTF8String *String2, UTF8String *NewString, size_t StartGrapheme);
 	
 	uint64_t   LocateOccurrence(UTF8String *String, UTF8String *Character2Locate, bool StartAtEnd);
 	
-	void       CheckBOM(NewUTF8String *String);
+	void       CheckBOM(UTF8String *String);
 	
 	//void       MeasureString(UTF8String *String);
 	
-	void       CreateString(NewUTF8String *String, uint8_t *StringData, size_t DataSize);
+	void       CreateString(UTF8String *String, uint8_t *StringData, size_t DataSize);
 	
 	UTF8String ReadUTF8String(BitInput *BitI, UTF8String *String, uint64_t Graphemes2Read);
+	
+	void       SplitString(UTF8String *String2Split, UTF8String *SplitString1, UTF8String *SplitString2, Grapheme *Grapheme2Split);
 	
 	
 #ifdef __cplusplus

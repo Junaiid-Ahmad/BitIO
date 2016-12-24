@@ -3,12 +3,113 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-    void       CheckBOM(NewUTF8String *String) {
+	
+	// UTF8String stuct will consist of a number of Graphemes variable, and an unsized array to attach pointers to these individual graphemes.
+	
+	// While creating a string from a data source, you NEED to Convert anything to precomposed characters when possible, AND measure the string before creating it, that way we can just realloc it just once.
+	
+	void CountGraphemesInData(UTF8String *String, uint8_t *StringData, size_t StringSize) {
+		size_t Graphemes = 0, StringDataSize;
+		uint8_t GraphemeSize[1024];
+		
+		for (size_t Byte = 0; Byte < StringSize; Byte++) {
+			if (StringData[Byte] == CodeUnit) { // if it = a continuation byte increase the size of GraphemeX, but not the total num of Graphemes.
+				Graphemes += 1;
+			}
+			
+			
+			for (size_t Grapheme = 0; Grapheme < Graphemes; Grapheme++) {
+				if ((StringData[Byte] == ContinuationByte) || (StringData[Byte] == AccentMark)) {
+					GraphemeSize[Grapheme] += 1;
+				}
+			}
+		}
+		
+		// Now we need to realloc the String, and copy in the data we've discovered here, the num of graphemes, and the size of each one.
+		realloc(String->Grapheme, Graphemes);
+		String->Graphemes = Graphemes;
+		for (size_t Grapheme = 0; Grapheme < Graphemes; Grapheme++) {
+			String->Grapheme[Grapheme]->Size = GraphemeSize[Grapheme];
+		}
+		
+		
+		// We need 3 loops, one over graphemes, one over grapheme bytes, and one over total bytes.
+		// The way to do that is to have 2 loop sections and pass data between the 2 loops.
+	}
+	
+	void  CreateString(UTF8String *String, uint8_t *StringData, size_t DataSize) {
+		size_t CurrentByte = 0;
+		// Measure graphemes in StringData, then realloc String to be large enough.
+		CountGraphemesInData(String, StringData, DataSize);
+		// now just loop over the data using the info from the String variables.
+		while (CurrentByte < DataSize) {
+			for (size_t Grapheme = 0; Grapheme < String->Graphemes; Grapheme++) {
+				for (uint8_t GraphemeByte = 0; GraphemeByte < String->Grapheme[Grapheme]->Size; GraphemeByte++) {
+					String->Grapheme[Grapheme]->Data[GraphemeByte] = StringData[CurrentByte];
+					CurrentByte += 1;
+				}
+			}
+		}
+	}
+	
+	
+	void NormalizeString(UTF8String *String) {
+		for (size_t Grapheme = 0; Grapheme < String->Graphemes; Grapheme++) {
+			for (uint8_t Byte = 0; Byte < String->Grapheme[Grapheme]->Size; Byte++) {
+				// Scan for Accent marks or Continuation bytes, and replace those bytes with precomposed graphemes.
+				
+			}
+		}
+	}
+	
+	
+	bool CompareStrings(UTF8String *String1, UTF8String *String2, bool CaseSensitive) {
+		
+	}
+	
+	
+	UTF8String ConcatenateStrings(UTF8String *String1, UTF8String *String2, UTF8String *NewString, size_t StartGrapheme) {
+		// Copy String2's graphemes after StartGrapheme in String1
+		// Free String1 and String2.
+	}
+	
+	void       SplitString(UTF8String *String2Split, UTF8String *SplitString1, UTF8String *SplitString2, Grapheme *Grapheme2Split) {
+		// Scan String2Split for Grapheme2Split, when found, cut String2Split putting the first half in SplitString1, and the second half in SplitString2
+		for (size_t Grapheme = 0; Grapheme < String2Split->Graphemes; Grapheme++) {
+			for (uint8_t Data = 0; Data < String2Split->Grapheme[Grapheme]->Size; Data++) {
+				if ((String2Split->Grapheme[Grapheme]->Data[Data] == Grapheme2Split->Data[Data]) && (Data == Grapheme2Split->Size)) { // End of the grapheme, and each byte matches, aka we've found a match.
+					// Take the GraphemeNumber and use it as the end of the graphemes, start copying from 0 to GraphemeNumber.
+				}
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// OLD CODE
+/*
+    void       CheckBOM(UTF8String *String) {
         uint32_t BOMCheck = 0;
 
         for (uint8_t Grapheme = 0; Grapheme < String->Graphemes; Grapheme++) {
-			for (uint8_t GraphemePiece = 0; GraphemePiece < String->Grapheme[Grapheme]->GraphemeSize; GraphemePiece++) {
+			for (uint8_t GraphemePiece = 0; GraphemePiece < String->Grapheme[Grapheme]->Size; GraphemePiece++) {
 				BOMCheck += String->Grapheme[Grapheme]->GraphemePart[GraphemePiece];
 			}
         }
@@ -62,12 +163,13 @@ extern "C" {
 		return CharacterIsDiacritic;
 	}
 	
-	void CreateString(NewUTF8String *String, uint8_t *StringData, size_t DataSize) {
+	void CreateString(UTF8String *String, uint8_t *StringData, size_t DataSize) {
 		CheckBOM(String);
 		for (uint64_t Byte = 0; Byte < DataSize; Byte++) { // See how many bytes each grapheme will take up.
 			
 		}
 	}
+ */
 
     /*
     bool       CodeUnitIsStartCodePoint(UTF8String *String, uint64_t StartCodeUnit) { // Should I add support for finding the closest previous Code Point?
@@ -360,16 +462,16 @@ extern "C" {
         return 0;
     }
     
-    UTF8String CreateUTF8String(size_t NumGraphemes, uint8_t *CodeUnits[]) { // call memset with 0xFF, because that's an invalid value in UTF AND ASCII
+    UTF8String CreateUTF8String(size_t Graphemes, uint8_t *CodeUnits[]) { // call memset with 0xFF, because that's an invalid value in UTF AND ASCII
                                                                              // In order to create a string, I need to
         
         // Scan through the code units, when you find the start of a new one, go to the next grapheme.
         
         uint64_t NumCodeUnits = sizeof(CodeUnits);
         UTF8String *String2Create = malloc(sizeof(UTF8String * NumCodeUnits));
-        if (NumGraphemes <= MaxGraphemes) {
+        if (Graphemes <= MaxGraphemes) {
             memset(String2Create, 0xFF, sizeof(String2Create));
-            for (uint64_t Grapheme = 0; Grapheme < NumGraphemes; Grapheme++) {
+            for (uint64_t Grapheme = 0; Grapheme < Graphemes; Grapheme++) {
                 for (uint8_t CodeUnit = 0; CodeUnit < MaxCodeUnits; CodeUnit++) {
                     String2Create->Grapheme[Grapheme][CodeUnit];
                 }

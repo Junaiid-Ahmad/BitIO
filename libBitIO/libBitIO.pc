@@ -1,9 +1,9 @@
 prefix=/usr/local/Packages/BitIO
 exec_prefix=${prefix}/bin
-libdir=${exec_prefix}/lib
-includedir=${exec_prefix}/include
+libdir=${prefix}/lib
+includedir=${prefix}/include
 
 Name: libBitIO
-Description: Input/Output library. includes bit reading/writing, arthimetic reading/writing, RLE, deflate, etc.
+Description: Input/Output library. includes bit reading/writing, ExpGolomb reading/writing, RICE reading/writing, RLE, deflate, etc.
 Version: @version
 Libs: -L${libdir}
