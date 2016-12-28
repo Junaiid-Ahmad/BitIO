@@ -54,6 +54,9 @@ install:
 	install -d -m 777 $(DESTINATION)/include
 	install -C -v -m 444 $(BUILD_LIB)/libBitIO.a $(DESTINATION)/lib/libBitIO.a
 	install -C -v -m 444 $(BUILD_DIR)/../include/BitIO.h $(DESTINATION)/include/BitIO.h
+	install -C -v -m 444 $(BUILD_DIR)/../include/UUID.h $(DESTINATION)/include/UUID.h
+	install -C -v -m 444 $(BUILD_DIR)/../include/UTF8String.h $(DESTINATION)/include/UTF8String.h
+	install -C -v -m 444 $(BUILD_DIR)/../include/MD5.h $(DESTINATION)/include/MD5.h
 	install -C -v -m 444 $(BUILD_DIR)/test/Test-BitIO $(DESTINATION)/bin/Test-BitIO
 	chmod +x $(DESTINATION)/bin/Test-BitIO
 	ln -i $(DESTINATION)/bin/Test-BitIO /usr/bin/Test-BitIO
