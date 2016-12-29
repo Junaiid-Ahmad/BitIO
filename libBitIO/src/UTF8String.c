@@ -13,7 +13,19 @@ extern "C" {
 		uint8_t GraphemeSize[1024];
 		
 		for (size_t Byte = 0; Byte < StringSize; Byte++) {
-			if (StringData[Byte] == CodeUnit) { // if it = a continuation byte increase the size of GraphemeX, but not the total num of Graphemes.
+			// Just test for ASCII (aka no highest bit set), and CodeUnit. anything else is assumed to be a continuation byte or a diacritic
+			if (((StringData[Byte] & 0x80) >> 7) == 0) { // ASCII
+				
+			} else if (((StringData[Byte] & 0x80) >> 7) == 1) { // Code Unit
+				Graphemes += 1;
+			}
+			
+			
+			
+			
+			
+			
+			if (StringData[Byte] == CodeUnit) { // if it is a continuation byte increase the size of GraphemeX, but not the total num of Graphemes.
 				Graphemes += 1;
 			}
 			
