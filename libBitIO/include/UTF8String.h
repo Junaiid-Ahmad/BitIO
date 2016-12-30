@@ -38,14 +38,56 @@ extern "C" {
 		UTF8String_BOM1_LE                  = 0xFFFE,
 		UTF8String_BOM2_BE                  = 0xEFBBBF,
 		UTF8String_BOM2_LE                  = 0xBFBBEF,
-		UTF8String_LineFeed                 = 0x0A,
+	} UTF8Constants;
+	
+	extern enum GraphemeClusterBoundaries { // aka user percieved character boundaries.
+											// regional indicators (Emoji flags) should be seperated by U+200B ZERO WIDTH SPACE
+		UTF8String_ZeroWidthSpace           = 0x2008,
+		UTF8String_CarriageReturn           = 0x000D,
+		UTF8String_LineFeed                 = 0x000A,
+		UTF8String_ZeroWidthNonJoiner       = 0x200C,
+		UTF8String_ZeroWidthJoiner          = 0x200D,
 		UTF8String_VerticalTab              = 0x0B,
 		UTF8String_FormFeed                 = 0x0C,
-		UTF8String_CarriageReturn           = 0x0D,
 		UTF8String_NextLine                 = 0x85,
 		UTF8String_LineSeperator            = 0x2028,
 		UTF8String_ParagraphSeperator       = 0x2029,
-	} UTF8Constants;
+		UTF8String_ThaiSaraAm               = 0x0E33,
+		UTF8String_LaoVowelSignAm           = 0x0EB3,
+		
+		
+		UTF8String_LegacyGraphemeCluster    = 0,
+		UTF8String_ExtendedGraphemeCluster  = 0,
+	} GraphemeClusterBoundaries;
+	
+	extern enum RegionalIndicator { // Emoji Flags
+		UTF8String_RegionalIndicatorA = 0x1F1E6,
+		UTF8String_RegionalIndicatorB = 0x1F1E7,
+		UTF8String_RegionalIndicatorC = 0x1F1E8,
+		UTF8String_RegionalIndicatorD = 0x1F1E9,
+		UTF8String_RegionalIndicatorE = 0x1F1EA,
+		UTF8String_RegionalIndicatorF = 0x1F1EB,
+		UTF8String_RegionalIndicatorG = 0x1F1EC,
+		UTF8String_RegionalIndicatorH = 0x1F1ED,
+		UTF8String_RegionalIndicatorI = 0x1F1EE,
+		UTF8String_RegionalIndicatorJ = 0x1F1EF,
+		UTF8String_RegionalIndicatorK = 0x1F1F0,
+		UTF8String_RegionalIndicatorL = 0x1F1F1,
+		UTF8String_RegionalIndicatorM = 0x1F1F2,
+		UTF8String_RegionalIndicatorN = 0x1F1F3,
+		UTF8String_RegionalIndicatorO = 0x1F1F4,
+		UTF8String_RegionalIndicatorP = 0x1F1F5,
+		UTF8String_RegionalIndicatorQ = 0x1F1F6,
+		UTF8String_RegionalIndicatorR = 0x1F1F7,
+		UTF8String_RegionalIndicatorS = 0x1F1F8,
+		UTF8String_RegionalIndicatorT = 0x1F1F9,
+		UTF8String_RegionalIndicatorU = 0x1F1FA,
+		UTF8String_RegionalIndicatorV = 0x1F1FB,
+		UTF8String_RegionalIndicatorW = 0x1F1FC,
+		UTF8String_RegionalIndicatorX = 0x1F1FD,
+		UTF8String_RegionalIndicatorY = 0x1F1FE,
+		UTF8String_RegionalIndicatorZ = 0x1F1FF,
+	} RegionalIndicator;
 	
 	// If the first 2 bits in a code point = 10, it's a "data" code point.
 	// if the first 2 bits = 11, it's the first codepoint in a character, and as a result of that it will tell how many more codepoints in the character there are
