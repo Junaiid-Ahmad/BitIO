@@ -61,7 +61,7 @@ install:
 	chmod +x $(DESTINATION)/bin/Test-BitIO
 	ln -i $(DESTINATION)/bin/Test-BitIO /usr/bin/Test-BitIO
 	chmod +x /usr/bin/Test-BitIO
-	install -C -v -m 444 $(BUILD_DIR)/../libBitIO.pc /usr/share/pkgconfig/libBitIO.pc
+	install -C -v -m 444 $(BUILD_DIR)/../BitIO.pc /usr/share/pkgconfig/BitIO.pc
 clean:
 	cd $(BUILD_LIB)/
 	rm -f -v -r BitIO.o
