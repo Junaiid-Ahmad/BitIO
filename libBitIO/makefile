@@ -29,9 +29,9 @@ release: $(CURDIR)/src/BitIO.c
 	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/BitIO.c -o $(BUILD_LIB)/BitIO.o
 	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/UUID.c -o $(BUILD_LIB)/UUID.o
 	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/Deflate.c -o $(BUILD_LIB)/Deflate.o
-	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/UTF8String.c -o $(BUILD_LIB)/UTF8String.o
+	#$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/UTF8String.c -o $(BUILD_LIB)/UTF8String.o
 	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/MD5.c -o $(BUILD_LIB)/MD5.o
-	ar -crsu   $(BUILD_LIB)/libBitIO.a $(BUILD_LIB)/BitIO.o $(BUILD_LIB)/UUID.o $(BUILD_LIB)/Deflate.o $(BUILD_LIB)/UTF8String.o $(BUILD_LIB)/MD5.o
+	ar -crsu   $(BUILD_LIB)/libBitIO.a $(BUILD_LIB)/BitIO.o $(BUILD_LIB)/UUID.o $(BUILD_LIB)/Deflate.o $(BUILD_LIB)/MD5.o #$(BUILD_LIB)/UTF8String.o
 	ranlib -sf $(BUILD_LIB)/libBitIO.a
 debug: $(CURDIR)/src/BitIO.c
 	mkdir -p   $(BUILD_DIR)
@@ -39,9 +39,9 @@ debug: $(CURDIR)/src/BitIO.c
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/BitIO.c -o $(BUILD_LIB)/BitIO.o
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/UUID.c -o $(BUILD_LIB)/UUID.o
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/Deflate.c -o $(BUILD_LIB)/Deflate.o
-	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/UTF8String.c -o $(BUILD_LIB)/UTF8String.o
+	#$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/UTF8String.c -o $(BUILD_LIB)/UTF8String.o
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/src/MD5.c -o $(BUILD_LIB)/MD5.o
-	ar -crsu   $(BUILD_LIB)/libBitIO.a $(BUILD_LIB)/BitIO.o $(BUILD_LIB)/UUID.o $(BUILD_LIB)/Deflate.o $(BUILD_LIB)/UTF8String.o
+	ar -crsu   $(BUILD_LIB)/libBitIO.a $(BUILD_LIB)/BitIO.o $(BUILD_LIB)/UUID.o $(BUILD_LIB)/Deflate.o $(BUILD_LIB)/MD5.o #$(BUILD_LIB)/UTF8String.o
 	ranlib -sf $(BUILD_LIB)/libBitIO.a
 test: $(CURDIR)/test/UnitTest.c
 	mkdir -p   $(BUILD_DIR)

@@ -5,6 +5,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+	
+	typedef struct LZ77 {
+		size_t WindowSize;
+		
+	} LZ77;
 
 	extern enum HuffmanConstants {
 		Huffman_MaxLengthCodes      = 286,

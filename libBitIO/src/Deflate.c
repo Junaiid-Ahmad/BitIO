@@ -4,6 +4,33 @@
 extern "C" {
 #endif
 	
+	/*!
+	 @param LengthDistanceSize    "Is the number of bits to read for the length and distance codes".
+	 @param IsEAFormat            "EA format specifies the size in bytes of the code within the first 3 bits of the first byte".
+	 */
+	void ParseLZ77(BitInput *BitI, uint8_t LengthDistanceSize, bool IsEAFormat) {
+		
+		// Lookup the size of the sliding window.
+		if (IsEAFormat == true && IsStreamByteAligned(BitI->BitsUnavailable, 1) == true) {
+			// Read the first 3 bits of the byte for the size
+			uint8_t EASize = PeekBits(BitI, 3);
+			switch (EASize) {
+				case 0:
+					LengthDistanceSize = 1;
+					break;
+				case 1:
+					LengthDistanceSize = 2;
+					break;
+				case 3:
+					LengthDistanceSize = 3;
+					break;
+				case 7:
+					LengthDistanceSize = 4;
+					break;
+			}
+		}
+	}
+	
 	void CreateHuffmanTree(uint16_t *SymbolOccurance) {
 		
 	}
