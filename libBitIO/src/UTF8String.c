@@ -3,6 +3,64 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+	// When creating a string froma uint8_t array, you need to scan for the end of each grapheme, once found, make a new grapheme type, connect it to the main grapheme array, and then continue one.
+	// After you have gone over the whole uint8_t array, you need to Scan through all graphemes, and replace any with accents with a precompsed grapheme, if possible.
+	// In order to speed that up, you should do it as you go.
+	
+	
+	uint32_t ExtractCodePoint(uint8_t *Data, uint64_t StartByte) {
+		uint8_t  Entry = 0, CodePointSize = 0, GraphemeSize = 0;
+		uint32_t CodePoint = 0;
+		
+		for (size_t Byte = StartByte; Byte < StartByte + 4; Byte++) { // read bytes for the first codepoint
+			Entry = Data[Byte];
+			if (((Entry & 0x80) >> 7) == 0) { // ASCII
+				CodePoint = Entry;
+				CodePointSize = 1;
+			} else if (((Entry & 0x80) >> 7) == 1) { // CodePoint, read the following bits to see the size of this code point
+				CodePointSize = CountBitsSet(((Entry & 0xF0) >> 4));
+				for (uint8_t CodePointByte = 0; CodePointByte < CodePointSize; CodePointByte++) {
+					CodePoint += Data[Byte + CodePointByte] << CodePointByte; // you've extracted a code point.
+																			  // time to look for accents, or the next code pint, and see if theyre associated
+				}
+				GraphemeSize += CodePointSize;
+			}
+		}
+		return CodePoint;
+	}
+	
+	void FindTrailingAccents(uint8_t *Data) {
+		
+	}
+	
+	void CreateGraphemeFromCodePoints(uint32_t *CodePoints, uint64_t NumCodePoints) {
+		
+	}
+	
+	void CreateUTF8String(uint8_t *Data, UTF8String NewString) {
+		uint8_t  Entry = 0, CodePointSize = 0, GraphemeSize = 0;
+		uint32_t CodePoint = 0;
+		for (size_t Byte = 0; Byte < sizeof(Data); Byte++) { // read bytes for the first codepoint
+			Entry = Data[Byte];
+			if (((Entry & 0x80) >> 7) == 0) { // ASCII
+				
+			} else if (((Entry & 0x80) >> 7) == 1) { // UTF-8 byte, read the following bits to see the size of this code point
+				CodePointSize = CountBitsSet(((Entry & 0xF0) >> 4));
+				for (uint8_t CodePointByte = 0; CodePointByte < CodePointSize; CodePointByte++) {
+					CodePoint += Data[Byte + CodePointByte] << CodePointByte; // you've extracted a code point.
+																			  // time to look for accents, or the next code pint, and see if theyre associated
+				}
+				GraphemeSize += CodePointSize;
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	// UTF8String stuct will consist of a number of Graphemes variable, and an unsized array to attach pointers to these individual graphemes.
 	

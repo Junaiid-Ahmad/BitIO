@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C1ED4741E20E65F00115556 /* UTF8String.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C7CDA091DE26A8200161286 /* UTF8String.c */; };
 		2C4D08BD1D585897002AB9B5 /* libBitIO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C1989D71D58560500E948F7 /* libBitIO.a */; };
 		2C4E2FD11DF41609004688D8 /* Deflate.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C4E2FD01DF41609004688D8 /* Deflate.c */; };
 		2C62B5821DFAA9F0006BC917 /* MD5.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C62B5811DFAA9F0006BC917 /* MD5.h */; };
@@ -228,6 +229,7 @@
 				2C7CDA061DE26A7700161286 /* UUID.c in Sources */,
 				2C7CDA081DE26A7D00161286 /* BitIO.c in Sources */,
 				2C62B5831DFAA9F6006BC917 /* MD5.c in Sources */,
+				2C1ED4741E20E65F00115556 /* UTF8String.c in Sources */,
 				2C4E2FD11DF41609004688D8 /* Deflate.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
