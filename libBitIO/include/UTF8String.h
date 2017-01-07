@@ -6,6 +6,8 @@
 extern "C" {
 #endif
 	
+	// TODO: Add support for U+ instead of 0x
+	
 	/*!
 	 @abstract               "is a Grapheme, contains the size of the grapheme in bytes, and the actual grapheme data itself".
 	 @constant     Size      "Size of this grapheme in bytes".
@@ -101,10 +103,10 @@ extern "C" {
 	} BOMType;
 	
 	extern enum CodePointType {
-		FourCodeUnitsInCodePoint,
-		ThreeCodeUnitsInCodePoint,
-		TwoCodeUnitsInCodePoint,
-		OneCodeUnitInCodePoint,
+		FourCodeUnitsInCodePoint  = 4,
+		ThreeCodeUnitsInCodePoint = 3,
+		TwoCodeUnitsInCodePoint   = 2,
+		OneCodeUnitInCodePoint    = 1,
 	} CodePointType;
 	
 	extern enum UTF8StringErrorCodes {
@@ -112,7 +114,8 @@ extern "C" {
 		CharacterIsContinuationCodeUnit = 2,
 	} UTF8StringErrorCodes;
 	
-	extern enum DiacriticalMarks { // Starts at 0x300, ends at 0x36F
+	extern enum CombiningCharacters { // Starts at 0x300, ends at 0x36F
+		/* DiacriticalMarks */
 		GraveAccent                   = 0x300,
 		AcuteAccent                   = 0x301,
 		CircumflexAccent              = 0x302,
@@ -163,11 +166,7 @@ extern "C" {
 		InvertedBreveBelow            = 0x32F,
 		TildeBelow                    = 0x330,
 		MacronBelow                   = 0x331,
-	} DiacriticalMarks;
-	
-	uint16_t Diacritics[64] = {
-		0x300, 0x301, 0x302, 0x303, 0x304, 0x395, 0x305, 0x306,
-	};
+	} CombiningCharacters;
 	
 	extern enum PrecomposedCodePoints {
 		CapitalAcuteA = 0xC1,
@@ -179,29 +178,6 @@ extern "C" {
 		int64_t CompareStrings;
 		int64_t RemoveCharacter;
 	} UTF8StringErrors;
-	
-	/*!
-	 @abstract                        "Structure to hold various variables to contain a string".
-	 @constant StringSizeInCodeUnits  "Total number of bytes in the string".
-	 @constant StringSizeInCodePoints "Size of string in the Unicode equilivent of characters"
-	 @constant CharacterSize          "Array to hold the number of Code Points in each UTF8 character, 2 bits each, 0 = 1, 1 = 2, etc.".
-	 @constant
-	 */
-	/*
-	 typedef struct UTF8String {
-		UTF8StringErrors *Error;
-		bool              StringEndian:1;
-		size_t            StringSizeInCodeUnits; // aka bytes
-		size_t            StringSizeInCodePoints; // aka characters
-		size_t            StringSizeInGraphemes;
-		uint8_t           CodePoints[UTF8String_MaxCodeUnits];
-		// Because of combining characters and accents and whatnot, we' can't have a 4 bitfield, we'll have to scan each byte
-	 } UTF8String;
-	 */
-	
-	/*!
-	 @abstract                        "The SubString can be a character, or it's own string, all that matters is that each code point is adjacent".
-	 */
 	
 	extern enum UTF8InvalidCodePoints {
 		LowestValidCodePoint = 0x1FFFF,

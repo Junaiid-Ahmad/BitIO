@@ -9,21 +9,27 @@ extern "C" {
 	
 	
 	uint32_t ExtractCodePoint(uint8_t *Data, uint64_t StartByte) {
-		uint8_t  Entry = 0, CodePointSize = 0, GraphemeSize = 0;
+		bool     NextCodePointFound = false;
+		uint8_t  Entry = 0, CodePointSize = 0, GraphemeSize = 0, TrailingAccents[8];
 		uint32_t CodePoint = 0;
 		
-		for (size_t Byte = StartByte; Byte < StartByte + 4; Byte++) { // read bytes for the first codepoint
-			Entry = Data[Byte];
-			if (((Entry & 0x80) >> 7) == 0) { // ASCII
-				CodePoint = Entry;
-				CodePointSize = 1;
-			} else if (((Entry & 0x80) >> 7) == 1) { // CodePoint, read the following bits to see the size of this code point
-				CodePointSize = CountBitsSet(((Entry & 0xF0) >> 4));
-				for (uint8_t CodePointByte = 0; CodePointByte < CodePointSize; CodePointByte++) {
-					CodePoint += Data[Byte + CodePointByte] << CodePointByte; // you've extracted a code point.
-																			  // time to look for accents, or the next code pint, and see if theyre associated
+		// Scan until you find the next code point, count the bytes from the first til the end.
+		while (NextCodePointFound != true) {
+			for (size_t Byte = StartByte; Byte < sizeof(Data); Byte++) {
+				if (((Data[Byte] & 0x80) >> 7) == 0) { // ASCII
+					CodePoint     = Data[Byte];
+					CodePointSize = 1;
+				} else if (((Data[Byte] & 0x80) >> 7) == 1) { // CodePoint, read the following bits to see the size of this code point
+					CodePointSize = CountBitsSet(((Data[Byte] & 0xF0) >> 4));
+					for (uint8_t CodePointByte = 0; CodePointByte < CodePointSize; CodePointByte++) {
+						CodePoint += Data[Byte + CodePointByte] << CodePointByte; // you've extracted a code point.
+				// time to look for accents, or the next code pint, and see if theyre associated
+					}
+					GraphemeSize += CodePointSize;
 				}
-				GraphemeSize += CodePointSize;
+				if (Data[Byte] == ) { // combining char
+					
+				}
 			}
 		}
 		return CodePoint;
