@@ -6,17 +6,17 @@
 extern "C" {
 #endif
 	
-	// TODO: Add support for U+ instead of 0x
-	
 	/*!
 	 @abstract               "is a Grapheme, contains the size of the grapheme in bytes, and the actual grapheme data itself".
 	 @constant     Size      "Size of this grapheme in bytes".
 	 @constant     Data      "An array that contains the actual bytes that make up the grapheme".
 	 */
 	typedef struct Grapheme {
+		bool       IsLittleEndian;
+		bool       IsRight2Left;
 		uint8_t    Size;
 		uint8_t    Data[];
-	} Grapheme __attribute__((packed));
+	} Grapheme;
 	
 	/*!
 	 @abstract              "Contains a string of UTF-8 "characters" aka Graphemes".
@@ -26,7 +26,7 @@ extern "C" {
 	typedef struct UTF8String { // UTF8Strings are ALWAYS big endian.
 		size_t     Graphemes;
 		Grapheme  *Grapheme[];
-	} UTF8String __attribute__((packed));
+	} UTF8String;
 	
 	extern enum UTF8Constants { // UTF-8 strings are Big Endian by default, therefore 0xFEFF is correct. 0xFFFE needs to be swapped
 		UTF8String_MaxGraphemes             = 16,

@@ -7,6 +7,9 @@ extern "C" {
 	// After you have gone over the whole uint8_t array, you need to Scan through all graphemes, and replace any with accents with a precompsed grapheme, if possible.
 	// In order to speed that up, you should do it as you go.
 	
+	// In codepoints, remove all but 1 of the leading sizing bits to get the actual value
+	// Latin accents always start with a leading 1 bit, and are above 127
+	
 	
 	uint32_t ExtractCodePoint(uint8_t *Data, uint64_t StartByte) {
 		bool     NextCodePointFound = false;
@@ -16,7 +19,7 @@ extern "C" {
 		// Scan until you find the next code point, count the bytes from the first til the end.
 		while (NextCodePointFound != true) {
 			for (size_t Byte = StartByte; Byte < sizeof(Data); Byte++) {
-				if (((Data[Byte] & 0x80) >> 7) == 0) { // ASCII
+				if (((Data[Byte] & 0x80) >> 7) == 0 && Data[Byte] <= 127) { // ASCII
 					CodePoint     = Data[Byte];
 					CodePointSize = 1;
 				} else if (((Data[Byte] & 0x80) >> 7) == 1) { // CodePoint, read the following bits to see the size of this code point
@@ -26,9 +29,8 @@ extern "C" {
 				// time to look for accents, or the next code pint, and see if theyre associated
 					}
 					GraphemeSize += CodePointSize;
-				}
-				if (Data[Byte] == ) { // combining char
-					
+				} else if (((Data[Byte] & 0x80) >> 7) == 1 && Data[Byte] > 127) { // combining char
+					GraphemeSize += 1;
 				}
 			}
 		}

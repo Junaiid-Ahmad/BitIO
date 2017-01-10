@@ -29,10 +29,11 @@ release: $(CURDIR)/src/BitIO.c
 	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/BitIO.c -o $(BUILD_LIB)/BitIO.o
 	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/UUID.c -o $(BUILD_LIB)/UUID.o
 	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/Deflate.c -o $(BUILD_LIB)/Deflate.o
-	#$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/UTF8String.c -o $(BUILD_LIB)/UTF8String.o
+	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/UTF8String.c -o $(BUILD_LIB)/UTF8String.o
 	$(CC)      $(REL_FLAGS) -c $(CURDIR)/src/MD5.c -o $(BUILD_LIB)/MD5.o
 	ar -crsu   $(BUILD_LIB)/libBitIO.a $(BUILD_LIB)/BitIO.o $(BUILD_LIB)/UUID.o $(BUILD_LIB)/Deflate.o $(BUILD_LIB)/MD5.o #$(BUILD_LIB)/UTF8String.o
 	ranlib -sf $(BUILD_LIB)/libBitIO.a
+	strip	   $(BUILD_LIB)/libBitIO.a
 debug: $(CURDIR)/src/BitIO.c
 	mkdir -p   $(BUILD_DIR)
 	mkdir -p   $(BUILD_LIB)
@@ -48,6 +49,7 @@ test: $(CURDIR)/test/UnitTest.c
 	mkdir -p   $(BUILD_DIR)/test
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/test/UnitTest.c -o $(BUILD_DIR)/test/UnitTest.o
 	$(CC)      $(BUILD_DIR)/test/UnitTest.o $(BUILD_LIB)/libBitIO.a -o $(BUILD_DIR)/test/Test-BitIO
+	strip      $(BUILD_DIR)/test/Test-BitIO
 install:
 	install -d -m 777 $(DESTINATION)/lib
 	install -d -m 777 $(DESTINATION)/bin
