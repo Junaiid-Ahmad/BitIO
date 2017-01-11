@@ -8,7 +8,20 @@ extern "C" {
 	// In order to speed that up, you should do it as you go.
 	
 	// In codepoints, remove all but 1 of the leading sizing bits to get the actual value
-	// Latin accents always start with a leading 1 bit, and are above 127
+	// Latin accents always start with a leading 1 bit, and are above 127.
+	
+	// Good lord man, all you need to do is count the number of bytes in a grapheme.
+	
+	uint8_t GetGraphemeSize(uint8_t *Data[]) {
+		uint8_t GraphemeSize = 0, Prefix = 0;
+		for (size_t Byte = 0; Byte < sizeof(Data); Byte++) {
+			Prefix = ((Data[Byte] & 0xC0) >> 6);
+			while ((Prefix != 0x2) || (Prefix != 0x1)) {
+				GraphemeSize += 1;
+			}
+		}
+		return GraphemeSize;
+	}
 	
 	
 	uint32_t ExtractCodePoint(uint8_t *Data, uint64_t StartByte) {
@@ -91,13 +104,13 @@ extern "C" {
 			
 			
 			
-			if (StringData[Byte] == CodeUnit) { // if it is a continuation byte increase the size of GraphemeX, but not the total num of Graphemes.
+			if (((StringData[Byte] & 0xF0) >> 4) == 0xF || 0x7 || 0x3 || 0x1) { // if it is a continuation byte increase the size of GraphemeX, but not the total num of Graphemes.
 				Graphemes += 1;
 			}
 			
 			
 			for (size_t Grapheme = 0; Grapheme < Graphemes; Grapheme++) {
-				if ((StringData[Byte] == ContinuationByte) || (StringData[Byte] == AccentMark)) {
+				//if (((StringData[Byte] & 0xC0) >> 6) == 3) || ((StringData[Byte] >= 0x300 || StringData[Byte] <= 0x36F))) {
 					GraphemeSize[Grapheme] += 1;
 				}
 			}

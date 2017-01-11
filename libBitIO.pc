@@ -1,4 +1,4 @@
-prefix=/usr/local/Packages/BitIO
+prefix=/usr/local/Packages/libBitIO
 exec_prefix=${prefix}/bin
 libdir=${prefix}/lib
 includedir=${prefix}/include
