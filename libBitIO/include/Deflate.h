@@ -6,6 +6,11 @@
 extern "C" {
 #endif
 	
+	typedef struct DeflateBlock {
+		bool     IsLastBlock;
+		uint8_t  EncodingMethod:2;
+	} DeflateBlock;
+	
 	typedef struct LZ77 {
 		size_t WindowSize;
 		

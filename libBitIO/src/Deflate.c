@@ -4,6 +4,47 @@
 extern "C" {
 #endif
 	
+	// The length code is read as 8 bits, and left shifted 2.
+	// The distance code is 15 bits
+	// or maybe the length code isn't shifted and is just read as 9 bits, which would byte align it
+	// This is all the LZ77 stuff.
+	
+	// Huffman
+	// the Huffman tree contains 288 nodes, one each for each length code
+	// 286 and 287 arent used.
+	// Basically a huffman tree stores it's bit, and the value it represents is represented by it's location in the tree?
+	// After the distance code is the match length code
+	
+	
+	void DecodeStaticHuffman(BitInput *BitI, DeflateBlock *Deflate) {
+		
+	}
+	
+	void ParseDeflateBlock(BitInput *BitI, DeflateBlock *Deflate) {
+		char ErrorString[BitIOStringSize];
+		Deflate->IsLastBlock    = ReadBits(BitI, 1);
+		Deflate->EncodingMethod = ReadBits(BitI, 2);
+		
+		switch (Deflate->EncodingMethod) {
+			case 0:
+				// Raw data
+				break;
+			case 1:
+				// Static Huffman + preagreed table
+				DecodeStaticHuffman(BitI, Deflate);
+				break;
+			case 2:
+				// Dynamic Huffman
+				break;
+				
+			default:
+				snprintf(ErrorString, BitIOStringSize, "Invalid Deflate encoding method: %d\n", Deflate->EncodingMethod);
+				Log(SYSEmergency, "BitIO", "ParseDeflateBlock", ErrorString);
+				break;
+		}
+	}
+	
+	
 	/*!
 	 @param LengthDistanceSize    "Is the number of bits to read for the length and distance codes".
 	 @param IsEAFormat            "EA format specifies the size in bytes of the code within the first 3 bits of the first byte".
