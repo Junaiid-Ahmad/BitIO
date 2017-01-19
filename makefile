@@ -40,8 +40,6 @@ debug: $(CURDIR)/libBitIO/src/BitIO.c
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_LIB)/BitIO.o
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/UUID.c -o $(BUILD_LIB)/UUID.o
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/Deflate.c -o $(BUILD_LIB)/Deflate.o
-	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/UTF8String.c -o $(BUILD_LIB)/UTF8String.o
-	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/MD5.c -o $(BUILD_LIB)/MD5.o
 	ar -crsu   $(BUILD_LIB)/libBitIO.a $(BUILD_LIB)/*.o
 	ranlib -sf $(BUILD_LIB)/libBitIO.a
 test: $(CURDIR)/test/UnitTest.c
