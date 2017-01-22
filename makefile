@@ -1,5 +1,5 @@
 PACKAGE_NAME        := libBitIO
-FILE                := $(CURDIR)/include/BitIO.h
+FILE                := $(CURDIR)/libBitIO/include/BitIO.h
 VERSION             := $(shell cat ${FILE} | grep -e "@version")
 CC                  := cc
 DESTINATION         := /usr/local/Packages/$(PACKAGE_NAME)
@@ -17,6 +17,7 @@ BUILD_LIB           := $(BUILD_DIR)/libBitIO
 
 all: release
 	$(release)
+	$(test)
 check: test
 	$(test)
 distclean: clean
@@ -24,7 +25,6 @@ distclean: clean
 CheckVer:
 	$(shell echo ${VERSION})
 release: $(CURDIR)/libBitIO/src/BitIO.c
-	mkdir -p   $(BUILD_DIR)
 	mkdir -p   $(BUILD_LIB)
 	$(CC)      $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_LIB)/BitIO.o
 	$(CC)      $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/UUID.c -o $(BUILD_LIB)/UUID.o
@@ -35,17 +35,15 @@ release: $(CURDIR)/libBitIO/src/BitIO.c
 	ranlib -sf $(BUILD_LIB)/libBitIO.a
 	strip	   $(BUILD_LIB)/libBitIO.a
 debug: $(CURDIR)/libBitIO/src/BitIO.c
-	mkdir -p   $(BUILD_DIR)
 	mkdir -p   $(BUILD_LIB)
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_LIB)/BitIO.o
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/UUID.c -o $(BUILD_LIB)/UUID.o
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/Deflate.c -o $(BUILD_LIB)/Deflate.o
 	ar -crsu   $(BUILD_LIB)/libBitIO.a $(BUILD_LIB)/*.o
 	ranlib -sf $(BUILD_LIB)/libBitIO.a
-test: $(CURDIR)/test/UnitTest.c
-	mkdir -p   $(BUILD_DIR)
+test: $(CURDIR)/libBitIO/test/UnitTest.c
 	mkdir -p   $(BUILD_DIR)/test
-	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/test/UnitTest.c -o $(BUILD_DIR)/test/UnitTest.o
+	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/test/UnitTest.c -o $(BUILD_DIR)/test/UnitTest.o
 	$(CC)      $(BUILD_DIR)/test/UnitTest.o $(BUILD_LIB)/libBitIO.a -o $(BUILD_DIR)/test/Test-BitIO
 	strip      $(BUILD_DIR)/test/Test-BitIO
 install:
@@ -61,7 +59,7 @@ install:
 	chmod +x $(DESTINATION)/bin/Test-BitIO
 	ln -i $(DESTINATION)/bin/Test-BitIO /usr/bin/Test-BitIO
 	chmod +x /usr/bin/Test-BitIO
-	install -C -v -m 444 (CURDIR)/libBitIO.pc /usr/share/pkgconfig/libBitIO.pc
+	install -C -v -m 444 $(CURDIR)/libBitIO.pc /usr/share/pkgconfig/libBitIO.pc
 clean:
 	cd $(BUILD_LIB)/
 	rm -f -v -r BitIO.o

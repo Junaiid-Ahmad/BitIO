@@ -6,4 +6,4 @@ includedir=${prefix}/include
 Name: libBitIO
 Description: Input/Output library. includes bit reading/writing, ExpGolomb reading/writing, RICE reading/writing, RLE, deflate, etc.
 Version: @version
-Libs: -L${libdir}/libBitIO.a
+Libs: ${libdir}/libBitIO.a
