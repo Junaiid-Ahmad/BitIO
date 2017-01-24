@@ -96,7 +96,7 @@ bool Test_ReadBits(BitInput *Input) { // This should cover basically everything 
 			snprintf(Description, BitIOStringSize, "ReadBits fucked up big time on %d\n", Bits2Peek);
 			Log(SYSCritical, "BitIO", "ReadBits", Description);
             printf("\nERROR!\n");
-            printf("Bits2Peek: %1d, BitsUnavailable: %0llU, Result: 0x%llX, Correct: 0x%llX\n", Bits2Read, Input->BitsUnavailable, PeekedData, Correct);
+            printf("Bits2Peek: %1d, BitsUnavailable: %0zU, Result: 0x%llX, Correct: 0x%llX\n", Bits2Read, Input->BitsUnavailable, PeekedData, Correct);
             printf("!ERROR \n");
 		} else {
 			Passed = true;
