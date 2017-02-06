@@ -13,3 +13,4 @@ libBitIO/src/OldCode.c
 *.xcbkptlist
 project.xcworkspace/
 xcuserdata/
+libBitIO/OLDCODE/*
