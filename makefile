@@ -7,7 +7,7 @@ BUILD_DIR           := $(CURDIR)/BUILD
 CFLAGS              := -std=c11 -march=native -funroll-loops
 LDFLAGS             := -flto=thin
 DEB_ERROR_OPTIONS   := -Wno-unused-parameter -Wno-unused-variable -Wno-int-conversion
-REL_ERROR_OPTIONS   := -Weverything -Wunreachable-code -Wno-conversion
+REL_ERROR_OPTIONS   := -Wall -Weverything -Wunreachable-code -Wno-conversion
 DEB_FLAGS           := $(CFLAGS) -g -o0 $(DEB_ERROR_OPTIONS) $(LDFLAGS)
 SANITIZER           := -fsanitize=undefined -fsanitize=address
 REL_FLAGS           := $(CFLAGS) -ofast $(REL_ERROR_OPTIONS) $(LDFLAGS)
@@ -29,7 +29,6 @@ release: $(CURDIR)/libBitIO/src/BitIO.c
 	$(CC)      $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_LIB)/BitIO.o
 	$(CC)      $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/UUID.c -o $(BUILD_LIB)/UUID.o
 	$(CC)      $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/Deflate.c -o $(BUILD_LIB)/Deflate.o
-	$(CC)      $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/UTF8String.c -o $(BUILD_LIB)/UTF8String.o
 	$(CC)      $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/MD5.c -o $(BUILD_LIB)/MD5.o
 	ar -crsu   $(BUILD_LIB)/libBitIO.a $(BUILD_LIB)/*.o
 	ranlib -sf $(BUILD_LIB)/libBitIO.a
@@ -53,7 +52,6 @@ install:
 	install -C -v -m 444 $(BUILD_LIB)/libBitIO.a $(DESTINATION)/lib/libBitIO.a
 	install -C -v -m 444 $(CURDIR)/libBitIO/include/BitIO.h $(DESTINATION)/include/BitIO.h
 	install -C -v -m 444 $(CURDIR)/libBitIO/include/UUID.h $(DESTINATION)/include/UUID.h
-	install -C -v -m 444 $(CURDIR)/libBitIO/include/UTF8String.h $(DESTINATION)/include/UTF8String.h
 	install -C -v -m 444 $(CURDIR)/libBitIO/include/MD5.h $(DESTINATION)/include/MD5.h
 	install -C -v -m 444 $(BUILD_DIR)/test/Test-BitIO $(DESTINATION)/bin/Test-BitIO
 	chmod +x $(DESTINATION)/bin/Test-BitIO

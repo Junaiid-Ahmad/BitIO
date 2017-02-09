@@ -40,7 +40,6 @@
 /* Begin PBXFileReference section */
 		2C1989C71D5855B800E948F7 /* Test-BitIO */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Test-BitIO"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C1989D71D58560500E948F7 /* libBitIO.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBitIO.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		2C4E2FCC1DF414C0004688D8 /* UTF8String.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UTF8String.h; path = include/UTF8String.h; sourceTree = SOURCE_ROOT; };
 		2C4E2FCE1DF415C9004688D8 /* Deflate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Deflate.h; path = include/Deflate.h; sourceTree = SOURCE_ROOT; };
 		2C4E2FD01DF41609004688D8 /* Deflate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Deflate.c; path = src/Deflate.c; sourceTree = SOURCE_ROOT; };
 		2C4E2FD21DF41ADA004688D8 /* UUID.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UUID.h; path = include/UUID.h; sourceTree = SOURCE_ROOT; };
@@ -49,7 +48,6 @@
 		2C7CDA031DE26A6E00161286 /* BitIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BitIO.h; path = include/BitIO.h; sourceTree = SOURCE_ROOT; };
 		2C7CDA051DE26A7700161286 /* UUID.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = UUID.c; path = src/UUID.c; sourceTree = SOURCE_ROOT; };
 		2C7CDA071DE26A7D00161286 /* BitIO.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BitIO.c; path = src/BitIO.c; sourceTree = SOURCE_ROOT; };
-		2C7CDA091DE26A8200161286 /* UTF8String.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = UTF8String.c; path = src/UTF8String.c; sourceTree = SOURCE_ROOT; };
 		2C7CDA0B1DE26BAB00161286 /* UnitTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = UnitTest.c; path = test/UnitTest.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,7 +77,6 @@
 				2C62B57E1DFAA9D0006BC917 /* MD5.c */,
 				2C4E2FD01DF41609004688D8 /* Deflate.c */,
 				2C7CDA051DE26A7700161286 /* UUID.c */,
-				2C7CDA091DE26A8200161286 /* UTF8String.c */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -118,7 +115,6 @@
 				2C62B5811DFAA9F0006BC917 /* MD5.h */,
 				2C4E2FD21DF41ADA004688D8 /* UUID.h */,
 				2C4E2FCE1DF415C9004688D8 /* Deflate.h */,
-				2C4E2FCC1DF414C0004688D8 /* UTF8String.h */,
 				2C0CC93C1DD36AEA00549106 /* Source */,
 			);
 			name = libBitIO;
