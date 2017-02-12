@@ -15,31 +15,39 @@ extern "C" {
 	// Basically a huffman tree stores it's bit, and the value it represents is represented by it's location in the tree?
 	// After the distance code is the match length code
 	
-	
-	void DecodeStaticHuffman(BitInput *BitI, DeflateBlock *Deflate) {
+	void DecodeStoredHuffman(BitInput *BitI, DeflateBlock *Inflate) {
 		
 	}
 	
-	void ParseDeflateBlock(BitInput *BitI, DeflateBlock *Deflate) {
-		char ErrorString[BitIOStringSize];
-		Deflate->IsLastBlock    = ReadBits(BitI, 1);
-		Deflate->EncodingMethod = ReadBits(BitI, 2);
+	void DecodeStaticHuffman(BitInput *BitI, DeflateBlock *Inflate) {
 		
-		switch (Deflate->EncodingMethod) {
+	}
+	
+	void DecodeDynamicHuffman(BitInput *BitI, DeflateBlock *Inflate) {
+		
+	}
+	
+	void ParseDeflateBlock(BitInput *BitI, DeflateBlock *Inflate, uint16_t BlockSize) {
+		char ErrorString[BitIOStringSize];
+		Inflate->IsLastBlock    = ReadBits(BitI, 1); // no
+		Inflate->EncodingMethod = ReadBits(BitI, 2); // 3
+		
+		switch (Inflate->EncodingMethod) {
 			case 0:
-				// Raw data
+				// Stored.
+				DecodeStoredHuffman(BitI, Inflate);
 				break;
 			case 1:
 				// Static Huffman + preagreed table
-				DecodeStaticHuffman(BitI, Deflate);
+				DecodeStaticHuffman(BitI, Inflate);
 				break;
 			case 2:
 				// Dynamic Huffman
+				DecodeDynamicHuffman(BitI, Inflate);
 				break;
-				
 			default:
-				snprintf(ErrorString, BitIOStringSize, "Invalid Deflate encoding method: %d\n", Deflate->EncodingMethod);
-				Log(SYSEmergency, "BitIO", "ParseDeflateBlock", ErrorString);
+				snprintf(ErrorString, BitIOStringSize,"Invalid Deflate encoding method: %d\n",Inflate->EncodingMethod);
+				Log(LOG_EMERG, "BitIO", "ParseDeflateBlock", ErrorString);
 				break;
 		}
 	}
@@ -76,14 +84,21 @@ extern "C" {
 		
 	}
 	
-	void ParseDeflate(BitInput *BitI) {
-		uint8_t CompressionInfo    = ReadBits(BitI, 4); // 7 = LZ77 window size 32k
+	void ParseZLIBHeader(BitInput *BitI, DeflateBlock *Inflate) { // Deflate starts at the LSB, not the MSB so bit reading will be a PITA
+		uint8_t CompressionType    = ReadBits(BitI, 4); // 7 = LZ77 window size 32k
 		uint8_t CompressionMethod  = ReadBits(BitI, 4); // 8 = DEFLATE
-		uint8_t CheckCode          = ReadBits(BitI, 5); // for the previous 2 fields, MUST be multiple of 31
-		bool    DictionaryPresent  = ReadBits(BitI, 1); // false
-		uint8_t CompressionLevel   = ReadBits(BitI, 2); // Fixed Huffman
+		uint8_t CheckCode          = ReadBits(BitI, 5); // 19, for the previous 2 fields, MUST be multiple of 31
+		bool    DictionaryPresent  = ReadBits(BitI, 1); // true
+		uint8_t CompressionLevel   = ReadBits(BitI, 2); // 0
 		if (DictionaryPresent == true) {
-			uint16_t Dictionary    = ReadBits(BitI, 16);
+			uint16_t Dictionary    = ReadBits(BitI, 16); // 0xEDC1
+		}
+		if (CompressionMethod == 8) {
+			ParseDeflateBlock(BitI, Inflate, BlockSize[CompressionType]);
+		} else {
+			char Error[BitIOStringSize];
+			snprintf(Error, BitIOStringSize, "Invalid DEFLATE compression method %d\n", CompressionMethod);
+			Log(LOG_ERR, "BitIO", "ParseDeflate", Error);
 		}
 	}
 	
@@ -95,14 +110,13 @@ extern "C" {
 		/* Parse Huffman block header */
 		bool     IsLastHuffmanBlock     = ReadBits(BitI, 1);
 		uint8_t  HuffmanCompressionType = ReadBits(BitI, 2); // 0 = none, 1 = fixed, 2 = dynamic, 3 = invalid.
-		int32_t  DataLength             = 0;
-		int32_t  OnesComplimentOfLength = 0; // Ones Compliment of DataLength
+		uint32_t DataLength             = 0;
+		uint32_t OnesComplimentOfLength = 0; // Ones Compliment of DataLength
 		
 		if (OnesCompliment2TwosCompliment(OnesComplimentOfLength) != HuffmanSize) { // Make sure the numbers match up
-			BitI->ErrorStatus->DecodeHuffman = InvalidData;
 			char String2Print[BitIOStringSize];
 			snprintf(String2Print, BitIOStringSize, "One's Compliment of Length: %d != Length %d", OnesComplimentOfLength, DataLength);
-			Log(SYSWarning, "BitIO", "DecodeHuffman", String2Print);
+			Log(LOG_WARNING, "BitIO", "DecodeHuffman", String2Print);
 		}
 		
 		if (IsLastHuffmanBlock == true) {
@@ -116,7 +130,7 @@ extern "C" {
 			if (OnesCompliment2TwosCompliment(OnesComplimentOfLength) != DataLength) {
 				// Exit because there's an issue.
 			}
-			for (size_t Byte = 0; Byte < DataLength; Byte++) {
+			for (uint32_t Byte = 0; Byte < DataLength; Byte++) {
 				DecodedData[Byte] = ReadBits(BitI, 8);
 			}
 		} else if (HuffmanCompressionType == 1) { // Static Huffman.

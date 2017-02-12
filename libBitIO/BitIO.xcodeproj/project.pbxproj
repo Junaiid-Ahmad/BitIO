@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2C4D08BD1D585897002AB9B5 /* libBitIO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C1989D71D58560500E948F7 /* libBitIO.a */; };
 		2C4E2FD11DF41609004688D8 /* Deflate.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C4E2FD01DF41609004688D8 /* Deflate.c */; };
+		2C5ABD511E4D00CA009EB7D5 /* MD5.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C62B57E1DFAA9D0006BC917 /* MD5.c */; };
 		2C62B5821DFAA9F0006BC917 /* MD5.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C62B5811DFAA9F0006BC917 /* MD5.h */; };
 		2C7CDA061DE26A7700161286 /* UUID.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C7CDA051DE26A7700161286 /* UUID.c */; };
 		2C7CDA081DE26A7D00161286 /* BitIO.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C7CDA071DE26A7D00161286 /* BitIO.c */; };
@@ -220,6 +221,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C5ABD511E4D00CA009EB7D5 /* MD5.c in Sources */,
 				2C7CDA061DE26A7700161286 /* UUID.c in Sources */,
 				2C7CDA081DE26A7D00161286 /* BitIO.c in Sources */,
 				2C4E2FD11DF41609004688D8 /* Deflate.c in Sources */,

@@ -74,9 +74,9 @@ extern "C" {
 		}
 	}
 
-	void WriteUUID(BitOutput *BitO, char *UUIDString) {
+	uint8_t WriteUUID(BitOutput *BitO, char *UUIDString) {
 		if (strlen(UUIDString) != BitIOUUIDSize - 1) {
-			BitO->ErrorStatus->WriteUUID = WrongStringSize;
+			return -1;
 		} else {
 			for (uint8_t UUIDByte = 0; UUIDByte < BitIOUUIDSize - 1; UUIDByte++) {
 				if ((UUIDByte != 4) && (UUIDByte != 7) && (UUIDByte != 10) && (UUIDByte != 13) && (UUIDByte != 20)) {

@@ -4,7 +4,7 @@ VERSION             := $(shell cat ${FILE} | grep -e "@version")
 CC                  := cc
 DESTINATION         := /usr/local/Packages/$(PACKAGE_NAME)
 BUILD_DIR           := $(CURDIR)/BUILD
-CFLAGS              := -std=c11 -march=native -funroll-loops
+CFLAGS              := -std=c11 -march=native -funroll-loops -ffreestanding
 LDFLAGS             := -flto=thin
 DEB_ERROR_OPTIONS   := -Wno-unused-parameter -Wno-unused-variable -Wno-int-conversion
 REL_ERROR_OPTIONS   := -Wall -Weverything -Wunreachable-code -Wno-conversion
@@ -38,6 +38,7 @@ debug: $(CURDIR)/libBitIO/src/BitIO.c
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_LIB)/BitIO.o
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/UUID.c -o $(BUILD_LIB)/UUID.o
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/Deflate.c -o $(BUILD_LIB)/Deflate.o
+	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/MD5.c -o $(BUILD_LIB)/MD5.o
 	ar -crsu   $(BUILD_LIB)/libBitIO.a $(BUILD_LIB)/*.o
 	ranlib -sf $(BUILD_LIB)/libBitIO.a
 test: $(CURDIR)/libBitIO/test/UnitTest.c

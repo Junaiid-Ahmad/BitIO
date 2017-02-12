@@ -29,7 +29,7 @@ extern "C" {
 	 @param    BitO                "Pointer to BitOutput".
 	 @param    UUIDString          "UUID string to write to the file as a binary blob, aka remove hyphens and null terminating char".
 	 */
-	void           WriteUUID(BitOutput *BitO, char *UUIDString);
+	uint8_t        WriteUUID(BitOutput *BitO, char *UUIDString);
 	
 	/*!
 	 @abstract                     "Verify two UUIDs match each other".

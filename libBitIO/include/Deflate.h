@@ -6,6 +6,69 @@
 extern "C" {
 #endif
 	
+	static const uint16_t BlockSize[8] = {
+		0, 0, 0, 0, 0, 0, 0, 32768
+	};
+	
+	typedef struct HuffmanNode {
+		struct HuffmanNode *LeftNode;
+		struct HuffmanNode *RightNode;
+	} HuffmanNode;
+	
+	typedef struct HuffmanTree {
+		uint64_t  NumNodes;
+		HuffmanNode *Node[];
+	} HuffmanTree;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	typedef struct DeflateBlock {
 		bool     IsLastBlock;
 		uint8_t  EncodingMethod:2;
@@ -13,7 +76,6 @@ extern "C" {
 	
 	typedef struct LZ77 {
 		size_t WindowSize;
-		
 	} LZ77;
 
 	extern enum HuffmanConstants {
@@ -22,11 +84,6 @@ extern "C" {
 		Huffman_MaxSymbols          = Huffman_MaxLengthCodes + Huffman_MaxDistanceSymbols,
 		Huffman_FixedLengthCodes    = 288,
 	} HuffmanConstants;
-	
-	typedef struct HuffmanTree {
-		uint16_t   Symbol[255];        // input symbol to be coded
-		uint16_t   HuffmanCode[255];   // Encoded value for that symbol
-	} HuffmanTree;
 	
 	/*!
 	 @abstract                     "Decodes Huffman encoded data".
@@ -40,6 +97,16 @@ extern "C" {
 	 @param    BitI                "Pointer to BitInput".
 	 */
 	void           ParseDeflate(BitInput *BitI);
+	
+	void           DecodeHuffman(BitInput *BitI, size_t HuffmanSize);
+	
+	void           ParseZLIBHeader(BitInput *BitI, DeflateBlock *Inflate);
+	
+	void           CreateHuffmanTree(uint16_t *SymbolOccurance);
+	
+	void           ParseLZ77(BitInput *BitI, uint8_t LengthDistanceSize, bool IsEAFormat);
+	
+	void           ParseDeflateBlock(BitInput *BitI, DeflateBlock *Inflate, uint16_t BlockSize);
 
 #ifdef __cplusplus
 }
