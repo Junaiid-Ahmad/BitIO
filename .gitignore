@@ -14,3 +14,21 @@ libBitIO/src/OldCode.c
 project.xcworkspace/
 xcuserdata/
 libBitIO/OLDCODE/*
+
+# Windows stuff
+*.pdb
+*.db
+*.obj
+*.dll
+*.lib
+*.exe
+*.tlog
+*.log
+*.pch
+*.opendb
+*.suo
+*.json
+*.sqlite
+*.ipch
+*.idb
+*.ini
