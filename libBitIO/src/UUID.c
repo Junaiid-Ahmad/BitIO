@@ -76,7 +76,7 @@ extern "C" {
 
 	uint8_t WriteUUID(BitOutput *BitO, char *UUIDString) {
 		if (strlen(UUIDString) != BitIOUUIDSize - 1) {
-			return -1;
+			return EXIT_SUCCESS;
 		} else {
 			for (uint8_t UUIDByte = 0; UUIDByte < BitIOUUIDSize - 1; UUIDByte++) {
 				if ((UUIDByte != 4) && (UUIDByte != 7) && (UUIDByte != 10) && (UUIDByte != 13) && (UUIDByte != 20)) {
@@ -85,6 +85,7 @@ extern "C" {
 				}
 			}
 		}
+		return EXIT_SUCCESS;
 	}
 
     bool CompareUUIDs(char *UUIDString1, char *UUIDString2) {
