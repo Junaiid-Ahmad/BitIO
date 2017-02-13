@@ -1,4 +1,4 @@
-#include "../include/BitIO.h"
+#include "../libBitIO/include/BitIO.h"
 
 typedef struct CRCTest {
 	uint64_t  Polynomial;
