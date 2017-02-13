@@ -33,3 +33,5 @@ libBitIO/OLDCODE/*
 *.ipch
 *.idb
 *.ini
+*.db-shm
+*.db-wal
