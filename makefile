@@ -41,19 +41,19 @@ debug: $(CURDIR)/libBitIO/src/BitIO.c
 	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/MD5.c -o $(BUILD_LIB)/MD5.o
 	ar -crsu   $(BUILD_LIB)/libBitIO.a $(BUILD_LIB)/*.o
 	ranlib -sf $(BUILD_LIB)/libBitIO.a
-test: $(CURDIR)/libBitIO/test/UnitTest.c
-	mkdir -p   $(BUILD_DIR)/test
-	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/test/UnitTest.c -o $(BUILD_DIR)/test/UnitTest.o
-	$(CC)      $(BUILD_DIR)/test/UnitTest.o $(BUILD_LIB)/libBitIO.a -o $(BUILD_DIR)/test/Test-BitIO
-	strip      $(BUILD_DIR)/test/Test-BitIO
+test: $(CURDIR)/Test-BitIO/UnitTest.c
+	mkdir -p   $(BUILD_DIR)/Test-BitIO
+	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/Test-BitIO/UnitTest.c -o $(BUILD_DIR)/Test-BitIO/UnitTest.o
+	$(CC)      $(BUILD_DIR)/Test-BitIO/UnitTest.o $(BUILD_LIB)/libBitIO.a -o $(BUILD_DIR)/Test-BitIO/Test-BitIO
+	strip      $(BUILD_DIR)/Test-BitIO/Test-BitIO
 install:
 	install -d -m 777 $(DESTINATION)/lib
 	install -d -m 777 $(DESTINATION)/bin
 	install -d -m 777 $(DESTINATION)/include
-	install -C -v -m 444 $(BUILD_LIB)/libBitIO.a $(DESTINATION)/lib/libBitIO.a
 	install -C -v -m 444 $(CURDIR)/libBitIO/include/BitIO.h $(DESTINATION)/include/BitIO.h
 	install -C -v -m 444 $(CURDIR)/libBitIO/include/UUID.h $(DESTINATION)/include/UUID.h
 	install -C -v -m 444 $(CURDIR)/libBitIO/include/MD5.h $(DESTINATION)/include/MD5.h
+	install -C -v -m 444 $(BUILD_LIB)/libBitIO.a $(DESTINATION)/lib/libBitIO.a
 	install -C -v -m 444 $(BUILD_DIR)/test/Test-BitIO $(DESTINATION)/bin/Test-BitIO
 	chmod +x $(DESTINATION)/bin/Test-BitIO
 	ln -i $(DESTINATION)/bin/Test-BitIO /usr/bin/Test-BitIO
