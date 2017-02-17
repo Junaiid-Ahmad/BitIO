@@ -20,7 +20,7 @@ extern "C" {
             } else if ((Character == 4) || (Character == 7) || (Character == 10) || (Character == 13)) {
                 UUIDString[Character] = 0x2D;
             } else {
-                UUIDString[Character] = ReadBits(BitI, 8);
+                UUIDString[Character] = ReadBits(BitI, 8, true);
             }
         }
     }

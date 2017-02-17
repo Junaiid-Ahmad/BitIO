@@ -29,8 +29,8 @@ extern "C" {
 	
 	void ParseDeflateBlock(BitInput *BitI, DeflateBlock *Inflate, uint16_t BlockSize) {
 		char ErrorString[BitIOStringSize];
-		Inflate->IsLastBlock    = ReadBits(BitI, 1); // no
-		Inflate->EncodingMethod = ReadBits(BitI, 2); // 3
+		Inflate->IsLastBlock    = ReadBits(BitI, 1, true); // no
+		Inflate->EncodingMethod = ReadBits(BitI, 2, true); // 3
 		
 		switch (Inflate->EncodingMethod) {
 			case 0:
@@ -62,7 +62,7 @@ extern "C" {
 		// Lookup the size of the sliding window.
 		if (IsEAFormat == true && IsStreamByteAligned(BitI->BitsUnavailable, 1) == true) {
 			// Read the first 3 bits of the byte for the size
-			uint8_t EASize = PeekBits(BitI, 3);
+			uint8_t EASize = PeekBits(BitI, 3, true);
 			switch (EASize) {
 				case 0:
 					LengthDistanceSize = 1;
@@ -85,13 +85,13 @@ extern "C" {
 	}
 	
 	void ParseZLIBHeader(BitInput *BitI, DeflateBlock *Inflate) { // Deflate starts at the LSB, not the MSB so bit reading will be a PITA
-		uint8_t CompressionType    = ReadBits(BitI, 4); // 7 = LZ77 window size 32k
-		uint8_t CompressionMethod  = ReadBits(BitI, 4); // 8 = DEFLATE
-		uint8_t CheckCode          = ReadBits(BitI, 5); // 19, for the previous 2 fields, MUST be multiple of 31
-		bool    DictionaryPresent  = ReadBits(BitI, 1); // true
-		uint8_t CompressionLevel   = ReadBits(BitI, 2); // 0
+		uint8_t CompressionType    = ReadBits(BitI, 4, true); // 7 = LZ77 window size 32k
+		uint8_t CompressionMethod  = ReadBits(BitI, 4, true); // 8 = DEFLATE
+		uint8_t CheckCode          = ReadBits(BitI, 5, true); // 19, for the previous 2 fields, MUST be multiple of 31
+		bool    DictionaryPresent  = ReadBits(BitI, 1, true); // true
+		uint8_t CompressionLevel   = ReadBits(BitI, 2, true); // 0
 		if (DictionaryPresent == true) {
-			uint16_t Dictionary    = ReadBits(BitI, 16); // 0xEDC1
+			uint16_t Dictionary    = ReadBits(BitI, 16, true); // 0xEDC1
 		}
 		if (CompressionMethod == 8) {
 			ParseDeflateBlock(BitI, Inflate, BlockSize[CompressionType]);
@@ -108,8 +108,8 @@ extern "C" {
 		
 		uint8_t  DecodedData[32768] = {0};
 		/* Parse Huffman block header */
-		bool     IsLastHuffmanBlock     = ReadBits(BitI, 1);
-		uint8_t  HuffmanCompressionType = ReadBits(BitI, 2); // 0 = none, 1 = fixed, 2 = dynamic, 3 = invalid.
+		bool     IsLastHuffmanBlock     = ReadBits(BitI, 1, true);
+		uint8_t  HuffmanCompressionType = ReadBits(BitI, 2, true); // 0 = none, 1 = fixed, 2 = dynamic, 3 = invalid.
 		uint32_t DataLength             = 0;
 		uint32_t OnesComplimentOfLength = 0; // Ones Compliment of DataLength
 		
@@ -125,17 +125,17 @@ extern "C" {
 		
 		if (HuffmanCompressionType == 0) { // No compression.
 			AlignInput(BitI, 1); // Skip the rest of the current byte
-			DataLength             = ReadBits(BitI, 32);
-			OnesComplimentOfLength = ReadBits(BitI, 32);
+			DataLength             = ReadBits(BitI, 32, true);
+			OnesComplimentOfLength = ReadBits(BitI, 32, true);
 			if (OnesCompliment2TwosCompliment(OnesComplimentOfLength) != DataLength) {
 				// Exit because there's an issue.
 			}
 			for (uint32_t Byte = 0; Byte < DataLength; Byte++) {
-				DecodedData[Byte] = ReadBits(BitI, 8);
+				DecodedData[Byte] = ReadBits(BitI, 8, true);
 			}
 		} else if (HuffmanCompressionType == 1) { // Static Huffman.
-			uint8_t  Length   = (ReadBits(BitI, 8) - 254);
-			uint16_t Distance = ReadBits(BitI, 5);
+			uint8_t  Length   = (ReadBits(BitI, 8, true) - 254);
+			uint16_t Distance = ReadBits(BitI, 5, true);
 			
 		} else if (HuffmanCompressionType == 2) { // Dynamic Huffman.
 			/*
