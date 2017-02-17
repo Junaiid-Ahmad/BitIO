@@ -87,7 +87,7 @@ bool Test_ReadBits(BitInput *Input) { // This should cover basically everything 
 
 	for (uint8_t Bits2Peek = 0; Bits2Peek < 65; Bits2Peek++) {
         Bits2Read = RandomBits2Peek[Bits2Peek];
-        uint64_t PeekedData = ReadBits(Input, Bits2Read);
+        uint64_t PeekedData = ReadBits(Input, Bits2Read, false);
         Correct = Power2Mask(Bits2Read);
 		if (PeekedData != Correct) {
 			Passed = false;
@@ -257,7 +257,7 @@ void Test_All(BitInput *Input, BitOutput *Output) {
 	TestPassed  = Test_ReadBits(Input);
 	if (TestPassed == false) {
 		printf("Test_ReadBits failed!!!\n");
-	}else {
+	} else {
 		printf("Test_ReadBits passed!\n");
 	}
 	TestPassed  = Test_Adler32(Input);
