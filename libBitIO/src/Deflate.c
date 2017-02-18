@@ -84,17 +84,18 @@ extern "C" {
 		
 	}
 	
-	void ParseZLIBHeader(BitInput *BitI, DeflateBlock *Inflate) { // Deflate starts at the LSB, not the MSB so bit reading will be a PITA
-		uint8_t CompressionType    = ReadBits(BitI, 4, true); // 7 = LZ77 window size 32k
-		uint8_t CompressionMethod  = ReadBits(BitI, 4, true); // 8 = DEFLATE
-		uint8_t CheckCode          = ReadBits(BitI, 5, true); // 19, for the previous 2 fields, MUST be multiple of 31
-		bool    DictionaryPresent  = ReadBits(BitI, 1, true); // true
+	void ParseZLIBHeader(BitInput *BitI, DeflateBlock *Inflate) {
+        // stored in big endian byte order, bits are stored LSB first
+        uint8_t CompressionMethod  = ReadBits(BitI, 4, true); // 8 = DEFLATE
+		uint8_t CompressionInfo    = ReadBits(BitI, 4, true); // 7 = LZ77 window size 32k
+		uint8_t CheckCode          = ReadBits(BitI, 5, true); // 1, for the previous 2 fields, MUST be multiple of 31
+		bool    DictionaryPresent  = ReadBits(BitI, 1, true); //
 		uint8_t CompressionLevel   = ReadBits(BitI, 2, true); // 0
 		if (DictionaryPresent == true) {
-			uint16_t Dictionary    = ReadBits(BitI, 16, true); // 0xEDC1
+			uint32_t DictionaryID  = ReadBits(BitI, 32, true); // 0xEDC1
 		}
 		if (CompressionMethod == 8) {
-			ParseDeflateBlock(BitI, Inflate, BlockSize[CompressionType]);
+			ParseDeflateBlock(BitI, Inflate, BlockSize[CompressionInfo]);
 		} else {
 			char Error[BitIOStringSize];
 			snprintf(Error, BitIOStringSize, "Invalid DEFLATE compression method %d\n", CompressionMethod);
