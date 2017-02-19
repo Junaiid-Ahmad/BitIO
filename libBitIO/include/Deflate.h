@@ -19,6 +19,8 @@ extern "C" {
 		uint64_t  NumNodes;
 		HuffmanNode *Node[];
 	} HuffmanTree;
+    
+    typedef struct LZ77Dictionary LZ77Dictionary;
 	
 	
 	

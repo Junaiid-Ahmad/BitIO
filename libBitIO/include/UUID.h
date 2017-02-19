@@ -20,7 +20,7 @@ extern "C" {
 	 @param UUIDString2Convert     "Pointer to a UUIDString to be converted".
 	 @param ConvertedUUIDString    "The resulting UUID or GUID".
 	 */
-	void           SwapUUID(char *UUIDString2Convert, char *ConvertedUUIDString);
+	void           SwapUUID(const char *UUIDString2Convert, char *ConvertedUUIDString);
 	
 	/*!
 	 @abstract                     "Write UUID/GUID string as hyphen-less blob".
@@ -29,7 +29,7 @@ extern "C" {
 	 @param    BitO                "Pointer to BitOutput".
 	 @param    UUIDString          "UUID string to write to the file as a binary blob, aka remove hyphens and null terminating char".
 	 */
-	uint8_t        WriteUUID(BitOutput *BitO, char *UUIDString);
+	uint8_t        WriteUUID(BitOutput *BitO, const char *UUIDString);
 	
 	/*!
 	 @abstract                     "Verify two UUIDs match each other".
@@ -37,7 +37,7 @@ extern "C" {
 	 @param    UUIDString1         "Pointer to a UUIDString to be matched against".
 	 @param    UUIDString2         "Pointer to a UUIDString to match against UUIDString1".
 	 */
-	bool           CompareUUIDs(char *UUIDString1, char *UUIDString2);
+	bool           CompareUUIDs(const char *UUIDString1, const char *UUIDString2);
 
 #ifdef __cplusplus
 }

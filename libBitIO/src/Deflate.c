@@ -3,6 +3,35 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+    
+    struct LZ77Node {
+        uint32_t  Length;
+        uint32_t  Offset;
+        struct LZ77Node *Parent;
+        struct LZ77Node *LeftChild;
+        struct LZ77Node *RightChild;
+    };
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 	
 	// The length code is read as 8 bits, and left shifted 2.
 	// The distance code is 15 bits
@@ -168,6 +197,22 @@ extern "C" {
 		 while not last block
 		 */
 	}
+    
+    struct LZ77Dictionary {
+        uint8_t  *Value;
+        uint64_t *Distance;
+    };
+    
+    void DecodeLZ77(const uint8_t *EncodedBuffer, uint8_t *DecodedBuffer, const size_t BufferSize) {
+        for (size_t Byte = 0; Byte < BufferSize; Byte++) {
+        }
+    }
+    
+    void EncodeLZ77(const uint8_t *RawData, uint8_t *EncodedBuffer, const size_t BufferSize, const size_t WindowSize) {
+        for (size_t Byte = 0; Byte < BufferSize; Byte++) {
+            // if BufferSize > WindowSize, we need to set up a dictionary structure that contains WindowSize bytes with their recent-ness.
+        }
+    }
 	
 #ifdef __cplusplus
 }
