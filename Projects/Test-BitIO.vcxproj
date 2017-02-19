@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Test-BitIO\UnitTest.c" />
+    <ClCompile Include="..\Test-BitIO\UnitTest.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <TargetName>DefaultTest</TargetName>
