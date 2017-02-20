@@ -1,0 +1,389 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2C419FCF1E5B003F00FC804F /* UnitTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C419FCE1E5B003F00FC804F /* UnitTest.c */; };
+		2C419FD91E5B00DB00FC804F /* BitIO.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C419FAA1E5AFF3800FC804F /* BitIO.h */; };
+		2C419FDA1E5B00DD00FC804F /* Deflate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C419FAB1E5AFF3800FC804F /* Deflate.h */; };
+		2C419FDB1E5B00E000FC804F /* UUID.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C419FAC1E5AFF3800FC804F /* UUID.h */; };
+		2C419FDC1E5B00E300FC804F /* MD5.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C419FAD1E5AFF3800FC804F /* MD5.h */; };
+		2C419FDD1E5B00E800FC804F /* BitIO.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C419FA21E5AFF2D00FC804F /* BitIO.c */; };
+		2C419FDE1E5B00EB00FC804F /* Deflate.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C419FA31E5AFF2D00FC804F /* Deflate.c */; };
+		2C419FDF1E5B00EE00FC804F /* MD5.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C419FA41E5AFF2D00FC804F /* MD5.c */; };
+		2C419FE01E5B00F100FC804F /* UUID.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C419FA51E5AFF2D00FC804F /* UUID.c */; };
+		2C419FE11E5B00F800FC804F /* libBitIO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C419FD51E5B00CC00FC804F /* libBitIO.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2C419FC51E5B001E00FC804F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		2C419FA21E5AFF2D00FC804F /* BitIO.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BitIO.c; path = ../libBitIO/src/BitIO.c; sourceTree = "<group>"; };
+		2C419FA31E5AFF2D00FC804F /* Deflate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Deflate.c; path = ../libBitIO/src/Deflate.c; sourceTree = "<group>"; };
+		2C419FA41E5AFF2D00FC804F /* MD5.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MD5.c; path = ../libBitIO/src/MD5.c; sourceTree = "<group>"; };
+		2C419FA51E5AFF2D00FC804F /* UUID.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = UUID.c; path = ../libBitIO/src/UUID.c; sourceTree = "<group>"; };
+		2C419FAA1E5AFF3800FC804F /* BitIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BitIO.h; path = ../libBitIO/include/BitIO.h; sourceTree = "<group>"; };
+		2C419FAB1E5AFF3800FC804F /* Deflate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Deflate.h; path = ../libBitIO/include/Deflate.h; sourceTree = "<group>"; };
+		2C419FAC1E5AFF3800FC804F /* UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UUID.h; path = ../libBitIO/include/UUID.h; sourceTree = "<group>"; };
+		2C419FAD1E5AFF3800FC804F /* MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MD5.h; path = ../libBitIO/include/MD5.h; sourceTree = "<group>"; };
+		2C419FC71E5B001E00FC804F /* Test-BitIO */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Test-BitIO"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C419FCE1E5B003F00FC804F /* UnitTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = UnitTest.c; path = "../../Test-BitIO/UnitTest.c"; sourceTree = "<group>"; };
+		2C419FD51E5B00CC00FC804F /* libBitIO.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBitIO.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2C419FC41E5B001E00FC804F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C419FE11E5B00F800FC804F /* libBitIO.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2C419FD21E5B00CC00FC804F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2C419F8F1E5AFEDE00FC804F = {
+			isa = PBXGroup;
+			children = (
+				2C419F9F1E5AFF0800FC804F /* libBitIO */,
+				2C419FC81E5B001E00FC804F /* Test-BitIO */,
+				2C419F991E5AFEDE00FC804F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2C419F991E5AFEDE00FC804F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2C419FC71E5B001E00FC804F /* Test-BitIO */,
+				2C419FD51E5B00CC00FC804F /* libBitIO.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2C419F9F1E5AFF0800FC804F /* libBitIO */ = {
+			isa = PBXGroup;
+			children = (
+				2C419FA11E5AFF1800FC804F /* Headers */,
+				2C419FA01E5AFF1100FC804F /* Source */,
+			);
+			name = libBitIO;
+			sourceTree = "<group>";
+		};
+		2C419FA01E5AFF1100FC804F /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				2C419FA21E5AFF2D00FC804F /* BitIO.c */,
+				2C419FA31E5AFF2D00FC804F /* Deflate.c */,
+				2C419FA41E5AFF2D00FC804F /* MD5.c */,
+				2C419FA51E5AFF2D00FC804F /* UUID.c */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		2C419FA11E5AFF1800FC804F /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				2C419FAA1E5AFF3800FC804F /* BitIO.h */,
+				2C419FAB1E5AFF3800FC804F /* Deflate.h */,
+				2C419FAC1E5AFF3800FC804F /* UUID.h */,
+				2C419FAD1E5AFF3800FC804F /* MD5.h */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		2C419FC81E5B001E00FC804F /* Test-BitIO */ = {
+			isa = PBXGroup;
+			children = (
+				2C419FCE1E5B003F00FC804F /* UnitTest.c */,
+			);
+			path = "Test-BitIO";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2C419FD31E5B00CC00FC804F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C419FDA1E5B00DD00FC804F /* Deflate.h in Headers */,
+				2C419FDC1E5B00E300FC804F /* MD5.h in Headers */,
+				2C419FDB1E5B00E000FC804F /* UUID.h in Headers */,
+				2C419FD91E5B00DB00FC804F /* BitIO.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2C419FC61E5B001E00FC804F /* Test-BitIO */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2C419FCB1E5B001E00FC804F /* Build configuration list for PBXNativeTarget "Test-BitIO" */;
+			buildPhases = (
+				2C419FC31E5B001E00FC804F /* Sources */,
+				2C419FC41E5B001E00FC804F /* Frameworks */,
+				2C419FC51E5B001E00FC804F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Test-BitIO";
+			productName = "Test-BitIO";
+			productReference = 2C419FC71E5B001E00FC804F /* Test-BitIO */;
+			productType = "com.apple.product-type.tool";
+		};
+		2C419FD41E5B00CC00FC804F /* libBitIO */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2C419FD61E5B00CC00FC804F /* Build configuration list for PBXNativeTarget "libBitIO" */;
+			buildPhases = (
+				2C419FD11E5B00CC00FC804F /* Sources */,
+				2C419FD21E5B00CC00FC804F /* Frameworks */,
+				2C419FD31E5B00CC00FC804F /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = libBitIO;
+			productName = libBitIO;
+			productReference = 2C419FD51E5B00CC00FC804F /* libBitIO.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2C419F901E5AFEDE00FC804F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = "Marcus Johnson";
+				TargetAttributes = {
+					2C419FC61E5B001E00FC804F = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 628J9L7WK5;
+						ProvisioningStyle = Automatic;
+					};
+					2C419FD41E5B00CC00FC804F = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 628J9L7WK5;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 2C419F931E5AFEDE00FC804F /* Build configuration list for PBXProject "BitIO" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2C419F8F1E5AFEDE00FC804F;
+			productRefGroup = 2C419F991E5AFEDE00FC804F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2C419FC61E5B001E00FC804F /* Test-BitIO */,
+				2C419FD41E5B00CC00FC804F /* libBitIO */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2C419FC31E5B001E00FC804F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C419FCF1E5B003F00FC804F /* UnitTest.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2C419FD11E5B00CC00FC804F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C419FDF1E5B00EE00FC804F /* MD5.c in Sources */,
+				2C419FDD1E5B00E800FC804F /* BitIO.c in Sources */,
+				2C419FE01E5B00F100FC804F /* UUID.c in Sources */,
+				2C419FDE1E5B00EB00FC804F /* Deflate.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2C419F9A1E5AFEDE00FC804F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		2C419F9B1E5AFEDE00FC804F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		2C419FCC1E5B001E00FC804F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 628J9L7WK5;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2C419FCD1E5B001E00FC804F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 628J9L7WK5;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		2C419FD71E5B00CC00FC804F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 628J9L7WK5;
+				EXECUTABLE_PREFIX = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2C419FD81E5B00CC00FC804F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 628J9L7WK5;
+				EXECUTABLE_PREFIX = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2C419F931E5AFEDE00FC804F /* Build configuration list for PBXProject "BitIO" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2C419F9A1E5AFEDE00FC804F /* Debug */,
+				2C419F9B1E5AFEDE00FC804F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2C419FCB1E5B001E00FC804F /* Build configuration list for PBXNativeTarget "Test-BitIO" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2C419FCC1E5B001E00FC804F /* Debug */,
+				2C419FCD1E5B001E00FC804F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		2C419FD61E5B00CC00FC804F /* Build configuration list for PBXNativeTarget "libBitIO" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2C419FD71E5B00CC00FC804F /* Debug */,
+				2C419FD81E5B00CC00FC804F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2C419F901E5AFEDE00FC804F /* Project object */;
+}
