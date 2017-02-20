@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libBitIO", "libBitIO.vcxproj", "{4595E7FD-A17A-47DC-B7C3-E67884442EA7}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test-BitIO", "Test-BitIO.vcxproj", "{863B6E12-83B5-4F5B-8163-932ACE208844}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4595E7FD-A17A-47DC-B7C3-E67884442EA7} = {4595E7FD-A17A-47DC-B7C3-E67884442EA7}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
