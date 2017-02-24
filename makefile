@@ -1,78 +1,31 @@
-PACKAGE_NAME        := libBitIO
-FILE                := $(CURDIR)/libBitIO/include/BitIO.h
-VERSION             := $(shell cat ${FILE} | grep -e "@version")
-CC                  := cc
-DESTINATION         := /usr/local/Packages/$(PACKAGE_NAME)
-BUILD_DIR           := $(CURDIR)/BUILD
-CFLAGS              := -std=c11 -march=native -funroll-loops -ffreestanding
-LDFLAGS             := -flto=thin
-DEB_ERROR_OPTIONS   := -Wno-unused-parameter -Wno-unused-variable -Wno-int-conversion
-REL_ERROR_OPTIONS   := -Wall -Weverything -Wunreachable-code -Wno-conversion
-DEB_FLAGS           := $(CFLAGS) -g -o0 $(DEB_ERROR_OPTIONS) $(LDFLAGS)
-SANITIZER           := -fsanitize=undefined -fsanitize=address
-REL_FLAGS           := $(CFLAGS) -ofast $(REL_ERROR_OPTIONS) $(LDFLAGS)
-BUILD_LIB           := $(BUILD_DIR)/libBitIO
+CC            := cc
+PACKAGENAME   := libLIVC
+DEST          := /usr/local/Packages/$(PACKAGE_NAME)
+VERSION       := $(shell cat ${$(CURDIR)/libBitIO/include/BitIO.h} | grep -e "@version")
+CFLAGS        := -std=c11 -march=native -Ofast -funroll-loops -ferror-limit=1024 -Wall
+LDFLAGS       := -flto=thin -l$(shell pkg-config --libs libBitIO) -l$(shell pkg-config --libs libModernPNG)
+LIBDIR        := $(CURDIR)/libBitIO
+UTILITYDIR    := $(CURDIR)/Test-BitIO
+BUILDDIR      := $(CURDIR)/BUILD
+BUILDLIB      := $(BUILDDIR)/libBitIO
+BUILDUTILITY  := $(BUILDDIR)/Test-BitIO
 
-.PHONY: all check distclean CheckVer release debug test install clean uninstall
+.PHONY: install uninstall clean
 
-all: release
-	$(release)
-	$(test)
-check: test
-	$(test)
-distclean: clean
-	$(clean)
-CheckVer:
-	$(shell echo ${VERSION})
-release: $(CURDIR)/libBitIO/src/BitIO.c
-	mkdir -p   $(BUILD_LIB)
-	$(CC)      $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_LIB)/BitIO.o
-	$(CC)      $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/UUID.c -o $(BUILD_LIB)/UUID.o
-	$(CC)      $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/Deflate.c -o $(BUILD_LIB)/Deflate.o
-	$(CC)      $(REL_FLAGS) -c $(CURDIR)/libBitIO/src/MD5.c -o $(BUILD_LIB)/MD5.o
-	ar -crsu   $(BUILD_LIB)/libBitIO.a $(BUILD_LIB)/*.o
-	ranlib -sf $(BUILD_LIB)/libBitIO.a
-	strip	   $(BUILD_LIB)/libBitIO.a
-debug: $(CURDIR)/libBitIO/src/BitIO.c
-	mkdir -p   $(BUILD_LIB)
-	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/BitIO.c -o $(BUILD_LIB)/BitIO.o
-	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/UUID.c -o $(BUILD_LIB)/UUID.o
-	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/Deflate.c -o $(BUILD_LIB)/Deflate.o
-	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/libBitIO/src/MD5.c -o $(BUILD_LIB)/MD5.o
-	ar -crsu   $(BUILD_LIB)/libBitIO.a $(BUILD_LIB)/*.o
-	ranlib -sf $(BUILD_LIB)/libBitIO.a
-test: $(CURDIR)/Test-BitIO/UnitTest.c
-	mkdir -p   $(BUILD_DIR)/Test-BitIO
-	$(CC)      $(DEB_FLAGS) -c $(CURDIR)/Test-BitIO/UnitTest.c -o $(BUILD_DIR)/Test-BitIO/UnitTest.o
-	$(CC)      $(BUILD_DIR)/Test-BitIO/UnitTest.o $(BUILD_LIB)/libBitIO.a -o $(BUILD_DIR)/Test-BitIO/Test-BitIO
-	strip      $(BUILD_DIR)/Test-BitIO/Test-BitIO
-install:
-	install -d -m 777 $(DESTINATION)/lib
-	install -d -m 777 $(DESTINATION)/bin
-	install -d -m 777 $(DESTINATION)/include
-	install -C -v -m 444 $(CURDIR)/libBitIO/include/BitIO.h $(DESTINATION)/include/BitIO.h
-	install -C -v -m 444 $(CURDIR)/libBitIO/include/UUID.h $(DESTINATION)/include/UUID.h
-	install -C -v -m 444 $(CURDIR)/libBitIO/include/MD5.h $(DESTINATION)/include/MD5.h
-	install -C -v -m 444 $(BUILD_LIB)/libBitIO.a $(DESTINATION)/lib/libBitIO.a
-	install -C -v -m 444 $(BUILD_DIR)/test/Test-BitIO $(DESTINATION)/bin/Test-BitIO
-	chmod +x $(DESTINATION)/bin/Test-BitIO
-	ln -i $(DESTINATION)/bin/Test-BitIO /usr/bin/Test-BitIO
-	chmod +x /usr/bin/Test-BitIO
-	install -C -v -m 444 $(CURDIR)/libBitIO.pc /usr/share/pkgconfig/libBitIO.pc
-clean:
-	cd $(BUILD_LIB)/
-	rm -f -v -r BitIO.o
-	rm -f -v -r UUID.o
-	rm -f -v -r libBitIO.a
-	rm -f -v -r .DS_Store
-	rm -f -v -r Thumbs.db
-	rm -f -v -r desktop.ini
-	cd ../test/
-	rm -f -v -r UnitTest.o
-	rm -f -v -r Test-BitIO
-	rm -f -v -r .DS_Store
-	rm -f -v -r Thumbs.db
-	rm -f -v -r desktop.ini
-	rmdir $(BUILD_DIR)
-uninstall:
-	rm -d -i $(DESTINATION)
+all: $(BUILDLIB)/libBitIO.a $(BUILDUTILITY)/Test-BitIO
+	$(shell mkdir -p $(BUILDUTILITY))
+	$(shell mkdir -p $(BUILDLIB))
+	$(BUILDLIB)/libLIVC.a
+	$(BUILDUTILITY)/Test-BitIO
+
+$(BUILDLIB)/libLIVC.a: $(LIBDIR)/BitIO.c $(LIBDIR)/UUID.c $(LIBDIR)/Deflate.c $(LIBDIR)MD5.c
+	$(shell mkdir -p $(BUILDLIB))
+	$(CC) -c $(LIBDIR)/BitIO.c -o $(BUILDLIB)/BitIO.o $(CFLAGS) $(LDFLAGS)
+	$(CC) -c $(LIBDIR)/UUID.c -o $(BUILDLIB)/UUID.o $(CFLAGS) $(LDFLAGS)
+	$(CC) -c $(LIBDIR)/Deflate.c -o $(BUILDLIB)/Deflate.o $(CFLAGS) $(LDFLAGS)
+	$(CC) -c $(LIBDIR)/MD5.c -o $(BUILDLIB)/MD5.o $(CFLAGS) $(LDFLAGS)
+	libtool -current_version $(VERSION) -o $(BUILDLIB)/libLIVC.a $(BUILDLIB)*.o
+
+$(BUILDUTILITY)/Test-BitIO: $(UTILITYDIR)/UnitTest.c
+	$(shell mkdir -p $(BUILDUTILITY))
+	$(CC) -c $(UTILITYDIR)/UnitTest.c -o $(UTILITYDIR)/UnitTest.o $(CFLAGS) $(LDFLAGS)
