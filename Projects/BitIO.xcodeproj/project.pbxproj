@@ -95,9 +95,9 @@
 			isa = PBXGroup;
 			children = (
 				2C419FA21E5AFF2D00FC804F /* BitIO.c */,
+				2C419FA51E5AFF2D00FC804F /* UUID.c */,
 				2C419FA31E5AFF2D00FC804F /* Deflate.c */,
 				2C419FA41E5AFF2D00FC804F /* MD5.c */,
-				2C419FA51E5AFF2D00FC804F /* UUID.c */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -106,8 +106,8 @@
 			isa = PBXGroup;
 			children = (
 				2C419FAA1E5AFF3800FC804F /* BitIO.h */,
-				2C419FAB1E5AFF3800FC804F /* Deflate.h */,
 				2C419FAC1E5AFF3800FC804F /* UUID.h */,
+				2C419FAB1E5AFF3800FC804F /* Deflate.h */,
 				2C419FAD1E5AFF3800FC804F /* MD5.h */,
 			);
 			name = Headers;
@@ -374,6 +374,7 @@
 				2C419FCD1E5B001E00FC804F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2C419FD61E5B00CC00FC804F /* Build configuration list for PBXNativeTarget "libBitIO" */ = {
 			isa = XCConfigurationList;
@@ -382,6 +383,7 @@
 				2C419FD81E5B00CC00FC804F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
