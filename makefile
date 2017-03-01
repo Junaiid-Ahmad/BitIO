@@ -1,7 +1,7 @@
 CC             := cc
-PACKAGENAME    := libLIVC
+PACKAGENAME    := libBitIO
 DEST           := /usr/local/Packages/$(PACKAGE_NAME)
-VERSION         = `grep @version $(CURDIR)/libBitIO/include/BitIO.h | echo |  grep -o '[0-9]\.[0-9]\.[0-9]'`
+VERSION         = `grep @version $(CURDIR)/libBitIO/include/BitIO.h | echo | grep -o '[0-9]\.[0-9]\.[0-9]'`
 CFLAGS         := -std=c11 -march=native -Ofast -funroll-loops -ferror-limit=10240 -Wall
 LDFLAGS        := -flto=thin
 CURDIR         := $(shell pwd)
@@ -25,10 +25,10 @@ LIB_SRC_FILES := \
 	$(LIB_DIR)/Deflate.c \
 	$(LIB_DIR)/MD5.c
 
-$(BUILD_LIB)/libLIVC.a: $(LIB_OBJ_FILES)
+$(BUILD_LIB)/libBitIO.a: $(LIB_OBJ_FILES)
 	mkdir -p $(BUILD_LIB)
 	$(CC) $^ -o $@ $(CFLAGS) $(LDFLAGS)
-	libtool -current_version $(VERSION) -o $(BUILD_LIB)/libLIVC.a $(BUILD_LIB)*.o
+	libtool -current_version $(VERSION) -o $(BUILD_LIB)/libBitIO.a $(BUILD_LIB)*.o
 
 $(LIB_OBJ_FILES) : $(LIB_SRC_FILES)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $^
