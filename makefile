@@ -1,31 +1,44 @@
-CC            := cc
-PACKAGENAME   := libLIVC
-DEST          := /usr/local/Packages/$(PACKAGE_NAME)
-VERSION       := $(shell cat ${$(CURDIR)/libBitIO/include/BitIO.h} | grep -e "@version")
-CFLAGS        := -std=c11 -march=native -Ofast -funroll-loops -ferror-limit=1024 -Wall
-LDFLAGS       := -flto=thin -l$(shell pkg-config --libs libBitIO) -l$(shell pkg-config --libs libModernPNG)
-LIBDIR        := $(CURDIR)/libBitIO
-UTILITYDIR    := $(CURDIR)/Test-BitIO
-BUILDDIR      := $(CURDIR)/BUILD
-BUILDLIB      := $(BUILDDIR)/libBitIO
-BUILDUTILITY  := $(BUILDDIR)/Test-BitIO
+CC             := cc
+PACKAGENAME    := libLIVC
+DEST           := /usr/local/Packages/$(PACKAGE_NAME)
+VERSION         = `grep @version $(CURDIR)/libBitIO/include/BitIO.h | echo |  grep -o '[0-9]\.[0-9]\.[0-9]'`
+CFLAGS         := -std=c11 -march=native -Ofast -funroll-loops -ferror-limit=10240 -Wall
+LDFLAGS        := -flto=thin
+CURDIR         := $(shell pwd)
+BUILD_DIR      := $(CURDIR)/BUILD
+LIB_DIR        := $(CURDIR)/libBitIO/src
+UTILITY_DIR    := $(CURDIR)/Test-BitIO
+BUILD_LIB      := $(BUILD_DIR)/libBitIO
+BUILD_UTILITY  := $(BUILD_DIR)/Test-BitIO
 
-.PHONY: install uninstall clean
+.PHONY: all install uninstall clean
 
-all: $(BUILDLIB)/libBitIO.a $(BUILDUTILITY)/Test-BitIO
-	$(shell mkdir -p $(BUILDUTILITY))
-	$(shell mkdir -p $(BUILDLIB))
-	$(BUILDLIB)/libLIVC.a
-	$(BUILDUTILITY)/Test-BitIO
+LIB_OBJ_FILES := \
+	$(BUILD_LIB)/BitIO.o   \
+	$(BUILD_LIB)/UUID.o    \
+	$(BUILD_LIB)/Deflate.o \
+	$(BUILD_LIB)/MD5.o
 
-$(BUILDLIB)/libLIVC.a: $(LIBDIR)/BitIO.c $(LIBDIR)/UUID.c $(LIBDIR)/Deflate.c $(LIBDIR)MD5.c
-	$(shell mkdir -p $(BUILDLIB))
-	$(CC) -c $(LIBDIR)/BitIO.c -o $(BUILDLIB)/BitIO.o $(CFLAGS) $(LDFLAGS)
-	$(CC) -c $(LIBDIR)/UUID.c -o $(BUILDLIB)/UUID.o $(CFLAGS) $(LDFLAGS)
-	$(CC) -c $(LIBDIR)/Deflate.c -o $(BUILDLIB)/Deflate.o $(CFLAGS) $(LDFLAGS)
-	$(CC) -c $(LIBDIR)/MD5.c -o $(BUILDLIB)/MD5.o $(CFLAGS) $(LDFLAGS)
-	libtool -current_version $(VERSION) -o $(BUILDLIB)/libLIVC.a $(BUILDLIB)*.o
+LIB_SRC_FILES := \
+	$(LIB_DIR)/BitIO.c   \
+	$(LIB_DIR)/UUID.c    \
+	$(LIB_DIR)/Deflate.c \
+	$(LIB_DIR)/MD5.c
 
-$(BUILDUTILITY)/Test-BitIO: $(UTILITYDIR)/UnitTest.c
-	$(shell mkdir -p $(BUILDUTILITY))
-	$(CC) -c $(UTILITYDIR)/UnitTest.c -o $(UTILITYDIR)/UnitTest.o $(CFLAGS) $(LDFLAGS)
+$(BUILD_LIB)/libLIVC.a: $(LIB_OBJ_FILES)
+	mkdir -p $(BUILD_LIB)
+	$(CC) $^ -o $@ $(CFLAGS) $(LDFLAGS)
+	libtool -current_version $(VERSION) -o $(BUILD_LIB)/libLIVC.a $(BUILD_LIB)*.o
+
+$(LIB_OBJ_FILES) : $(LIB_SRC_FILES)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $^
+
+$(UTILITY_DIR)/UnitTest.o:
+	mkdir -p $(BUILD_UTILITY)
+	$(CC) -c $(UTILITY_DIR)/UnitTest.c -o $(UTILITY_DIR)/UnitTest.o $(CFLAGS) $(LDFLAGS)
+
+$(BUILD_UTILITY)/Test-BitIO: $(UTILITY_DIR)/UnitTest.o
+	mkdir -p $(BUILD_UTILITY)
+	$(CC) -c $(UTILITY_DIR)/UnitTest.c -o $(UTILITY_DIR)/UnitTest.o $(CFLAGS) $(LDFLAGS)
+
+all: $(BUILD_LIB)/libBitIO.a $(BUILD_UTILITY)/Test-BitIO

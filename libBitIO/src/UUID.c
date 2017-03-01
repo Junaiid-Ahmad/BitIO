@@ -3,15 +3,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-	
-	// Example UUID String: f3833d76-a0e9-4d0d-be0a-8d028937d594
-	// Example Binary UUID: F3833D76A0E94D0DBE0A8D028937D594
-	// F3 83 3D 76 - A0 E9 - 4D 0D  - BE 0A -  8D 02 89 37 D5 94
-	// 0  1  2  3  4 5  6  7  8  9 10 11 12 13 14 15 16 17 18 19
-	
-	static const uint8_t UUIDSectionSize[21] = {
-		4, 0, 0, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 6, 0, 0, 0, 0, 0, 1
-	};
 
     void ReadUUID(BitInput *BitI, char *UUIDString) {
         for (uint8_t Character = 0; Character < BitIOUUIDSize - 1; Character++) {

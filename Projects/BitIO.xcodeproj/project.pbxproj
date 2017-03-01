@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C0B12751E66517B00224B7D /* ANS.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C0B12741E66517B00224B7D /* ANS.c */; };
+		2C0B12771E6651E300224B7D /* ANS.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C0B12761E6651E300224B7D /* ANS.h */; };
 		2C419FCF1E5B003F00FC804F /* UnitTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C419FCE1E5B003F00FC804F /* UnitTest.c */; };
 		2C419FD91E5B00DB00FC804F /* BitIO.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C419FAA1E5AFF3800FC804F /* BitIO.h */; };
 		2C419FDA1E5B00DD00FC804F /* Deflate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C419FAB1E5AFF3800FC804F /* Deflate.h */; };
@@ -32,6 +34,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2C0B12741E66517B00224B7D /* ANS.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ANS.c; path = ../libBitIO/src/ANS.c; sourceTree = "<group>"; };
+		2C0B12761E6651E300224B7D /* ANS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ANS.h; path = ../libBitIO/include/ANS.h; sourceTree = "<group>"; };
 		2C419FA21E5AFF2D00FC804F /* BitIO.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BitIO.c; path = ../libBitIO/src/BitIO.c; sourceTree = "<group>"; };
 		2C419FA31E5AFF2D00FC804F /* Deflate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Deflate.c; path = ../libBitIO/src/Deflate.c; sourceTree = "<group>"; };
 		2C419FA41E5AFF2D00FC804F /* MD5.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MD5.c; path = ../libBitIO/src/MD5.c; sourceTree = "<group>"; };
@@ -98,6 +102,7 @@
 				2C419FA51E5AFF2D00FC804F /* UUID.c */,
 				2C419FA31E5AFF2D00FC804F /* Deflate.c */,
 				2C419FA41E5AFF2D00FC804F /* MD5.c */,
+				2C0B12741E66517B00224B7D /* ANS.c */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -109,6 +114,7 @@
 				2C419FAC1E5AFF3800FC804F /* UUID.h */,
 				2C419FAB1E5AFF3800FC804F /* Deflate.h */,
 				2C419FAD1E5AFF3800FC804F /* MD5.h */,
+				2C0B12761E6651E300224B7D /* ANS.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -129,6 +135,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C419FDA1E5B00DD00FC804F /* Deflate.h in Headers */,
+				2C0B12771E6651E300224B7D /* ANS.h in Headers */,
 				2C419FDC1E5B00E300FC804F /* MD5.h in Headers */,
 				2C419FDB1E5B00E000FC804F /* UUID.h in Headers */,
 				2C419FD91E5B00DB00FC804F /* BitIO.h in Headers */,
@@ -224,6 +231,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C0B12751E66517B00224B7D /* ANS.c in Sources */,
 				2C419FDF1E5B00EE00FC804F /* MD5.c in Sources */,
 				2C419FDD1E5B00E800FC804F /* BitIO.c in Sources */,
 				2C419FE01E5B00F100FC804F /* UUID.c in Sources */,
@@ -257,6 +265,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -268,6 +277,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				GCC_UNROLL_LOOPS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -304,11 +314,14 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_UNROLL_LOOPS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -333,6 +346,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 628J9L7WK5;
+				GCC_OPTIMIZATION_LEVEL = fast;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
