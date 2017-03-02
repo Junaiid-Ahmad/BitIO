@@ -15,13 +15,11 @@ BUILD_UTILITY  := $(BUILD_DIR)/Test-BitIO
 
 LIB_OBJ_FILES := \
 	$(BUILD_LIB)/BitIO.o   \
-	$(BUILD_LIB)/UUID.o    \
 	$(BUILD_LIB)/Deflate.o \
 	$(BUILD_LIB)/MD5.o
 
 LIB_SRC_FILES := \
 	$(LIB_DIR)/BitIO.c   \
-	$(LIB_DIR)/UUID.c    \
 	$(LIB_DIR)/Deflate.c \
 	$(LIB_DIR)/MD5.c
 
