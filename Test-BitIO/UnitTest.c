@@ -1,5 +1,7 @@
 #include "../libBitIO/include/BitIO.h"
 
+#include <string.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
