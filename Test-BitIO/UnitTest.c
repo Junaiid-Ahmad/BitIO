@@ -113,9 +113,14 @@ extern "C" {
         return Passed;
     }
     
-    bool Test_ReadExpGolomb(BitInput *Input) {
-        ReadExpGolomb(Input, false);
-        ReadExpGolomb(Input, true);
+    bool Test_ReadExpGolomb(BitInput *Input, const bool Signed) {
+        uint64_t OutputData = 0;
+        ReadExpGolomb(Input, Signed);
+        if (OutputData == 0x0) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
     bool Test_Adler32(BitInput *Input) { // FIXME: I may need to swap endian...
@@ -196,7 +201,7 @@ extern "C" {
         }
     }
     
-    bool Test_2sComplimentTo1sCompliment(void) {
+    bool Test_TwosCompliment2OnesCompliment(void) {
         int64_t OnesCompliment = TwosCompliment2OnesCompliment(-64);
         if (OnesCompliment != 0xFFFFFFFFFFFFFFC0) {
             // test failed
@@ -206,7 +211,7 @@ extern "C" {
         }
     }
     
-    bool Test_1sComplimentTo2sCompliment(void) {
+    bool Test_OneCompliment2TwosCompliment(void) {
         int64_t TwosCompliment = OnesCompliment2TwosCompliment(0xFFFFFFFFFFFFFFC0); // -64
         if (TwosCompliment != -64) {
             // test failed
@@ -256,59 +261,63 @@ extern "C" {
         
         TestPassed  = Test_ReadBits(Input);
         if (TestPassed == false) {
-            printf("Test_ReadBits failed!!!\n");
-        } else {
-            printf("Test_ReadBits passed!\n");
+            Log(LOG_ERR, "Test-BitIO", "Test_ReadBits", "Test_ReadBits failed!!!\n");
         }
         TestPassed  = Test_Adler32(Input);
         if (TestPassed == false) {
-            printf("Test_Adler32 failed!!!\n");
-        } else {
-            printf("Test_Adler32 passed!\n");
+            Log(LOG_ERR, "Test-BitIO", "Test_Adler32", "Test_Adler32 failed!!!\n");
         }
         TestPassed  = Test_CRC(Input, PNGCRC);
         if (TestPassed == false) {
-            printf("Test_CRC PNGCrc failed!!!\n");
+            Log(LOG_ERR, "Test-BitIO", "Test_CRC", "Test_CRC failed!!!\n");
         }
-        TestPassed  = Test_SwapEndian16(void);
+        TestPassed  = Test_SwapEndian16();
         if (TestPassed == false) {
-            printf("Test_SwapEndian16 failed!!!\n");
+            Log(LOG_ERR, "Test-BitIO", "Test_SwapEndian16", "Test_SwapEndian16 failed!!!\n");
         }
-        TestPassed  = Test_SwapEndian32(void);
+        TestPassed  = Test_SwapEndian32();
         if (TestPassed == false) {
-            printf("Test_SwapEndian32 failed!!!\n");
+            Log(LOG_ERR, "Test-BitIO", "Test_SwapEndian32", "Test_SwapEndian32 failed!!!\n");
         }
-        TestPassed  = Test_SwapEndian64(void);
+        TestPassed  = Test_SwapEndian64();
         if (TestPassed == false) {
-            printf("Test_SwapEndian64 failed!!!\n");
+            Log(LOG_ERR, "Test-BitIO", "Test_SwapEndian64", "Test_SwapEndian64 failed!!!\n");
         }
-        TestPassed  = Test_Signed2Unsigned(void);
+        TestPassed  = Test_Signed2Unsigned();
         if (TestPassed == false) {
-            printf("Test_Signed2Unsigned failed!!!\n");
+            Log(LOG_ERR, "Test-BitIO", "Test_Signed2Unsigned", "Test_Signed2Unsigned failed!!!\n");
         }
-        TestPassed  = Test_Unsigned2Signed(void);
+        TestPassed  = Test_Unsigned2Signed();
         if (TestPassed == false) {
-            printf("Test_Unsigned2Signed failed!!!\n");
+            Log(LOG_ERR, "Test-BitIO", "Test_Unsigned2Signed", "Test_Unsigned2Signed failed!!!\n");
         }
-        TestPassed  = Test_2sComplimentTo1sCompliment(void);
+        TestPassed  = Test_TwosCompliment2OnesCompliment();
         if (TestPassed == false) {
-            printf("Test_2sComplimentTo1sCompliment failed!!!\n");
+            Log(LOG_ERR, "Test-BitIO", "Test_TwosCompliment2OnesCompliment", "Test_2sComplimentTo1sCompliment failed!!!\n");
         }
-        TestPassed  = Test_1sComplimentTo2sCompliment(void);
+        TestPassed  = Test_OneCompliment2TwosCompliment();
         if (TestPassed == false) {
-            printf("Test_1sComplimentTo2sCompliment failed!!!\n");
+            Log(LOG_ERR, "Test-BitIO", "Test_OneCompliment2TwosCompliment", "Test_1sComplimentTo2sCompliment failed!!!\n");
         }
-        TestPassed  = Test_StreamAlignment(void);
+        TestPassed  = Test_StreamAlignment();
         if (TestPassed == false) {
-            printf("Test_StreamAlignment failed!!!\n");
+            Log(LOG_ERR, "Test-BitIO", "Test_StreamAlignment", "Test_StreamAlignment failed!!!\n");
         }
         TestPassed  = Test_AlignInput(Input);
         if (TestPassed == false) {
-            printf("Test_AlignInput failed!!!\n");
+            Log(LOG_ERR, "Test-BitIO", "Test_AlignInput", "Test_AlignInput failed!!!\n");
         }
         TestPassed  = Test_AlignOutput(Output);
         if (TestPassed == false) {
-            printf("Test_AlignOutput failed!!!\n");
+            Log(LOG_ERR, "Test-BitIO", "Test_AlignOutput", "Test_AlignOutput failed!!!\n");
+        }
+        TestPassed = Test_ReadExpGolomb(Input, true);
+        if (TestPassed == false) {
+            Log(LOG_ERR, "Test-BitIO", "Test_ReadExpGolomb", "Test_ReadExpGolomb Signed failed!!!\n");
+        }
+        TestPassed = Test_ReadExpGolomb(Input, false);
+        if (TestPassed == false) {
+            Log(LOG_ERR, "Test-BitIO", "Test_ReadExpGolomb", "Test_ReadExpGolomb Unsigned failed!!!\n");
         }
         free(PNGCRC);
     }
@@ -321,18 +330,8 @@ extern "C" {
         
         CLSwitch *Switch0                 = calloc(sizeof(CLSwitch), 1);
         CLSwitch *Switch1                 = calloc(sizeof(CLSwitch), 1);
-        CLSwitch *Switch2                 = calloc(sizeof(CLSwitch), 1);
-        CLSwitch *Switch3                 = calloc(sizeof(CLSwitch), 1);
-        CLSwitch *Switch4                 = calloc(sizeof(CLSwitch), 1);
-        CLSwitch *Switch5                 = calloc(sizeof(CLSwitch), 1);
-        CLSwitch *Switch6                 = calloc(sizeof(CLSwitch), 1);
         CMD->Switch[0]                    = Switch0;
         CMD->Switch[1]                    = Switch1;
-        CMD->Switch[2]                    = Switch2;
-        CMD->Switch[3]                    = Switch3;
-        CMD->Switch[4]                    = Switch4;
-        CMD->Switch[5]                    = Switch5;
-        CMD->Switch[6]                    = Switch6;
         
         CMD->Switch[0]->Switch            = "-i";
         CMD->Switch[0]->SwitchDescription = "Input file or stdin with: '-'";
