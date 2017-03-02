@@ -22,13 +22,11 @@
     <ClCompile Include="..\libBitIO\src\BitIO.c" />
     <ClCompile Include="..\libBitIO\src\Deflate.c" />
     <ClCompile Include="..\libBitIO\src\MD5.c" />
-    <ClCompile Include="..\libBitIO\src\UUID.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libBitIO\include\BitIO.h" />
     <ClInclude Include="..\libBitIO\include\Deflate.h" />
     <ClInclude Include="..\libBitIO\include\MD5.h" />
-    <ClInclude Include="..\libBitIO\include\UUID.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

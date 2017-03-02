@@ -21,9 +21,6 @@
     <ClCompile Include="..\libBitIO\src\MD5.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\libBitIO\src\UUID.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\libBitIO\src\BitIO.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -33,9 +30,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\libBitIO\include\MD5.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libBitIO\include\UUID.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\libBitIO\include\BitIO.h">
