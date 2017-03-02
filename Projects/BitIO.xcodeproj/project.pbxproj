@@ -12,12 +12,10 @@
 		2C419FCF1E5B003F00FC804F /* UnitTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C419FCE1E5B003F00FC804F /* UnitTest.c */; };
 		2C419FD91E5B00DB00FC804F /* BitIO.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C419FAA1E5AFF3800FC804F /* BitIO.h */; };
 		2C419FDA1E5B00DD00FC804F /* Deflate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C419FAB1E5AFF3800FC804F /* Deflate.h */; };
-		2C419FDB1E5B00E000FC804F /* UUID.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C419FAC1E5AFF3800FC804F /* UUID.h */; };
 		2C419FDC1E5B00E300FC804F /* MD5.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C419FAD1E5AFF3800FC804F /* MD5.h */; };
 		2C419FDD1E5B00E800FC804F /* BitIO.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C419FA21E5AFF2D00FC804F /* BitIO.c */; };
 		2C419FDE1E5B00EB00FC804F /* Deflate.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C419FA31E5AFF2D00FC804F /* Deflate.c */; };
 		2C419FDF1E5B00EE00FC804F /* MD5.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C419FA41E5AFF2D00FC804F /* MD5.c */; };
-		2C419FE01E5B00F100FC804F /* UUID.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C419FA51E5AFF2D00FC804F /* UUID.c */; };
 		2C419FE11E5B00F800FC804F /* libBitIO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C419FD51E5B00CC00FC804F /* libBitIO.a */; };
 /* End PBXBuildFile section */
 
@@ -39,10 +37,8 @@
 		2C419FA21E5AFF2D00FC804F /* BitIO.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BitIO.c; path = ../libBitIO/src/BitIO.c; sourceTree = "<group>"; };
 		2C419FA31E5AFF2D00FC804F /* Deflate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Deflate.c; path = ../libBitIO/src/Deflate.c; sourceTree = "<group>"; };
 		2C419FA41E5AFF2D00FC804F /* MD5.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MD5.c; path = ../libBitIO/src/MD5.c; sourceTree = "<group>"; };
-		2C419FA51E5AFF2D00FC804F /* UUID.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = UUID.c; path = ../libBitIO/src/UUID.c; sourceTree = "<group>"; };
 		2C419FAA1E5AFF3800FC804F /* BitIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BitIO.h; path = ../libBitIO/include/BitIO.h; sourceTree = "<group>"; };
 		2C419FAB1E5AFF3800FC804F /* Deflate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Deflate.h; path = ../libBitIO/include/Deflate.h; sourceTree = "<group>"; };
-		2C419FAC1E5AFF3800FC804F /* UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UUID.h; path = ../libBitIO/include/UUID.h; sourceTree = "<group>"; };
 		2C419FAD1E5AFF3800FC804F /* MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MD5.h; path = ../libBitIO/include/MD5.h; sourceTree = "<group>"; };
 		2C419FC71E5B001E00FC804F /* Test-BitIO */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Test-BitIO"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C419FCE1E5B003F00FC804F /* UnitTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = UnitTest.c; path = "../../Test-BitIO/UnitTest.c"; sourceTree = "<group>"; };
@@ -99,7 +95,6 @@
 			isa = PBXGroup;
 			children = (
 				2C419FA21E5AFF2D00FC804F /* BitIO.c */,
-				2C419FA51E5AFF2D00FC804F /* UUID.c */,
 				2C419FA31E5AFF2D00FC804F /* Deflate.c */,
 				2C419FA41E5AFF2D00FC804F /* MD5.c */,
 				2C0B12741E66517B00224B7D /* ANS.c */,
@@ -111,7 +106,6 @@
 			isa = PBXGroup;
 			children = (
 				2C419FAA1E5AFF3800FC804F /* BitIO.h */,
-				2C419FAC1E5AFF3800FC804F /* UUID.h */,
 				2C419FAB1E5AFF3800FC804F /* Deflate.h */,
 				2C419FAD1E5AFF3800FC804F /* MD5.h */,
 				2C0B12761E6651E300224B7D /* ANS.h */,
@@ -137,7 +131,6 @@
 				2C419FDA1E5B00DD00FC804F /* Deflate.h in Headers */,
 				2C0B12771E6651E300224B7D /* ANS.h in Headers */,
 				2C419FDC1E5B00E300FC804F /* MD5.h in Headers */,
-				2C419FDB1E5B00E000FC804F /* UUID.h in Headers */,
 				2C419FD91E5B00DB00FC804F /* BitIO.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -234,7 +227,6 @@
 				2C0B12751E66517B00224B7D /* ANS.c in Sources */,
 				2C419FDF1E5B00EE00FC804F /* MD5.c in Sources */,
 				2C419FDD1E5B00E800FC804F /* BitIO.c in Sources */,
-				2C419FE01E5B00F100FC804F /* UUID.c in Sources */,
 				2C419FDE1E5B00EB00FC804F /* Deflate.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
