@@ -1,11 +1,11 @@
 #include "../libBitIO/include/BitIO.h"
 
-#ifdef _WIN32
-#define strcasecmp stricmp
-#endif
-
 #ifdef __cplusplus
 extern "C" {
+#endif
+    
+#ifdef _WIN32
+#define strcasecmp stricmp
 #endif
     
     typedef struct CRCTest {
@@ -24,7 +24,7 @@ extern "C" {
         CRC16_CDMA2000 = 3,
     } CRCTypes;
     
-    void InitalizeCRC(char CRCType[BitIOStringSize], CRCTest *CRC) {
+    void InitalizeCRC(char *CRCType, CRCTest *CRC) {
         if (strcasecmp(CRCType, "CRC16_USB") == 0) {
             CRC->Polynomial        = 0xC002;
             CRC->Initializer       = 0xFFFF;
@@ -114,7 +114,8 @@ extern "C" {
     }
     
     bool Test_ReadExpGolomb(BitInput *Input) {
-        return false;
+        ReadExpGolomb(Input, false);
+        ReadExpGolomb(Input, true);
     }
     
     bool Test_Adler32(BitInput *Input) { // FIXME: I may need to swap endian...
@@ -146,7 +147,7 @@ extern "C" {
         }
     }
     
-    bool Test_SwapEndian16() {
+    bool Test_SwapEndian16(void) {
         uint16_t Swapped = SwapEndian16(0x7FFF);
         if (Swapped == 0xFF7F) {
             // test sucessful
@@ -156,7 +157,7 @@ extern "C" {
         }
     }
     
-    bool Test_SwapEndian32() {
+    bool Test_SwapEndian32(void) {
         uint32_t Swapped = SwapEndian32(0xBFFFFFF7);
         if (Swapped == 0xF7FFFFBF) {
             // test sucessful
@@ -166,7 +167,7 @@ extern "C" {
         }
     }
     
-    bool Test_SwapEndian64() {
+    bool Test_SwapEndian64(void) {
         uint64_t Swapped = SwapEndian64(0xDFFFFFFFFFFFBFFF);
         if (Swapped == 0xFFBFFFFFFFFFFFDF) {
             return true;
@@ -175,7 +176,7 @@ extern "C" {
         }
     }
     
-    bool Test_Signed2Unsigned() {
+    bool Test_Signed2Unsigned(void) {
         int64_t Unsigned = Signed2Unsigned(-128);
         if (Unsigned != 0) {
             // test failed
@@ -185,7 +186,7 @@ extern "C" {
         }
     }
     
-    bool Test_Unsigned2Signed() {
+    bool Test_Unsigned2Signed(void) {
         uint64_t Signed = Unsigned2Signed(255);
         if (Signed != 127) {
             // test failed
@@ -195,7 +196,7 @@ extern "C" {
         }
     }
     
-    bool Test_2sComplimentTo1sCompliment() {
+    bool Test_2sComplimentTo1sCompliment(void) {
         int64_t OnesCompliment = TwosCompliment2OnesCompliment(-64);
         if (OnesCompliment != 0xFFFFFFFFFFFFFFC0) {
             // test failed
@@ -205,7 +206,7 @@ extern "C" {
         }
     }
     
-    bool Test_1sComplimentTo2sCompliment() {
+    bool Test_1sComplimentTo2sCompliment(void) {
         int64_t TwosCompliment = OnesCompliment2TwosCompliment(0xFFFFFFFFFFFFFFC0); // -64
         if (TwosCompliment != -64) {
             // test failed
@@ -215,7 +216,7 @@ extern "C" {
         }
     }
     
-    bool Test_StreamAlignment() {
+    bool Test_StreamAlignment(void) {
         bool IsAligned = IsStreamByteAligned(7, 1);
         if (IsAligned != false) {
             // test failed
@@ -269,35 +270,35 @@ extern "C" {
         if (TestPassed == false) {
             printf("Test_CRC PNGCrc failed!!!\n");
         }
-        TestPassed  = Test_SwapEndian16();
+        TestPassed  = Test_SwapEndian16(void);
         if (TestPassed == false) {
             printf("Test_SwapEndian16 failed!!!\n");
         }
-        TestPassed  = Test_SwapEndian32();
+        TestPassed  = Test_SwapEndian32(void);
         if (TestPassed == false) {
             printf("Test_SwapEndian32 failed!!!\n");
         }
-        TestPassed  = Test_SwapEndian64();
+        TestPassed  = Test_SwapEndian64(void);
         if (TestPassed == false) {
             printf("Test_SwapEndian64 failed!!!\n");
         }
-        TestPassed  = Test_Signed2Unsigned();
+        TestPassed  = Test_Signed2Unsigned(void);
         if (TestPassed == false) {
             printf("Test_Signed2Unsigned failed!!!\n");
         }
-        TestPassed  = Test_Unsigned2Signed();
+        TestPassed  = Test_Unsigned2Signed(void);
         if (TestPassed == false) {
             printf("Test_Unsigned2Signed failed!!!\n");
         }
-        TestPassed  = Test_2sComplimentTo1sCompliment();
+        TestPassed  = Test_2sComplimentTo1sCompliment(void);
         if (TestPassed == false) {
             printf("Test_2sComplimentTo1sCompliment failed!!!\n");
         }
-        TestPassed  = Test_1sComplimentTo2sCompliment();
+        TestPassed  = Test_1sComplimentTo2sCompliment(void);
         if (TestPassed == false) {
             printf("Test_1sComplimentTo2sCompliment failed!!!\n");
         }
-        TestPassed  = Test_StreamAlignment();
+        TestPassed  = Test_StreamAlignment(void);
         if (TestPassed == false) {
             printf("Test_StreamAlignment failed!!!\n");
         }
