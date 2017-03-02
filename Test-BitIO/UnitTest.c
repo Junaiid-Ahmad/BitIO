@@ -133,7 +133,6 @@ extern "C" {
         // Loop throught a variety of polys, and put the log if inside the loop
         uint32_t GeneratedCRC = GenerateCRC(Input, 64, CRCData); // &RandomData[64], 64, 0x82608EDB, 0xFFFFFFFF, 32
         if (GeneratedCRC != VerifiedCRC) {
-            Input->ErrorStatus->VerifyCRC = InvalidCRC;
             char Description[BitIOStringSize] = {0};
             snprintf(Description, BitIOStringSize, "Poly: %x, Init: %x, CRCSize: %d\n", 0x82608EDB, 0xFFFFFFFF, 32);
             Log(LOG_ERR, "BitIO", "Test_CRC", Description);
