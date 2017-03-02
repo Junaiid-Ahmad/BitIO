@@ -98,7 +98,7 @@ extern "C" {
                 
                 char Description[BitIOStringSize];
                 snprintf(Description, BitIOStringSize, "ReadBits fucked up big time on %d\n", Bits2Peek);
-                Log(SYSCritical, "BitIO", "ReadBits", Description);
+                Log(LOG_EMERG, "BitIO", "ReadBits", Description);
                 printf("\nERROR!\n");
                 printf("Bits2Peek: %1d, BitsUnavailable: %0zU, Result: 0x%llX, Correct: 0x%llX\n", Bits2Read, Input->BitsUnavailable, PeekedData, Correct);
                 printf("!ERROR \n");
@@ -120,7 +120,7 @@ extern "C" {
         if (GeneratedAdler32 != ConfirmedAdler32) {
             char ErrorString[BitIOStringSize] = {0};
             snprintf(ErrorString, BitIOStringSize, "Adler32 failed, generated: %x, should've been: %x", GeneratedAdler32, ConfirmedAdler32);
-            Log(SYSError, "BitIO", "Test_Adler32", ErrorString);
+            Log(LOG_ERR, "BitIO", "Test_Adler32", ErrorString);
             return false;
         } else {
             return true;
@@ -136,7 +136,7 @@ extern "C" {
             Input->ErrorStatus->VerifyCRC = InvalidCRC;
             char Description[BitIOStringSize] = {0};
             snprintf(Description, BitIOStringSize, "Poly: %x, Init: %x, CRCSize: %d\n", 0x82608EDB, 0xFFFFFFFF, 32);
-            Log(SYSError, "BitIO", "Test_CRC", Description);
+            Log(LOG_ERR, "BitIO", "Test_CRC", Description);
             return false; // test failed
         } else {
             return true;
