@@ -7,10 +7,19 @@
  @brief     This header contains code related to reading and writing files, and utility functions to support that goal.
  */
 
-#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#ifndef _WIN32
+#include <stdbool.h>
+#else
+#define	bool  _Bool
+#define true  1
+#define false 0
+#define yes   true
+#define no    false
+#endif
 
 #ifdef __cplusplus
 extern "C" {
