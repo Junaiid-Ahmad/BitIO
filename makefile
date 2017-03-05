@@ -15,11 +15,15 @@ BUILD_UTILITY  := $(BUILD_DIR)/Test-BitIO
 .PHONY: all install uninstall clean DEBUG
 
 DEBUG ?= 1
-.ifeq (DEBUG, 1)
+ifeq (DEBUG, 1)
 	CFLAGS += -g -O0
 else
 	CFLAGS += -Ofast
-.endif
+endif
+
+all : $(BUILD_LIB)/libBitIO.a $(BUILD_UTILITY)/Test-BitIO
+	$($$(BUILD_LIB)/libBitIO.a)
+	$($$(BUILD_UTILITY)/Test-BitIO)
 
 install : $(PREFIX)/bin/Test-BitIO $(PREFIX)/lib/libBitIO.a $(PREFIX)/include/BitIO.h $(PREFIX)/include/Deflate.h $(PREFIX)/include/MD5.h
 	install -c -d -f 0555 $(BUILD_UTILITY)/Test-BitIO $(PREFIX)/bin/Test-BitIO
@@ -67,5 +71,3 @@ $(BUILD_UTILITY)/UnitTest.o : $(UTILITY_DIR)/UnitTest.c $(LIB_INC)/BitIO.h $(LIB
 $(BUILD_UTILITY)/Test-BitIO : $(BUILD_UTILITY)/UnitTest.o
 	$(CC) $(BUILD_UTILITY)/UnitTest.o -l$(BUILD_LIB)/libBitIO.a -o $(BUILD_UTILITY)/Test-BitIO $(CFLAGS) $(LDFLAGS)
 	strip $(BUILD_UTILITY)/Test-BitIO
-
-all : $(BUILD_LIB)/libBitIO.a $(BUILD_UTILITY)/Test-BitIO
