@@ -25,6 +25,8 @@ release: CFLAGS += -Ofast -DNDEBUG
 
 all: $(BUILD_LIB)/libBitIO.a $(BUILD_UTILITY)/Test-BitIO
 
+#TODO: Make a target for the documentation to be built and installed to $(prefix)/docs as well
+
 $(BUILD_LIB)/libBitIO.a($(LIB_OBJECT_FILES)): $(LIB_SOURCE_FILES) $(LIB_INCLUDE_FILES)
 	$(CC) -c $< -o $@ $(CFLAGS) $(LDFLAGS)
 	ar -r -c -s $(BUILD_LIB)/libBitIO.a $(BUILD_LIB)/*.o
