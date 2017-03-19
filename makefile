@@ -1,31 +1,39 @@
-CC             := cc
-CURDIR         := $(shell pwd)
-LIB            := libBitIO
-PREFIX         ?= /usr/local/Packages/$(LIB)
-VERSION         = `grep @version $(CURDIR)/libBitIO/include/BitIO.h | echo | grep -o '[0-9]\.[0-9]\.[0-9]'`
-CFLAGS         := -std=c11 -march=native -funroll-loops -ferror-limit=10240 -Wall
-LDFLAGS        := -flto=thin
-BUILD_DIR      := $(CURDIR)/BUILD
-LIB_DIR        := $(CURDIR)/libBitIO/src
-LIB_INC        := $(CURDIR)/libBitIO/include
-UTILITY_DIR    := $(CURDIR)/Test-BitIO
-BUILD_LIB      := $(BUILD_DIR)/libBitIO
-BUILD_UTILITY  := $(BUILD_DIR)/Test-BitIO
+CC             = cc
+CURDIR         = $(shell pwd)
+LIB            = libBitIO
+PREFIX         = /usr/local/Packages/$(LIB)
+VERSION        = $(shell grep @version $(CURDIR)/libBitIO/include/BitIO.h | echo | grep -o '[0-9]\.[0-9]\.[0-9]')
+CFLAGS         = -std=c11 -march=native -funroll-loops -ferror-limit=1024 -Wall
+LDFLAGS        = -flto=thin
+BUILD_DIR      = $(CURDIR)/BUILD
+LIB_DIR        = $(CURDIR)/libBitIO/src
+LIB_INC        = $(CURDIR)/libBitIO/include
+UTILITY_DIR    = $(CURDIR)/Test-BitIO
+BUILD_LIB      = $(BUILD_DIR)/libBitIO
+BUILD_UTILITY  = $(BUILD_DIR)/Test-BitIO
+
+LIB_SOURCE_FILES  = $(LIB_DIR)/BitIO.c $(LIB_DIR)/Deflate.c $(LIB_DIR)/MD5.c
+LIB_OBJECT_FILES  = $(BUILD_LIB)/BitIO.o $(BUILD_LIB)/Deflate.o $(BUILD_LIB)/MD5.o
+LIB_INCLUDE_FILES = $(LIB_INC)/BitIO.h $(LIB_INC)/Deflate.h $(LIB_INC)/MD5.h
 
 .PHONY: all install uninstall clean DEBUG
 
-DEBUG ?= 1
-ifeq (DEBUG, 1)
-	CFLAGS += -g -O0
-else
-	CFLAGS += -Ofast
-endif
+.DEFAULT_GOAL := all
 
-all : $(BUILD_LIB)/libBitIO.a $(BUILD_UTILITY)/Test-BitIO
-	$($$(BUILD_LIB)/libBitIO.a)
-	$($$(BUILD_UTILITY)/Test-BitIO)
+debug:   CFLAGS += -g -O0 -DDEBUG
+release: CFLAGS += -Ofast -DNDEBUG
 
-install : $(PREFIX)/bin/Test-BitIO $(PREFIX)/lib/libBitIO.a $(PREFIX)/include/BitIO.h $(PREFIX)/include/Deflate.h $(PREFIX)/include/MD5.h
+all: $(BUILD_LIB)/libBitIO.a $(BUILD_UTILITY)/Test-BitIO
+
+$(BUILD_LIB)/libBitIO.a($(LIB_OBJECT_FILES)): $(LIB_SOURCE_FILES) $(LIB_INCLUDE_FILES)
+	$(CC) -c $< -o $@ $(CFLAGS) $(LDFLAGS)
+	ar -r -c -s $(BUILD_LIB)/libBitIO.a $(BUILD_LIB)/*.o
+
+$(BUILD_UTILITY)/Test-BitIO: $(UTILITY_DIR)/UnitTest.c $(LIB_INCLUDE_FILES)
+	$(CC) -c $(UTILITY_DIR)/UnitTest.c -lBitIO.a -o $(BUILD_UTILITY)/Test-BitIO $(CFLAGS) $(LDFLAGS)
+	strip $(BUILD_UTILITY)/Test-BitIO
+
+install: $(PREFIX)/bin/Test-BitIO $(PREFIX)/lib/libBitIO.a $(PREFIX)/include/BitIO.h $(PREFIX)/include/Deflate.h $(PREFIX)/include/MD5.h
 	install -c -d -f 0555 $(BUILD_UTILITY)/Test-BitIO $(PREFIX)/bin/Test-BitIO
 	install -c -d -f 0444 $(BUILD_LIB)/libBitIO.a $(PREFIX)/lib/libBitIO.a
 	install -c -d -f 0444 $(LIB_INC)/BitIO.h $(PREFIX)/include/BitIO.h
@@ -47,27 +55,3 @@ clean:
 	rm -d -i -R $(BUILD_LIB)/*.o
 	rm -d -i -R $(BUILD_DIR)/*/.DS_Store
 	rm -d -i -R $(BUILD_DIR)
-
-$(BUILD_LIB)/BitIO.o : $(LIB_DIR)/BitIO.c $(LIB_INC)/BitIO.h
-	mkdir -p $(BUILD_LIB)
-	$(CC) -c $< -o $@ $(CFLAGS) $(LDFLAGS)
-
-$(BUILD_LIB)/Deflate.o : $(LIB_DIR)/Deflate.c
-	mkdir -p $(BUILD_LIB)
-	$(CC) -c $< -o $@ $(CFLAGS) $(LDFLAGS)
-
-$(BUILD_LIB)/MD5.o : $(LIB_DIR)/MD5.c
-	mkdir -p $(BUILD_LIB)
-	$(CC) -c $< -o $@ $(CFLAGS) $(LDFLAGS)
-
-$(BUILD_LIB)/libBitIO.a($(BUILD_LIB)/BitIO.o $(BUILD_LIB)/Deflate.o $(BUILD_LIB)/MD5.o) : $(BUILD_LIB)/BitIO.o $(BUILD_LIB)/Deflate.o $(BUILD_LIB)/MD5.o
-	ar -r -c -s $(BUILD_LIB)/libBitIO.a $(BUILD_LIB)/*.o
-	libtool -current_version $(VERSION) -o $(BUILD_LIB)/libBitIO.a $(BUILD_LIB)/*.o
-
-$(BUILD_UTILITY)/UnitTest.o : $(UTILITY_DIR)/UnitTest.c $(LIB_INC)/BitIO.h $(LIB_INC)/Deflate.h $(LIB_INC)/MD5.h
-	mkdir -p $(BUILD_UTILITY)
-	$(CC) -c $(UTILITY_DIR)/UnitTest.c -o $(BUILD_UTILITY)/Test-BitIO $(CFLAGS) $(LDFLAGS)
-
-$(BUILD_UTILITY)/Test-BitIO : $(BUILD_UTILITY)/UnitTest.o
-	$(CC) $(BUILD_UTILITY)/UnitTest.o -l$(BUILD_LIB)/libBitIO.a -o $(BUILD_UTILITY)/Test-BitIO $(CFLAGS) $(LDFLAGS)
-	strip $(BUILD_UTILITY)/Test-BitIO
