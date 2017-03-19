@@ -41,6 +41,7 @@ install: $(PREFIX)/bin/Test-BitIO $(PREFIX)/lib/libBitIO.a $(PREFIX)/include/Bit
 	install -c -d -f 0444 $(LIB_INC)/BitIO.h $(PREFIX)/include/BitIO.h
 	install -c -d -f 0444 $(LIB_INC)/Deflate.h $(PREFIX)/include/Deflate.h
 	install -c -d -f 0444 $(LIB_INC)/MD5.h $(PREFIX)/include/MD5.h
+	install -c -d -f 0444 $(CURDIR)/libBitIO.pc /usr/lib/pkgconfig/libBitIO.pc
 
 uninstall:
 	rm -d -i -R $(PREFIX)/bin/Test-BitIO
