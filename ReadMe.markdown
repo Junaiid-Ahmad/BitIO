@@ -38,7 +38,7 @@ In order to use BitIO, you need to include BitIO.h.
 
 `Log`:
 * Log calls `openlog` on POSIX compatible platforms.
-* Log calls `fprintf`on Windows.
+* Log calls `ReportEvent`on Windows.
 
 License:
 -----------
@@ -54,5 +54,4 @@ Todo:
 -------
 * Add a function that takes memory addresses and wraps them in Fopen-able whatever. to allow BitInput/BitOutput to be used in lower level apps, directly on the hardware.
 * Implement the FILE memory address wrapper.
-* Replace the Windows version of Log with Event Viewer compatible calls instead of using `fprintf`.
 * Replace the `ifndef _WIN32` defines with POSIX ones for the logger.
