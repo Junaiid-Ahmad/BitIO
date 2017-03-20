@@ -139,11 +139,11 @@ extern "C" {
         }
     }
     
-    bool Test_CRC(BitInput *Input, CRC *CRCData) { // This will test both GenerateCRC and VerifyCRC
+    bool Test_CRC(BitInput *Input) { // This will test both GenerateCRC and VerifyCRC
         uint32_t VerifiedCRC = 0xBA5370DA;
         
         // Loop throught a variety of polys, and put the log if inside the loop
-        uint32_t GeneratedCRC = GenerateCRC(Input, 64, CRCData); // &RandomData[64], 64, 0x82608EDB, 0xFFFFFFFF, 32
+        uint32_t GeneratedCRC = GenerateCRC(RandomData, 64, 0x82608EDB, 32, 0xFFFFFFFF);
         if (GeneratedCRC != VerifiedCRC) {
             char Description[BitIOStringSize] = {0};
             snprintf(Description, BitIOStringSize, "Poly: %x, Init: %x, CRCSize: %d\n", 0x82608EDB, 0xFFFFFFFF, 32);
@@ -259,7 +259,6 @@ extern "C" {
     
     void Test_All(BitInput *Input, BitOutput *Output) {
         bool TestPassed = 0;
-        CRC *PNGCRC = calloc(sizeof(CRC), 1);
         
         TestPassed  = Test_ReadBits(Input);
         if (TestPassed == false) {
@@ -269,7 +268,7 @@ extern "C" {
         if (TestPassed == false) {
             Log(LOG_ERR, "Test-BitIO", "Test_Adler32", "Test_Adler32 failed!!!\n");
         }
-        TestPassed  = Test_CRC(Input, PNGCRC);
+        TestPassed  = Test_CRC(Input);
         if (TestPassed == false) {
             Log(LOG_ERR, "Test-BitIO", "Test_CRC", "Test_CRC failed!!!\n");
         }
@@ -321,7 +320,6 @@ extern "C" {
         if (TestPassed == false) {
             Log(LOG_ERR, "Test-BitIO", "Test_ReadExpGolomb", "Test_ReadExpGolomb Unsigned failed!!!\n");
         }
-        free(PNGCRC);
     }
     
     void SetUnitTestOptions(CommandLineOptions *CMD) {

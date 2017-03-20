@@ -117,4 +117,4 @@ extern "C" {
 }
 #endif
 
-#endif BITIO_DEFLATE_H
+#endif /* BITIO_DEFLATE_H */
