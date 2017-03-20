@@ -16,7 +16,7 @@ LIB_SOURCE_FILES  = $(LIB_DIR)/BitIO.c $(LIB_DIR)/Deflate.c $(LIB_DIR)/MD5.c
 LIB_OBJECT_FILES  = $(BUILD_LIB)/BitIO.o $(BUILD_LIB)/Deflate.o $(BUILD_LIB)/MD5.o
 LIB_INCLUDE_FILES = $(LIB_INC)/BitIO.h $(LIB_INC)/Deflate.h $(LIB_INC)/MD5.h
 
-.PHONY: all install uninstall clean DEBUG
+.PHONY: all install uninstall clean debug release
 
 .DEFAULT_GOAL := all
 
