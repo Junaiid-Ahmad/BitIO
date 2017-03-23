@@ -1,7 +1,7 @@
 #include "../include/BitIO.h"
 
-#ifndef BITIO_DEFLATE_H
-#define BITIO_DEFLATE_H
+#ifndef LIBBITIO_DEFLATE_H
+#define LIBBITIO_DEFLATE_H
 
 #pragma once
 
@@ -24,55 +24,6 @@ extern "C" {
     } HuffmanTree;
     
     typedef struct LZ77Dictionary LZ77Dictionary;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     typedef struct DeflateBlock {
         bool     IsLastBlock;
@@ -117,4 +68,4 @@ extern "C" {
 }
 #endif
 
-#endif /* BITIO_DEFLATE_H */
+#endif /* LIBBITIO_DEFLATE_H */

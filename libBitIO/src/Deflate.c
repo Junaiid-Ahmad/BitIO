@@ -12,27 +12,6 @@ extern "C" {
         struct LZ77Node *RightChild;
     };
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-	
 	// The length code is read as 8 bits, and left shifted 2.
 	// The distance code is 15 bits
 	// or maybe the length code isn't shifted and is just read as 9 bits, which would byte align it
