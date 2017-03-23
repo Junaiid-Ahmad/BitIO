@@ -70,6 +70,7 @@ extern "C" {
 	void ParseLZ77(BitInput *BitI, uint8_t LengthDistanceSize, bool IsEAFormat) {
 		
 		// Lookup the size of the sliding window.
+        /*
 		if (IsEAFormat == true && IsStreamByteAligned(BitI->BitsUnavailable, 1) == true) {
 			// Read the first 3 bits of the byte for the size
 			uint8_t EASize = PeekBits(BitI, 3, true);
@@ -88,6 +89,7 @@ extern "C" {
 					break;
 			}
 		}
+         */
 	}
 	
 	void CreateHuffmanTree(uint16_t *SymbolOccurance) {
