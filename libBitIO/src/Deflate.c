@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "../include/Deflate.h"
 
 #ifdef __cplusplus
