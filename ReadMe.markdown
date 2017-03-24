@@ -60,3 +60,9 @@ Here's a tl;dr of my license:
 Todo:
 -------
 * Add a function that takes memory addresses and wraps them in Fopen-able whatever. to allow BitInput/BitOutput to be used in lower level apps, directly on the hardware.
+* Finish the CRC generator and verifier.
+* Finish MD5 generator and verifier.
+* Write a Reed-Soloman Error correction verifier.
+* Write a LDPC encoder/decoder
+* Finish Deflate/Inflate
+* Write a FSE/Asymetric Numeral System encoder and decoder
