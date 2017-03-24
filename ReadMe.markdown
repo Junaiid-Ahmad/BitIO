@@ -65,4 +65,5 @@ Todo:
 * Write a Reed-Soloman Error correction verifier.
 * Write a LDPC encoder/decoder
 * Finish Deflate/Inflate
+* Finish LZ77 encoder/decoder
 * Write a FSE/Asymetric Numeral System encoder and decoder
