@@ -1,9 +1,9 @@
 #include "../include/BitIO.h"
 
+#pragma once
+
 #ifndef LIBBITIO_DEFLATE_H
 #define LIBBITIO_DEFLATE_H
-
-#pragma once
 
 #ifdef __cplusplus
 extern "C" {
