@@ -13,15 +13,13 @@ extern "C" {
         0, 0, 0, 0, 0, 0, 0, 32768
     };
     
-    typedef struct HuffmanNode {
-        struct HuffmanNode *LeftNode;
-        struct HuffmanNode *RightNode;
-    } HuffmanNode;
-    
-    typedef struct HuffmanTree {
-        uint64_t  NumNodes;
-        HuffmanNode *Node[];
-    } HuffmanTree;
+    struct LZ77Node {
+        uint32_t  Length;
+        uint32_t  Offset;
+        struct LZ77Node *Parent;
+        struct LZ77Node *LeftChild;
+        struct LZ77Node *RightChild;
+    };
     
     typedef struct LZ77Dictionary LZ77Dictionary;
     

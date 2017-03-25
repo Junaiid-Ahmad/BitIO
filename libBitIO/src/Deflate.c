@@ -5,14 +5,84 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+    /* General Huffman shit */
+    typedef struct HuffmanNode {
+        int64_t   *LeftNode;
+        int64_t   *RightNode;
+    } HuffmanNode;
     
-    struct LZ77Node {
-        uint32_t  Length;
-        uint32_t  Offset;
-        struct LZ77Node *Parent;
-        struct LZ77Node *LeftChild;
-        struct LZ77Node *RightChild;
-    };
+    typedef struct HuffmanTree {
+        uint64_t      NumNodes;
+        HuffmanNode  *Node;
+    } HuffmanTree;
+    
+    /*!
+     @remark The SymbolsAndProbabilities need to be sorted before being submitted
+     */
+    HuffmanTree *BuildHuffmanTree(HuffmanTree *Tree2Build, int64_t **SymbolsAndProbabilities, size_t NumSymbols) {
+        // Well start by taking the lowest probability pair (the bottom 2 regardless of value) symbols, and assigning them to nodes.
+        Tree2Build->NumNodes = NumSymbols / 2;
+        
+        for (uint64_t Symbol = NumSymbols; Symbol > 0; Symbol -= 2) { // What do we do if the number of symbols is uneven?
+            Tree2Build->Node[0].LeftNode  = SymbolsAndProbabilities[Symbol]; // FIXME: Not sure if "SymbolPair - 1" is gonna work?
+            Tree2Build->Node[0].RightNode = SymbolsAndProbabilities[Symbol + 1];
+        }
+        
+        return Tree2Build; // Is this seriously it?
+    }
+    
+    uint64_t GetHuffmanCode(HuffmanTree *Tree, int64_t **SymbolsAndProbabilities, int64_t Symbol, size_t NumSymbols) {
+        uint64_t SymbolPlace = 0;
+        for (uint64_t Index = 0; Index < NumSymbols; Index++) {
+            // Find the probability of Symbol, then build the actual huffman code from where in the tree that symbol was assigned
+            if (Symbol == SymbolsAndProbabilities[Index][Index]) {
+                // Ok so the position of the symbol = index, with the index we should be able to retrace the steps of the tree builder and get the huffman code for the symbol.
+                SymbolPlace = Index;
+            }
+            if (IsOdd(SymbolPlace) == true) {
+                // Left branch.
+            } else {
+                // Right branch
+            }
+        }
+        return 0;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 	// The length code is read as 8 bits, and left shifted 2.
 	// The distance code is 15 bits
@@ -96,25 +166,6 @@ extern "C" {
 		
 	}
 	
-	void ParseZLIBHeader(BitInput *BitI, DeflateBlock *Inflate) {
-        // stored in big endian byte order, bits are stored LSB first
-        uint8_t CompressionMethod  = ReadBits(BitI, 4, true); // 8 = DEFLATE
-		uint8_t CompressionInfo    = ReadBits(BitI, 4, true); // 7 = LZ77 window size 32k
-		uint8_t CheckCode          = ReadBits(BitI, 5, true); // 1, for the previous 2 fields, MUST be multiple of 31
-		bool    DictionaryPresent  = ReadBits(BitI, 1, true); //
-		uint8_t CompressionLevel   = ReadBits(BitI, 2, true); // 0
-		if (DictionaryPresent == true) {
-			uint32_t DictionaryID  = ReadBits(BitI, 32, true); // 0xEDC1
-		}
-		if (CompressionMethod == 8) {
-			ParseDeflateBlock(BitI, Inflate, BlockSize[CompressionInfo]);
-		} else {
-			char Error[BitIOStringSize];
-			snprintf(Error, BitIOStringSize, "Invalid DEFLATE compression method %d\n", CompressionMethod);
-			Log(LOG_ERR, "BitIO", "ParseDeflate", Error);
-		}
-	}
-	
 	void DecodeHuffman(BitInput *BitI, size_t HuffmanSize) {
 		// 3 alphabets, literal, "alphabet of bytes", or <length 8, distance 15> the first 2 are combined, 0-255 = literal, 256 = End of Block, 257-285 = length
 		// FIXME: The Tilde ~ symbol is the negation symbol in C!!!!! XOR = ^
@@ -194,6 +245,29 @@ extern "C" {
     void EncodeLZ77(const uint8_t *RawData, uint8_t *EncodedBuffer, const size_t BufferSize, const size_t WindowSize) {
         for (size_t Byte = 0; Byte < BufferSize; Byte++) {
             // if BufferSize > WindowSize, we need to set up a dictionary structure that contains WindowSize bytes with their recent-ness.
+        }
+    }
+    
+    
+    
+    
+    /* Start Inflater */
+    void ParseZLIBHeader(BitInput *BitI, DeflateBlock *Inflate) {
+        // stored in big endian byte order, bits are stored LSB first
+        uint8_t CompressionMethod  = ReadBits(BitI, 4, true); // 8 = DEFLATE
+        uint8_t CompressionInfo    = ReadBits(BitI, 4, true); // 7 = LZ77 window size 32k
+        uint8_t CheckCode          = ReadBits(BitI, 5, true); // 1, for the previous 2 fields, MUST be multiple of 31
+        bool    DictionaryPresent  = ReadBits(BitI, 1, true); //
+        uint8_t CompressionLevel   = ReadBits(BitI, 2, true); // 0
+        if (DictionaryPresent == true) {
+            uint32_t DictionaryID  = ReadBits(BitI, 32, true); // 0xEDC1
+        }
+        if (CompressionMethod == 8) {
+            ParseDeflateBlock(BitI, Inflate, BlockSize[CompressionInfo]);
+        } else {
+            char Error[BitIOStringSize];
+            snprintf(Error, BitIOStringSize, "Invalid DEFLATE compression method %d\n", CompressionMethod);
+            Log(LOG_ERR, "BitIO", "ParseDeflate", Error);
         }
     }
 	
