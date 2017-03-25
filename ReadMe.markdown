@@ -67,3 +67,4 @@ Todo:
 * Finish Deflate/Inflate
 * Finish LZ77 encoder/decoder
 * Write a FSE/Asymetric Numeral System encoder and decoder
+* Update the Argument parser to just take in full word flags, and generate short options automatically.
