@@ -8,6 +8,8 @@ extern "C" {
 
     /* General Huffman shit */
     typedef struct HuffmanNode {
+        int64_t    LeftHuffmanCode;
+        int64_t    RightHuffmanCode;
         int64_t   *LeftNode;
         int64_t   *RightNode;
     } HuffmanNode;
@@ -36,15 +38,9 @@ extern "C" {
         uint64_t SymbolPlace = 0;
         for (uint64_t Index = 0; Index < NumSymbols; Index++) {
             // Find the probability of Symbol, then build the actual huffman code from where in the tree that symbol was assigned
-            if (Symbol == SymbolsAndProbabilities[Index][Index]) {
-                // Ok so the position of the symbol = index, with the index we should be able to retrace the steps of the tree builder and get the huffman code for the symbol.
-                SymbolPlace = Index;
-            }
-            if (IsOdd(SymbolPlace) == true) {
-                // Left branch.
-            } else {
-                // Right branch
-            }
+           
+            // No, we should simply do a search through all the nodes, and when we find the symbol, create the Huffman code.
+            // Also, tree traversal for each fucking code will be slow should we just store the code alongside the symbol to speed up Decoding/Encoding?
         }
         return 0;
     }
@@ -269,6 +265,11 @@ extern "C" {
             snprintf(Error, BitIOStringSize, "Invalid DEFLATE compression method %d\n", CompressionMethod);
             Log(LOG_ERR, "BitIO", "ParseDeflate", Error);
         }
+    }
+    
+    void WriteZLIBHeader(BitOutput *BitO, DeflateBlock *Inflate) {
+        WriteBits(BitO, Inflate->EncodingMethod, 4, false);
+        
     }
 	
 #ifdef __cplusplus
