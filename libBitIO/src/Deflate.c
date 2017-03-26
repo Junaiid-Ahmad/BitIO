@@ -19,6 +19,32 @@ extern "C" {
         HuffmanNode  *Node;
     } HuffmanTree;
     
+    int64_t *MeasureSymbolProbability(uint64_t *Buffer, size_t BufferSize, uint8_t SymbolSize) {
+        int64_t CurrentSymbol = 0;
+        int64_t *Probabilities = calloc(1, BufferSize);
+        
+        for (uint64_t BufferSymbol = 0; BufferSymbol < BufferSize; BufferSymbol++) {
+            // Extract the symbol contained in Buffer[BufferSymbol], then find that symbol in SymbolsProbabilities, then increment that element
+            CurrentSymbol = Buffer[BufferSymbol];
+            // Now use CurrentSymbol as the index into SymbolsProbabilities
+            // and since by definition it was seen in the stream, increment the count unconditionally.
+            Probabilities[CurrentSymbol] += 1;
+            
+            // So we're done with this, now all we need to do is sort the list.
+        }
+        return Probabilities;
+    }
+    
+    /*!
+     @remark "Uses the Andresson algorithm available at nada.kth.se/~snilsson/fast-sorting/"
+     */
+    void SortProbabilities(int64_t *Probabilities, size_t NumProbabilities) {
+        uint64_t Error = mergesort(Probabilities, NumProbabilities, sizeof(int64_t), <#int (* _Nonnull __compar)(const void *, const void *)#>)
+        for (uint64_t Probability = 0; Probability < NumProbabilities; Probability++) {
+            
+        }
+    }
+    
     /*!
      @remark The SymbolsAndProbabilities need to be sorted before being submitted
      */
