@@ -35,11 +35,22 @@ extern "C" {
         return Probabilities;
     }
     
+    int32_t CompareProbabilities(const void *A, const void *B) { // so what this probably wants, is for me to compare them, and tell the sorter which one is smaller?
+        
+        // The comparison function must return an integer less than, equal to, or
+        // greater than zero if the first argument is considered to be respectively less
+        // than, equal to, or greater than the second.
+        
+        // OK, so that means we're supposed to tell it the difference between A and B?
+        // So, we need to find the difference between A and B.
+        return 0;
+    }
+    
     /*!
      @remark "Uses the Andresson algorithm available at nada.kth.se/~snilsson/fast-sorting/"
      */
     void SortProbabilities(int64_t *Probabilities, size_t NumProbabilities) {
-        uint64_t Error = mergesort(Probabilities, NumProbabilities, sizeof(int64_t), <#int (* _Nonnull __compar)(const void *, const void *)#>)
+        uint64_t Error = mergesort(Probabilities, NumProbabilities, sizeof(int64_t), CompareProbabilities);
         for (uint64_t Probability = 0; Probability < NumProbabilities; Probability++) {
             
         }
