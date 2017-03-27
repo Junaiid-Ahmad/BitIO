@@ -247,7 +247,9 @@ extern "C" {
     void InitCommandLineSwitches(CommandLineOptions *CMD, uint64_t NumSwitches) {
         CMD->NumSwitches += NumSwitches;
         CommandLineSwitch **Switch = calloc(NumSwitches, sizeof(CommandLineSwitch));
-        CMD->Switch = Switch;
+        for (uint64_t CMDSwitch = 0; CMDSwitch < NumSwitches; CMDSwitch++) {
+            CMD->Switch[CMDSwitch] = Switch[CMDSwitch];
+        }
     }
     
     void AddCommandLineSwitch(CommandLineOptions *CMD) {
