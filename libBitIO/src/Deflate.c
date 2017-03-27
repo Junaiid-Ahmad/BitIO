@@ -43,16 +43,23 @@ extern "C" {
         
         // OK, so that means we're supposed to tell it the difference between A and B?
         // So, we need to find the difference between A and B.
-        return 0;
+        
+        if (A > B) {
+            return labs(A - B);
+        } else {
+            return -labs(B - A);
+        }
     }
     
     /*!
      @remark "Uses the Andresson algorithm available at nada.kth.se/~snilsson/fast-sorting/"
      */
-    void SortProbabilities(int64_t *Probabilities, size_t NumProbabilities) {
-        uint64_t Error = mergesort(Probabilities, NumProbabilities, sizeof(int64_t), CompareProbabilities);
-        for (uint64_t Probability = 0; Probability < NumProbabilities; Probability++) {
-            
+    void SortProbabilities(const int32_t *Probabilities, const size_t NumProbabilities) {
+        for (uint64_t Probability = NumProbabilities; Probability > 0; Probability -= 2) {
+            uint64_t Error = mergesort(Probabilities, NumProbabilities, sizeof(int64_t), CompareProbabilities(Probabilities[Probability], Probabilities[Probability - 1]));
+            if (Error != 0) {
+                Log(LOG_ERR, "libBitIO", "SortProbabilities", "Something happened with mergesort, but IDK what\n");
+            }
         }
     }
     
