@@ -148,7 +148,6 @@ extern "C" {
 	}
 	
 	void ParseDeflateBlock(BitInput *BitI, DeflateBlock *Inflate, uint16_t BlockSize) {
-		char ErrorString[BitIOStringSize];
 		Inflate->IsLastBlock    = ReadBits(BitI, 1, true); // no
 		Inflate->EncodingMethod = ReadBits(BitI, 2, true); // 3
 		
@@ -166,8 +165,7 @@ extern "C" {
 				DecodeDynamicHuffman(BitI, Inflate);
 				break;
 			default:
-				snprintf(ErrorString, BitIOStringSize,"Invalid Deflate encoding method: %d\n",Inflate->EncodingMethod);
-				Log(LOG_EMERG, "BitIO", "ParseDeflateBlock", ErrorString);
+				Log(LOG_EMERG, "BitIO", "ParseDeflateBlock", "Invalid Deflate encoding method: %d\n", Inflate->EncodingMethod);
 				break;
 		}
 	}
@@ -218,9 +216,7 @@ extern "C" {
 		uint32_t OnesComplimentOfLength = 0; // Ones Compliment of DataLength
 		
 		if (OnesCompliment2TwosCompliment(OnesComplimentOfLength) != HuffmanSize) { // Make sure the numbers match up
-			char String2Print[BitIOStringSize];
-			snprintf(String2Print, BitIOStringSize, "One's Compliment of Length: %d != Length %d", OnesComplimentOfLength, DataLength);
-			Log(LOG_WARNING, "BitIO", "DecodeHuffman", String2Print);
+			Log(LOG_WARNING, "BitIO", "DecodeHuffman", "One's Compliment of Length: %d != Length %d", OnesComplimentOfLength, DataLength);
 		}
 		
 		if (IsLastHuffmanBlock == true) {
@@ -305,9 +301,7 @@ extern "C" {
         if (CompressionMethod == 8) {
             ParseDeflateBlock(BitI, Inflate, BlockSize[CompressionInfo]);
         } else {
-            char Error[BitIOStringSize];
-            snprintf(Error, BitIOStringSize, "Invalid DEFLATE compression method %d\n", CompressionMethod);
-            Log(LOG_ERR, "BitIO", "ParseDeflate", Error);
+            Log(LOG_ERR, "BitIO", "ParseDeflate", "Invalid DEFLATE compression method %d\n", CompressionMethod);
         }
     }
     
