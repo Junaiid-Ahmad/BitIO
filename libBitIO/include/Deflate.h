@@ -8,7 +8,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
+    /*
     static const uint16_t BlockSize[8] = {
         0, 0, 0, 0, 0, 0, 0, 32768
     };
@@ -39,7 +39,7 @@ extern "C" {
         Huffman_FixedLengthCodes    = 288,
     } HuffmanConstants;
     
-    /*!
+     // *!
      @abstract                     "Decodes Huffman encoded data".
      @remark                       "It's not even CLOSE to API/ABI compatible with zlib, because zlib is shit".
      */
@@ -49,7 +49,7 @@ extern "C" {
      @abstract                     "Parses DEFLATE encoded block, and sends it off to the Huffman/LZ77 decoder".
      
      @param    BitI                "Pointer to BitInput".
-     */
+     /
     void           ParseDeflate(BitInput *BitI);
     
     void           DecodeHuffman(BitInput *BitI, size_t HuffmanSize);
@@ -61,6 +61,7 @@ extern "C" {
     void           ParseLZ77(BitInput *BitI, uint8_t LengthDistanceSize, bool IsEAFormat);
     
     void           ParseDeflateBlock(BitInput *BitI, DeflateBlock *Inflate, uint16_t BlockSize);
+     */
     
 #ifdef __cplusplus
 }

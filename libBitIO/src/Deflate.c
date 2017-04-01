@@ -76,6 +76,8 @@ extern "C" {
         }
         
         return Tree2Build; // Is this seriously it?
+                           // Make sure to remove any codes that do not occur (frequency = 0)
+                           // When multiple values have the same frequency sort by intensity.
     }
     
     uint64_t GetHuffmanCode(HuffmanTree *Tree, int64_t **SymbolsAndProbabilities, int64_t Symbol, size_t NumSymbols) {
@@ -89,6 +91,25 @@ extern "C" {
         return 0;
     }
     
+    void ReadCanonicalHuffmanTable();
+    
+    
+    
+    
+    /* Start LZ77 stuff */
+    typedef struct LZ77 {
+    } LZ77;
+    
+    /* LZ77 encoder */
+    void EncodeLZ77(uint8_t *Buffer, uint8_t *EncodedBuffer, size_t BufferSize, uint64_t WindowSize, uint64_t AlphabetSize) {
+         // The dictionary is simply the current buffer, at the current buffer position -(WindowSize / 2) +(WindowSize / 2)
+        for (uint64_t BufferByte = 0; BufferByte < BufferSize; BufferByte++) {
+            
+        }
+    }
+    
+    
+    /* LZ77 decoder */
     
     
     
@@ -123,6 +144,76 @@ extern "C" {
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /* ANCIENT CODE
     
 	// The length code is read as 8 bits, and left shifted 2.
 	// The distance code is 15 bits
@@ -171,10 +262,10 @@ extern "C" {
 	}
 	
 	
-	/*!
+     // *!
 	 @param LengthDistanceSize    "Is the number of bits to read for the length and distance codes".
 	 @param IsEAFormat            "EA format specifies the size in bytes of the code within the first 3 bits of the first byte".
-	 */
+	 /
 	void ParseLZ77(BitInput *BitI, uint8_t LengthDistanceSize, bool IsEAFormat) {
 		
 		// Lookup the size of the sliding window.
@@ -197,7 +288,7 @@ extern "C" {
 					break;
 			}
 		}
-         */
+     ///
 	}
 	
 	void CreateHuffmanTree(uint16_t *SymbolOccurance) {
@@ -209,7 +300,7 @@ extern "C" {
 		// FIXME: The Tilde ~ symbol is the negation symbol in C!!!!! XOR = ^
 		
 		uint8_t  DecodedData[32768] = {0};
-		/* Parse Huffman block header */
+		/ Parse Huffman block header /
 		bool     IsLastHuffmanBlock     = ReadBits(BitI, 1, true);
 		uint8_t  HuffmanCompressionType = ReadBits(BitI, 2, true); // 0 = none, 1 = fixed, 2 = dynamic, 3 = invalid.
 		uint32_t DataLength             = 0;
@@ -238,15 +329,15 @@ extern "C" {
 			uint16_t Distance = ReadBits(BitI, 5, true);
 			
 		} else if (HuffmanCompressionType == 2) { // Dynamic Huffman.
-			/*
+			/
 			 Huff->Dynamic->Length     = ReadBits(BitI, 5) + 257;
 			 Huff->Dynamic->Distance   = ReadBits(BitI, 5) + 1;
 			 Huff->Dynamic->CodeLength = ReadBits(BitI, 4) + 4;
-			 */
+			 /
 		} else { // Invalid.
 			// Reject the stream.
 		}
-		/*
+		/
 		 if compressed with dynamic Huffman codes
 		 read representation of code trees (see
 		 subsection below)
@@ -265,7 +356,7 @@ extern "C" {
 		 position to the output stream.
 		 end loop
 		 while not last block
-		 */
+		 /
 	}
     
     struct LZ77Dictionary {
@@ -287,7 +378,7 @@ extern "C" {
     
     
     
-    /* Start Inflater */
+    / Start Inflater /
     void ParseZLIBHeader(BitInput *BitI, DeflateBlock *Inflate) {
         // stored in big endian byte order, bits are stored LSB first
         uint8_t CompressionMethod  = ReadBits(BitI, 4, true); // 8 = DEFLATE
@@ -309,6 +400,7 @@ extern "C" {
         WriteBits(BitO, Inflate->EncodingMethod, 4, false);
         
     }
+    */
 	
 #ifdef __cplusplus
 }
