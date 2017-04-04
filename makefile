@@ -3,7 +3,7 @@ CURDIR         = $(shell pwd)
 LIB            = libBitIO
 PREFIX         = /usr/local/Packages/$(LIB)
 VERSION        = $(shell grep @version $(CURDIR)/libBitIO/include/BitIO.h | echo | grep -o '[0-9]\.[0-9]\.[0-9]')
-CFLAGS         = -std=c11 -march=native -funroll-loops -ferror-limit=1024 -Wall
+CFLAGS         = -std=c11 -march=native -funroll-loops -ferror-limit=1024 -Wall -pedantic
 LDFLAGS        = -flto=thin
 BUILD_DIR      = $(CURDIR)/BUILD
 LIB_DIR        = $(CURDIR)/libBitIO/src
