@@ -87,6 +87,15 @@ extern "C" {
            
             // No, we should simply do a search through all the nodes, and when we find the symbol, create the Huffman code.
             // Also, tree traversal for each fucking code will be slow should we just store the code alongside the symbol to speed up Decoding/Encoding?
+            
+            // Search through the nodes by finding the probability of the submitted symbol, then go down the tree tracing that step.
+            // Lets say E is the symbol we're supposed to find, which is the fifth highest probability overall.
+            // We go to the root node, which has a 0. then the right since we're in position 1, not 5.
+            // the right branch of the root node has value 1, we go to the right node again since we're only as position 2.
+            // the code so far is 01, we're at the second right node, and we need to go right again. the code is now 011
+            // we're at position 4, so we need to go down 1 more node. the code is currently 0111
+            // since we're at position 5, we need to go left? the code is now 01110
+            // the Huffman code for the symbol E, is 0b01110, or 0xE (LOL HOLY SHIT WHAT A COINCIDENCE!)
         }
         return 0;
     }
