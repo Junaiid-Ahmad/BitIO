@@ -95,7 +95,7 @@ extern "C" {
             // the code so far is 01, we're at the second right node, and we need to go right again. the code is now 011
             // we're at position 4, so we need to go down 1 more node. the code is currently 0111
             // since we're at position 5, we need to go left? the code is now 01110
-            // the Huffman code for the symbol E, is 0b01110, or 0xE (LOL HOLY SHIT WHAT A COINCIDENCE!)
+            // the Huffman code for the symbol E, is 0b01110, or 0xE (LOL HOLY SHIT WHA	T A COINCIDENCE!)
         }
         return 0;
     }
