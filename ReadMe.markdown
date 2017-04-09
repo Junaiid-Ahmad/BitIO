@@ -59,8 +59,7 @@ Here's a tl;dr of my license:
 
 Todo:
 -------
-* Add a function that takes memory addresses and wraps them in Fopen-able whatever. to allow BitInput/BitOutput to be used in lower level apps, directly on the hardware.
-* We can acomplish that easier by splitting out a BufferBit reader/writer, and wrapping a File bit reader/writer around it. What should we call it tho? ReadFileBits and WriteFileBits, and ReadBufferBits and WriteBufferBits? the language is kinda clumsy, but it works for now. and if i think up a better name, i can always just rename it.
+* Add format specifier support to `OpenCMDInputFile`, and maybe add a function to increment the file?
 * Make Power2Mask more generic and simpler.
 * Finish the CRC generator and verifier.
 * Finish MD5 generator and verifier.
