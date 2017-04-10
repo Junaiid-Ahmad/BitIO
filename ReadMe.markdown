@@ -60,12 +60,10 @@ Here's a tl;dr of my license:
 Todo:
 -------
 * Add format specifier support to `OpenCMDInputFile`, and maybe add a function to increment the file?
-* Make Power2Mask more generic and simpler.
 * Finish the CRC generator and verifier.
 * Finish MD5 generator and verifier.
+* Finish Deflate/Inflate (which includes Huffman and LZ77)
 * Write a Reed-Soloman Error correction verifier.
 * Write a LDPC encoder/decoder
-* Finish Deflate/Inflate
-* Finish LZ77 encoder/decoder
 * Write a FSE/Asymetric Numeral System encoder and decoder
 * Update the Argument parser to just take in full word flags, and generate short options automatically.
