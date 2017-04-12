@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "../include/Deflate.h"
+#include <stdlib.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -17,27 +18,18 @@ extern "C" {
     typedef struct HuffmanTree {
         uint64_t       NumNodes;
         HuffmanNode   *Node;
+        uint64_t      *SymbolFrequency;
         bool           TableIsUsable;
         const uint8_t *Table;
     } HuffmanTree;
     
-    int64_t *MeasureSymbolProbability(uint64_t *Buffer, size_t BufferSize, uint8_t SymbolSize) {
-        int64_t CurrentSymbol = 0;
-        int64_t *Probabilities = calloc(1, BufferSize);
-        
-        for (uint64_t BufferSymbol = 0; BufferSymbol < BufferSize; BufferSymbol++) {
-            // Extract the symbol contained in Buffer[BufferSymbol], then find that symbol in SymbolsProbabilities, then increment that element
-            CurrentSymbol = Buffer[BufferSymbol];
-            // Now use CurrentSymbol as the index into SymbolsProbabilities
-            // and since by definition it was seen in the stream, increment the count unconditionally.
-            Probabilities[CurrentSymbol] += 1;
-            
-            // So we're done with this, now all we need to do is sort the list.
-        }
-        return Probabilities;
-    }
+    /*!
+     @abstract "Measures how often each symbol occurs in a buffer".
+     */
+    // This function should simply take in a Huffman tree, and buffer, iterate over the buffer counting the frequency of each symbol, and attach this frequency list to the tree.
+    // That way when someone needs to get a symbol from a code, or code from a symbol, they can just take in the symbol itself, or output it it and we only have to deal with the frequency list.
     
-    int32_t CompareProbabilities(const void *A, const void *B) { // so what this probably wants, is for me to compare them, and tell the sorter which one is smaller?
+    int32_t CompareProbabilities(const void *A, const void *B) {
         
         // The comparison function must return an integer less than, equal to, or
         // greater than zero if the first argument is considered to be respectively less
@@ -45,23 +37,25 @@ extern "C" {
         
         // OK, so that means we're supposed to tell it the difference between A and B?
         // So, we need to find the difference between A and B.
+        int32_t Difference = 0;
         
         if (A > B) {
-            return labs(A - B);
+            Difference = labs(&A - &B);
         } else {
-            return -labs(B - A);
+            Difference = -labs(&B - &A);
         }
+        return Difference;
     }
     
-    /*!
-     @remark "Uses the Andresson algorithm available at nada.kth.se/~snilsson/fast-sorting/"
-     */
-    void SortProbabilities(const int32_t *Probabilities, const size_t NumProbabilities) {
-        for (uint64_t Probability = NumProbabilities; Probability > 0; Probability -= 2) {
-            uint64_t Error = mergesort(Probabilities, NumProbabilities, sizeof(int64_t), CompareProbabilities(Probabilities[Probability], Probabilities[Probability - 1]));
-            if (Error != 0) {
-                Log(LOG_ERR, "libBitIO", "SortProbabilities", "Something happened with mergesort, but IDK what\n");
-            }
+    void MeasureSymbolFrequency(HuffmanTree *Tree, uint8_t *Buffer, size_t BufferSize) {
+        // Ok, so the list of Symbols index will be the symbol, and that will contain the frequencies.
+        // I need to extract the symbol from Buffer[Byte], and use that as the index.
+        // then call qsort from the stdlib on SymbolFrequency at the end
+        for (size_t Byte = 0; Byte < BufferSize; Byte++) {
+            Tree->SymbolFrequency[Buffer[Byte]] += 1;
+        }
+        for (size_t Symbol = 0; Symbol < BitIONumHuffmanSymbols; Symbol += 2) { // Sort the list of symbols and their frequencies.
+            qsort(Tree->SymbolFrequency, BitIONumHuffmanSymbols, sizeof(uint64_t), CompareProbabilities(Tree->SymbolFrequency[Symbol], Tree->SymbolFrequency[Symbol + 1]));
         }
     }
     
@@ -132,105 +126,6 @@ extern "C" {
     
     
     /* LZ77 decoder */
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
