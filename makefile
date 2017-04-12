@@ -22,10 +22,10 @@ ifeq (1,$(debug))
 	BUILD_FLAGS    = $(CFLAGS) -DDEBUG -g -O0
 elif (1,$(release))
 	BUILDFOLDER    = $(BUILD_DIR)/release
-	BUILD_FLAGS    = $(CFLAGS) -DNODEBUG -funroll-loops -Ofast
+	BUILD_FLAGS    = $(CFLAGS) -DNODEBUG -fvectorize -loop-vectorize -funroll-loops -Ofast
 else
 	BUILDFOLDER    = $(BUILD_DIR)/release
-	BUILD_FLAGS    = $(CFLAGS) -DNODEBUG -funroll-loops -Ofast
+	BUILD_FLAGS    = $(CFLAGS) -DNODEBUG -fvectorize -loop-vectorize -funroll-loops -Ofast
 endif
 
 ifeq (1,$(arm64))

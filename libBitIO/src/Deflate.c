@@ -8,15 +8,17 @@ extern "C" {
 
     /* General Huffman shit */
     typedef struct HuffmanNode {
-        int64_t    LeftHuffmanCode;
-        int64_t    RightHuffmanCode;
-        int64_t   *LeftNode;
-        int64_t   *RightNode;
+        int64_t        LeftHuffmanCode;
+        int64_t        RightHuffmanCode;
+        int64_t       *LeftNode;
+        int64_t       *RightNode;
     } HuffmanNode;
     
     typedef struct HuffmanTree {
-        uint64_t      NumNodes;
-        HuffmanNode  *Node;
+        uint64_t       NumNodes;
+        HuffmanNode   *Node;
+        bool           TableIsUsable;
+        const uint8_t *Table;
     } HuffmanTree;
     
     int64_t *MeasureSymbolProbability(uint64_t *Buffer, size_t BufferSize, uint8_t SymbolSize) {
@@ -84,9 +86,20 @@ extern "C" {
         uint64_t SymbolPlace = 0;
         for (uint64_t Index = 0; Index < NumSymbols; Index++) {
             // Find the probability of Symbol, then build the actual huffman code from where in the tree that symbol was assigned
+            
+            // No, then you'd have to do 2 lookups per symbol instead of just one.
+            // So, we should just take in a Symbol to find, and the tree to find it in
+            // But, to do that, we need to store the symbol with the probability, also we should think about building a table from this tree and hitting that first?
            
             // No, we should simply do a search through all the nodes, and when we find the symbol, create the Huffman code.
             // Also, tree traversal for each fucking code will be slow should we just store the code alongside the symbol to speed up Decoding/Encoding?
+            
+            // Honestly, you have to build a table to embed in the PNG anyway, so I might as well store the table in the tree pointer.
+            // Now, I just need to write a function to build a tree from the data, and include a bool so it knows when to use the tree.
+            
+            
+            
+            
             
             // Search through the nodes by finding the probability of the submitted symbol, then go down the tree tracing that step.
             // Lets say E is the symbol we're supposed to find, which is the fifth highest probability overall.
