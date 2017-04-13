@@ -30,7 +30,6 @@ extern "C" {
     // That way when someone needs to get a symbol from a code, or code from a symbol, they can just take in the symbol itself, or output it it and we only have to deal with the frequency list.
     
     int32_t CompareProbabilities(const void *A, const void *B) {
-        
         // The comparison function must return an integer less than, equal to, or
         // greater than zero if the first argument is considered to be respectively less
         // than, equal to, or greater than the second.
@@ -113,18 +112,26 @@ extern "C" {
     
     
     /* Start LZ77 stuff */
-    typedef struct LZ77 {
-    } LZ77;
     
     /* LZ77 encoder */
-    void EncodeLZ77(uint8_t *Buffer, uint8_t *EncodedBuffer, size_t BufferSize, uint64_t WindowSize, uint64_t AlphabetSize) {
-         // The dictionary is simply the current buffer, at the current buffer position -(WindowSize / 2) +(WindowSize / 2)
-        for (uint64_t BufferByte = 0; BufferByte < BufferSize; BufferByte++) {
-            
+    void EncodeLZ77(const uint8_t *Buffer, uint8_t *EncodedBuffer, const size_t BufferSize, const size_t WindowSize, const size_t AlphabetSize) {
+        // The dictionary is simply the current buffer, at the current buffer position -(WindowSize / 2) +(WindowSize / 2)
+        // So, the first thing you write is the distance from the cursor to the previous string.
+        // Then you write the length of the largest match you can find.
+        // Then write the next byte in the stream.
+        // Then move the cusor the length of the longest match + 1
+        // When we're at the start of the match, simply record the byte and the length of the match (1).
+        if (Buffer == NULL) {
+            Log(LOG_ERR, "BitIO", "EncodeLZ77", "The pointer to the input buffer is NULL\n");
+        } else {
+            for (uint64_t BufferByte = 0; BufferByte < BufferSize; BufferByte++) {
+                if (BufferByte == 0) { // First element, so just record the literal byte.
+                    EncodedBuffer[BufferByte] = Buffer[BufferByte];
+                }
+            }
         }
     }
-    
-    
+	
     /* LZ77 decoder */
     
     
