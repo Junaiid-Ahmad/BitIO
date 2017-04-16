@@ -1,4 +1,4 @@
-#include "../include/BijectiveBWT.h"
+#include "../include/BWSTransform.h"
 
 #ifdef __cplusplus
 extern "C" {
