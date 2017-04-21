@@ -6,6 +6,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+    
+    // Ok, so the LZ77 and Huffman codeers need to be seperate from Deflate, they need their own window size variables and what not.
+    // then the Deflator/Inflator needs to wrap those functions with Deflate specific constants.
+    // Also, each Deflate block uses it's own Huffman table.
 
     /* General Huffman shit */
     typedef struct HuffmanNode {
@@ -114,25 +118,23 @@ extern "C" {
     /* Start LZ77 stuff */
     
     /* LZ77 encoder */
-    void EncodeLZ77(const uint8_t *Buffer, uint8_t *EncodedBuffer, const size_t BufferSize, const size_t WindowSize, const size_t AlphabetSize) {
-        // The dictionary is simply the current buffer, at the current buffer position -(WindowSize / 2) +(WindowSize / 2)
-        // So, the first thing you write is the distance from the cursor to the previous string.
-        // Then you write the length of the largest match you can find.
-        // Then write the next byte in the stream.
-        // Then move the cusor the length of the longest match + 1
-        // When we're at the start of the match, simply record the byte and the length of the match (1).
-        if (Buffer == NULL) {
-            Log(LOG_ERR, "BitIO", "EncodeLZ77", "The pointer to the input buffer is NULL\n");
-        } else {
-            for (uint64_t BufferByte = 0; BufferByte < BufferSize; BufferByte++) {
-                if (BufferByte == 0) { // First element, so just record the literal byte.
-                    EncodedBuffer[BufferByte] = Buffer[BufferByte];
-                }
-            }
-        }
-    }
+    
 	
     /* LZ77 decoder */
+    
+    
+    
+    /* Huffman Encoder */
+    
+    void EncodeHuffman(HuffmanTree *Tree, BitBuffer *EncodedHuffman, const BitBuffer *Data2Encode, const size_t WindowSize, const size_t DistanceLength) { // in Deflate, the WindowSize is 32768, and the Distance is 258.
+        
+    }
+    
+    /* Huffman Decoder */
+    
+    void DecodeHuffman(HuffmanTree *Tree, BitBuffer *DecodedHuffman, const BitBuffer *Data2Decode, const size_t WindowSize, const size_t DistanceLength) { // in Deflate, the WindowSize is 32768, and the Distance is 258.
+        
+    }
     
     
     
