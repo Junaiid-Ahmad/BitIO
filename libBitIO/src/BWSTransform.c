@@ -4,7 +4,7 @@
 extern "C" {
 #endif
     
-    void EncodeBijectiveBWT(uint16_t ****Array, size_t ArraySize) {
+    void EncodeBWSTransform(uint16_t ****Array, size_t ArraySize) {
         
     }
     
