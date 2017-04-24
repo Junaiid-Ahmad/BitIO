@@ -67,3 +67,4 @@ Todo:
 * Write a LDPC encoder/decoder
 * Write a FSE/Asymetric Numeral System encoder and decoder
 * Update the Argument parser to just take in full word flags, and generate short options automatically.
+* Change ReadFromMSB/WriteFromMSB functions to ReadFromLittleEndian/ReadFromBigEndian and WriteFromBigEndian/WriteFromLittleEndian
