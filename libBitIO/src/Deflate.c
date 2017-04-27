@@ -28,41 +28,6 @@ extern "C" {
     } HuffmanTree;
     
     /*!
-     @abstract "Measures how often each symbol occurs in a buffer".
-     */
-    // This function should simply take in a Huffman tree, and buffer, iterate over the buffer counting the frequency of each symbol, and attach this frequency list to the tree.
-    // That way when someone needs to get a symbol from a code, or code from a symbol, they can just take in the symbol itself, or output it it and we only have to deal with the frequency list.
-    
-    int32_t CompareProbabilities(const void *A, const void *B) {
-        // The comparison function must return an integer less than, equal to, or
-        // greater than zero if the first argument is considered to be respectively less
-        // than, equal to, or greater than the second.
-        
-        // OK, so that means we're supposed to tell it the difference between A and B?
-        // So, we need to find the difference between A and B.
-        int32_t Difference = 0;
-        
-        if (A > B) {
-            Difference = labs(&A - &B);
-        } else {
-            Difference = -labs(&B - &A);
-        }
-        return Difference;
-    }
-    
-    void MeasureSymbolFrequency(HuffmanTree *Tree, uint8_t *Buffer, size_t BufferSize) {
-        // Ok, so the list of Symbols index will be the symbol, and that will contain the frequencies.
-        // I need to extract the symbol from Buffer[Byte], and use that as the index.
-        // then call qsort from the stdlib on SymbolFrequency at the end
-        for (size_t Byte = 0; Byte < BufferSize; Byte++) {
-            Tree->SymbolFrequency[Buffer[Byte]] += 1;
-        }
-        for (size_t Symbol = 0; Symbol < BitIONumHuffmanSymbols; Symbol += 2) { // Sort the list of symbols and their frequencies.
-            qsort(Tree->SymbolFrequency, BitIONumHuffmanSymbols, sizeof(uint64_t), CompareProbabilities(Tree->SymbolFrequency[Symbol], Tree->SymbolFrequency[Symbol + 1]));
-        }
-    }
-    
-    /*!
      @remark The SymbolsAndProbabilities need to be sorted before being submitted
      */
     HuffmanTree *BuildHuffmanTree(HuffmanTree *Tree2Build, int64_t **SymbolsAndProbabilities, size_t NumSymbols) {
