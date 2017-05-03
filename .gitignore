@@ -2,6 +2,7 @@
 *.html
 *.htm
 /BUILD/*
+BitIO_OLD.c
 
 # Mac stuff
 *.a
