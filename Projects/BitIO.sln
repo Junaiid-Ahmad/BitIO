@@ -1,26 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26206.0
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libBitIO", "libBitIO.vcxproj", "{4595E7FD-A17A-47DC-B7C3-E67884442EA7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM64 = Debug|ARM64
 		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
+		Release|ARM64 = Release|ARM64
 		Release|x64 = Release|x64
-		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4595E7FD-A17A-47DC-B7C3-E67884442EA7}.Debug|ARM64.ActiveCfg = Debug|ARM
+		{4595E7FD-A17A-47DC-B7C3-E67884442EA7}.Debug|ARM64.Build.0 = Debug|ARM
 		{4595E7FD-A17A-47DC-B7C3-E67884442EA7}.Debug|x64.ActiveCfg = Release|x64
 		{4595E7FD-A17A-47DC-B7C3-E67884442EA7}.Debug|x64.Build.0 = Release|x64
-		{4595E7FD-A17A-47DC-B7C3-E67884442EA7}.Debug|x86.ActiveCfg = Release|x64
-		{4595E7FD-A17A-47DC-B7C3-E67884442EA7}.Debug|x86.Build.0 = Release|x64
 		{4595E7FD-A17A-47DC-B7C3-E67884442EA7}.Release|x64.ActiveCfg = Release|x64
 		{4595E7FD-A17A-47DC-B7C3-E67884442EA7}.Release|x64.Build.0 = Release|x64
-		{4595E7FD-A17A-47DC-B7C3-E67884442EA7}.Release|x86.ActiveCfg = Release|x64
-		{4595E7FD-A17A-47DC-B7C3-E67884442EA7}.Release|x86.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
