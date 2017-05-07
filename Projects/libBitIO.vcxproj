@@ -52,17 +52,17 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
+    <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+	<WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
+    <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+	<WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -83,22 +83,24 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(ProjectDir)..\BUILD\</OutDir>
-    <IntDir>$(ProjectDir)..\BUILD\Intermediate\</IntDir>
-    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
+    <OutDir>$(ProjectDir)..\BUILD\$(Platform)\</OutDir>
+    <IntDir>$(OutDir)\Intermediate\</IntDir>
+    <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
+    <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
+    <OutDir>$(ProjectDir)..\BUILD\$(Platform)\</OutDir>
+    <IntDir>$(OutDir)\Intermediate\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)..\BUILD\$(Platform)\</OutDir>
     <IntDir>$(OutDir)Intermediate\</IntDir>
-    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
+    <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
-    <OutDir>$(ProjectDir)BUILD\$(Platform)\</OutDir>
-    <IntDir>$(ProjectDir)BUILD\$(Platform)\Intermediate\</IntDir>
+    <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
+    <OutDir>$(ProjectDir)..\BUILD\$(Platform)\</OutDir>
+    <IntDir>$(OutDir)Intermediate\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
