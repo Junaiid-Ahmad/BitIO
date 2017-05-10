@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2C419FD91E5B00DB00FC804F /* BitIO.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C419FAA1E5AFF3800FC804F /* BitIO.h */; };
 		2C419FDD1E5B00E800FC804F /* BitIO.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C419FA21E5AFF2D00FC804F /* BitIO.c */; };
+		2CA93C5E1EC12FFA00D0C19F /* MD5.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C419FA41E5AFF2D00FC804F /* MD5.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -146,6 +147,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CA93C5E1EC12FFA00D0C19F /* MD5.c in Sources */,
 				2C419FDD1E5B00E800FC804F /* BitIO.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
