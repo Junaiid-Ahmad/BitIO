@@ -20,12 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\libBitIO\src\BitIO.c" />
-    <ClCompile Include="..\libBitIO\src\Deflate.c" />
     <ClCompile Include="..\libBitIO\src\MD5.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libBitIO\include\BitIO.h" />
-    <ClInclude Include="..\libBitIO\include\Deflate.h" />
     <ClInclude Include="..\libBitIO\include\MD5.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

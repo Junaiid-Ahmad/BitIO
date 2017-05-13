@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\libBitIO\src\Deflate.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\libBitIO\src\MD5.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -26,9 +23,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\libBitIO\include\Deflate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\libBitIO\include\MD5.h">
       <Filter>Header Files</Filter>
     </ClInclude>
