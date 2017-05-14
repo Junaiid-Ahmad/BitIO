@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2C419FD91E5B00DB00FC804F /* BitIO.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C419FAA1E5AFF3800FC804F /* BitIO.h */; };
 		2C419FDD1E5B00E800FC804F /* BitIO.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C419FA21E5AFF2D00FC804F /* BitIO.c */; };
+		2C765FF11EC85F220067569F /* BWSTransform.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C838B5A1E998B0E003AEFD3 /* BWSTransform.c */; };
+		2C765FF21EC85F280067569F /* BWSTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C838B5C1E998B60003AEFD3 /* BWSTransform.h */; };
 		2CA93C5E1EC12FFA00D0C19F /* MD5.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C419FA41E5AFF2D00FC804F /* MD5.c */; };
 /* End PBXBuildFile section */
 
@@ -85,6 +87,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C765FF21EC85F280067569F /* BWSTransform.h in Headers */,
 				2C419FD91E5B00DB00FC804F /* BitIO.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -149,6 +152,7 @@
 			files = (
 				2CA93C5E1EC12FFA00D0C19F /* MD5.c in Sources */,
 				2C419FDD1E5B00E800FC804F /* BitIO.c in Sources */,
+				2C765FF11EC85F220067569F /* BWSTransform.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
