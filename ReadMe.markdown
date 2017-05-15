@@ -37,6 +37,7 @@ In order to use BitIO, you need to include BitIO.h.
 * Then call `ParseCommandLineArguments`.
 * `ParseCommandLineArguments` automatically handles dash, double dash, and backslash arguments for you; **DO NOT INCLUDE ANY OF THOSE CHARACTERS IN YOUR FLAGS**
 * Flags are case insensitive.
+* The Help option **MUST** be the last one, that way BitIO can automatically handle responding to help calls; **It's inaccessible otherwise**.
 
 `ReadUUID`:
 * UUIDs and GUIDs have the same size, but use a different format, so `ReadUUID` can also read GUIDs.
