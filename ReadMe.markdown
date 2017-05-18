@@ -23,49 +23,77 @@ Compiling:
 * On my Mac, the BitIO library is about 75kb, if that's too big for your use, enable link time optimization on your program to trim unused functions.
 
 How To Use BitIO:
--------------------------
+-----------------
 In order to use BitIO, you need to include BitIO.h.
 
-`BitInput`/`BitOutput`:
-* In `main`, you need to call at least one instance of `InitBitInput`, `InitBitOutput`.
-* You can have as many instances of `BitInput` and `BitOutput` as you want.
-* After you call  `InitBitInput`, and `InitBitOutput`, you need to call `ParseCommandLineArguments` and `OpenCMDInputFile` and/or `OpenCMDOutputFile`.
-* At the end of `main`, call `CloseBitInput` and/or `CloseBitOutput` to dealloc your instances of `BitInput` and `BitOutput`.
+* At the end of `main`, call `CloseBitInput`, `CloseBitOutput`, and `CloseBitBuffer` to dealloc all your instances of `BitInput`, `BitOutput`, and `BitBuffer`.
 
-`SetCMD*`:
-* After initalizing `BitInput` and `BitOutput`,  you need to call `InitCommandLineOptions`, and `InitCommandLineSwitches`, you need to set the command line options with the `SetCMD*` functions.
+Input/Output Handling:
+----------------------
+* Tips:
+** You can have multiple input and/or output files, at the same time, and/or you can iterate over format specified files with a single instance of them.
+* `BitInput` and `BitOutput` contain input and output files, respectively; and data to manage them.
+* `BitInput` and `BitOutput` are limited to dealing with files/sockets, for actual reading and writing to/from them, BitIO utilizes `BitBuffer`'s.
+* To read data from or write data to a file, you can use `ReadBitInput2BitBuffer` or `WriteBitBuffer2BitOutput`.
+
+Command Line Parsing:
+---------------------
+* Tips:
+** `ParseCommandLineOptions` is zero indexed, your first switch/option should be 0.
+** `ParseCommandLineOptions` handles flag prefixes `-`,` --`,` /` for you, do not include them in your flag's name.
+** `ParseCommandLineOptions`'s flags are case insensitive.
+** Your `Help` switch/option **MUST** be the last one; that way BitIO can automatically handle printing your help options for you.
+
+* Initialize CommandLineOptions (and CommandLineSwitches) with `InitCommandLineOptions`.
+* Then set your program wide options with:
+** `SetCMDName`,
+** `SetCMDVersion`,
+** `SetCMDDescription`,
+** `SetCMDAuthor`,
+** `SetCMDCopyright`,
+** `SetCMDLicense`,
+** `SetCMDLicenseURL`,
+** `SetCMDMinSwitches`.
+
+* Set each switch/option with:
+** `SetCMDSwitchFlag`,
+** `SetCMDSwitchDescription`
+** `SetCMDSwitchDependency`,
+** `SetCMDSwitchResultStatus`,
+
+* Get the result of your switches with:
+** `GetCMDSwitchPresence`,
+** `GetCMDSwitchResult`
+
 * Then call `ParseCommandLineArguments`.
-* `ParseCommandLineArguments` automatically handles dash, double dash, and backslash arguments for you; **DO NOT INCLUDE ANY OF THOSE CHARACTERS IN YOUR FLAGS**
-* Flags are case insensitive.
 * The Help option **MUST** be the last one, that way BitIO can automatically handle responding to help calls; **It's inaccessible otherwise**.
 
 `ReadUUID`:
 * UUIDs and GUIDs have the same size, but use a different format, so `ReadUUID` can also read GUIDs.
 * The only difference is that GUIDs are little endian.
-* To convert a UUID to a GUID or vice versa call `SwapUUID`.
+* To convert a UUID to a GUID or vice versa call `ConvertUUID2GUID` or `ConvertGUID2UUID`.
 
 `Log`:
 * Log calls `openlog` on POSIX compatible platforms.
 * Log calls `ReportEvent`on Windows.
 
 License:
------------
-BitIO is released under the 3 clause simplified BSD license.
+--------
+BitIO is released under the 3 clause simplified BSD license. (I may relicense or dual license under the MIT license tho, not sure)
 
 Here's a tl;dr of my license:
 * **Don't** plagiarize BitIO.
 * **Don't** relicense BitIO.
-* **Don't** sue me if something goes wrong, or for using patented algorithms. I'm a programmer, not a patent clerk.
+* **Don't** sue me if something goes wrong, or for using patented algorithms; I'm a programmer, not a patent clerk.
 * **Do** Include in your acknowledgments a link to [BitIO on GitHub](https://www.github.com/BumbleBritches57/BitIO).
 
 Todo:
--------
-* Add format specifier support to `OpenCMDInputFile`, and maybe add a function to increment the file?
+-----
+* Add format specifier support to `OpenCMDInputFile` and `OpenCMDOutputFile`, and add a function to increment the file.
 * Finish the CRC generator and verifier.
 * Finish MD5 generator and verifier.
 * Finish Deflate/Inflate (which includes Huffman and LZ77)
 * Write a Reed-Soloman Error correction verifier.
 * Write a LDPC encoder/decoder
-* Write a FSE/Asymetric Numeral System encoder and decoder
-* Update the Argument parser to just take in full word flags, and generate short options automatically.
+* Write a Asymmetric Binary System encoder and decoder
 * Change ReadFromMSB/WriteFromMSB functions to ReadFromLittleEndian/ReadFromBigEndian and WriteFromBigEndian/WriteFromLittleEndian
