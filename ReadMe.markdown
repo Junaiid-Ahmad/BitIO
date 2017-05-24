@@ -9,8 +9,7 @@
 
 Before You Compile:
 -------------------
-* You can change the size of `BitInputBufferSize` and `BitOutputBufferSize` in `BitIOConstants`, located in BitIO.h (it's currently set to 4096 bytes), but keep in mind that after initialization, those constants may not reflect the true size of those arrays.
-* In order to assess the true size of those arrays, check out `GetBitInputBufferSize` or `GetBitOutputBufferSize`
+* Make sure the values in `BitIOConstants` make sense to you.
 
 Compiling:
 ----------
@@ -89,7 +88,7 @@ Here's a tl;dr of my license:
 
 Todo:
 -----
-* Add format specifier support to `OpenCMDInputFile` and `OpenCMDOutputFile`, and add a function to increment the file.
+* Add format specifier support to `OpenInputFile` and `OpenOutputFile`, and add a function to increment the file.
 * Finish the CRC generator and verifier.
 * Finish MD5 generator and verifier.
 * Finish Deflate/Inflate (which includes Huffman and LZ77)
