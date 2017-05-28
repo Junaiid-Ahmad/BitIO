@@ -1,42 +1,29 @@
 PACKAGE_NAME        := BitIO
 CC                  := $(shell cc)
 CURDIR              := $(shell pwd)
-CFLAGS               = -std=c11 -ferror-limit=1024 -Wall -pedantic
+DEBUG_CFLAGS        := -DDEBUG -g -O0
+RELEASE_CFLAGS      := -DNODEBUG -fvectorize -loop-vectorize -funroll-loops -Os
+CFLAGS              := -std=c11 -ferror-limit=1024 -Wall -pedantic -march=$(ARCH) $($(BUILDTYPE)_CFLAGS)
 LDFLAGS             := -flto=thin
 BUILD_DIR            = $(CURDIR)/BUILD
-LIBBITIO_SOURCES    := $(CURDIR)/libBitIO/src/%.c
-LIBBITIO_HEADERS    := $(CURDIR)/libBitIO/include/%.h
+LIBBITIO_SOURCES    := $(wildcard CURDIR/libBitIO/src/*.c)
+LIBBITIO_HEADERS    := $(wildcard CURDIR/libBitIO/include/*.h)
+LIBBITIO_OBJECTS    := $(wildcard $(BUILD_DIR)/$(ARCH)/*.o)
+LIBBITIO_STATIC     := $(BUILD_DIR)/$(ARCH)/libBitIO.a
 
-.DEFAULT_GOAL: $(LIBBITIO_ARCHIVE)
+.DEFAULT_GOAL: $(.all)
 
-.PHONY: all debug release arm64 x86_64 clean
+.PHONY: .all debug release arm64 x86_64 clean
 
-ifeq (${ARCH}, arm64)
-	$(BUILD_DIR) += /arm64
-	$(CFLAGS) += -march=arm64 $(all)
-elif ($(ARCH),x86_64)
-	$(BUILD_DIR) += /x86_64
-	$(CFLAGS) += -march=x86_64 $(all)
-else
-	$(CFLAGS) += -march=native $(all)
-endif
+# OLD below
 
-ifeq (${BUILDTYPE}, debug)
-	$(CFLAGS) += -DDEBUG -g -O0
-elif (${BUILDTYPE}, release)
-	$(CFLAGS) += -DNODEBUG -fvectorize -loop-vectorize -funroll-loops -Ofast
-else
-	$(CFLAGS) += -DNODEBUG -fvectorize -loop-vectorize -funroll-loops -Ofast
-endif
-
-LIBBITIO_OBJECTS     = $(BUILD_DIR)/%.o
-LIBBITIO_ARCHIVE     = $(BUILD_DIR)/libBitIO.a
+.all: $(LIBBITIO_STATIC) $(LIBBITIO_OBJECTS)
 
 $(LIBBITIO_OBJECTS): $(LIBBITIO_SOURCES) $(LIBBITIO_HEADERS)
-	mkdir -p $(BUILD_DIR)
-	$(CC) $(BUILD_FLAGS) -c $< -o $@ $(LDFLAGS)
+	mkdir -p $(BUILD_DIR)/$(ARCH)
+	$(CC) $(CFLAGS) -c $< -o $@ $(LDFLAGS)
 
-$(LIBBITIO_ARCHIVE): $(LIBBITIO_OBJECTS)
+$(LIBBITIO_STATIC): $(LIBBITIO_OBJECTS) $(LIBBITIO_HEADERS)
 	ar -crsu $@ $<
 	ranlib -sf $@
 
