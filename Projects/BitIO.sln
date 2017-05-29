@@ -19,8 +19,8 @@ Global
 		{4595E7FD-A17A-47DC-B7C3-E67884442EA7}.Debug|x64.Build.0 = Release|ARM
 		{4595E7FD-A17A-47DC-B7C3-E67884442EA7}.Release|ARM.ActiveCfg = Release|ARM
 		{4595E7FD-A17A-47DC-B7C3-E67884442EA7}.Release|ARM.Build.0 = Release|ARM
-		{4595E7FD-A17A-47DC-B7C3-E67884442EA7}.Release|x64.ActiveCfg = Release|ARM
-		{4595E7FD-A17A-47DC-B7C3-E67884442EA7}.Release|x64.Build.0 = Release|ARM
+		{4595E7FD-A17A-47DC-B7C3-E67884442EA7}.Release|x64.ActiveCfg = Release|x64
+		{4595E7FD-A17A-47DC-B7C3-E67884442EA7}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
