@@ -7,6 +7,11 @@
 * Also, I've tried keeping BitIO modern, by using the preprocessor as little as possible. Currently, it's exclusively used for including files, for the pragma once directive, and to ensure C++ compilers don't mistake it as C++.
 * Currently, there's no stable API, let alone ABI. I constantly refactor BitIO to keep everything as simple as possible.
 
+License:
+--------
+
+BitIO (meaning the libBitIO library) uses the BSD 3 clause (aka Revised BSD) license.
+
 Before You Compile:
 -------------------
 * Make sure the values in `BitIOConstants` make sense to you.
