@@ -132,7 +132,7 @@
       <PrecompiledHeaderFile />
       <MinimalRebuild>true</MinimalRebuild>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
       <OmitFramePointers>false</OmitFramePointers>
       <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
@@ -187,7 +187,7 @@
       <PrecompiledHeaderFile />
       <MinimalRebuild>true</MinimalRebuild>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
       <OmitFramePointers>false</OmitFramePointers>
       <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
@@ -241,7 +241,7 @@
       <PrecompiledHeaderFile />
       <MinimalRebuild>true</MinimalRebuild>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
       <OmitFramePointers>false</OmitFramePointers>
       <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
@@ -301,7 +301,7 @@
       <PrecompiledHeaderFile />
       <MinimalRebuild>true</MinimalRebuild>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
       <OmitFramePointers>false</OmitFramePointers>
       <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
