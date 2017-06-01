@@ -13,21 +13,21 @@ LIBBITIO_STATIC     := $(BUILD_DIR)/$(ARCH)/libBitIO.a
 
 .DEFAULT_GOAL: $(.all)
 
-.PHONY: .all debug release arm64 x86_64 clean
+.PHONY: all clean
 
 # OLD below
 
-.all: $(LIBBITIO_STATIC) $(LIBBITIO_OBJECTS)
-
-$(LIBBITIO_OBJECTS): $(LIBBITIO_SOURCES) $(LIBBITIO_HEADERS)
-	mkdir -p $(BUILD_DIR)/$(ARCH)
-	$(CC) $(CFLAGS) -c $< -o $@ $(LDFLAGS)
+all: $(LIBBITIO_STATIC) $(LIBBITIO_OBJECTS)
 
 $(LIBBITIO_STATIC): $(LIBBITIO_OBJECTS) $(LIBBITIO_HEADERS)
 	ar -crsu $@ $<
 	ranlib -sf $@
 
-clean:
+$(LIBBITIO_OBJECTS): $(LIBBITIO_SOURCES) $(LIBBITIO_HEADERS)
+	mkdir -p $(BUILD_DIR)/$(ARCH)
+	$(CC) $(CFLAGS) -c $< -o $@ $(LDFLAGS) -lm
+
+clean: $(LIBBITIO_STATIC) $(LIBBITIO_OBJECTS)
 	rm -f -v -r $(LIBBITIO_OBJECTS)
 	rm -f -v -r *.a
 	rm -f -v -r .DS_Store
