@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C1E990F1EF322D200EECC32 /* CommandLineInterface.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C1E990E1EF322D200EECC32 /* CommandLineInterface.c */; };
+		2C1E99111EF3238000EECC32 /* CommandLineInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C1E99101EF3238000EECC32 /* CommandLineInterface.h */; };
 		2C419FD91E5B00DB00FC804F /* BitIO.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C419FAA1E5AFF3800FC804F /* BitIO.h */; };
 		2C419FDD1E5B00E800FC804F /* BitIO.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C419FA21E5AFF2D00FC804F /* BitIO.c */; };
 		2C765FF11EC85F220067569F /* BWSTransform.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C838B5A1E998B0E003AEFD3 /* BWSTransform.c */; };
@@ -15,6 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C1E990E1EF322D200EECC32 /* CommandLineInterface.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = CommandLineInterface.c; path = ../libBitIO/src/CommandLineInterface.c; sourceTree = "<group>"; };
+		2C1E99101EF3238000EECC32 /* CommandLineInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommandLineInterface.h; path = ../libBitIO/include/CommandLineInterface.h; sourceTree = "<group>"; };
 		2C419FA21E5AFF2D00FC804F /* BitIO.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BitIO.c; path = ../libBitIO/src/BitIO.c; sourceTree = SOURCE_ROOT; usesTabs = 0; };
 		2C419FA41E5AFF2D00FC804F /* MD5.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MD5.c; path = ../libBitIO/src/MD5.c; sourceTree = SOURCE_ROOT; usesTabs = 0; };
 		2C419FAA1E5AFF3800FC804F /* BitIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BitIO.h; path = ../libBitIO/include/BitIO.h; sourceTree = SOURCE_ROOT; };
@@ -64,6 +68,8 @@
 			isa = PBXGroup;
 			children = (
 				2C419FA21E5AFF2D00FC804F /* BitIO.c */,
+				2C1E990E1EF322D200EECC32 /* CommandLineInterface.c */,
+				2C1E99101EF3238000EECC32 /* CommandLineInterface.h */,
 				2C419FA41E5AFF2D00FC804F /* MD5.c */,
 				2C838B5A1E998B0E003AEFD3 /* BWSTransform.c */,
 			);
@@ -88,6 +94,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C765FF21EC85F280067569F /* BWSTransform.h in Headers */,
+				2C1E99111EF3238000EECC32 /* CommandLineInterface.h in Headers */,
 				2C419FD91E5B00DB00FC804F /* BitIO.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -153,6 +160,7 @@
 				2CA93C5E1EC12FFA00D0C19F /* MD5.c in Sources */,
 				2C419FDD1E5B00E800FC804F /* BitIO.c in Sources */,
 				2C765FF11EC85F220067569F /* BWSTransform.c in Sources */,
+				2C1E990F1EF322D200EECC32 /* CommandLineInterface.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
