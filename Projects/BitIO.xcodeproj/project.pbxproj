@@ -69,9 +69,8 @@
 			children = (
 				2C419FA21E5AFF2D00FC804F /* BitIO.c */,
 				2C1E990E1EF322D200EECC32 /* CommandLineInterface.c */,
-				2C1E99101EF3238000EECC32 /* CommandLineInterface.h */,
-				2C419FA41E5AFF2D00FC804F /* MD5.c */,
 				2C838B5A1E998B0E003AEFD3 /* BWSTransform.c */,
+				2C419FA41E5AFF2D00FC804F /* MD5.c */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -80,8 +79,9 @@
 			isa = PBXGroup;
 			children = (
 				2C419FAA1E5AFF3800FC804F /* BitIO.h */,
-				2C419FAD1E5AFF3800FC804F /* MD5.h */,
+				2C1E99101EF3238000EECC32 /* CommandLineInterface.h */,
 				2C838B5C1E998B60003AEFD3 /* BWSTransform.h */,
+				2C419FAD1E5AFF3800FC804F /* MD5.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
