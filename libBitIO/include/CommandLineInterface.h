@@ -1,3 +1,12 @@
+/*!
+ @header    CommandLineInterface.h
+ @author    Marcus Johnson aka BumbleBritches57
+ @copyright 2017, Marcus Johnson
+ @version   2.0.0
+ FIXME:     The Version number needs to be FeatureLevel.ABI.BugFix
+ @brief     This header contains code related to parsing the command line arguments.
+ */
+
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -12,6 +21,13 @@ extern "C" {
     
     typedef struct      CommandLineSwitch         CommandLineSwitch;
     
+    /*! @typedef                CommandLineArgument
+     @abstract                                    "Contains the data to support a single switch".
+     @constant                  SwitchNum         "Which switch is this argument?".
+     @constant                  NumMetaSwitches   "How many meta switches are part of this argument?".
+     @constant                  MetaSwitches      "Pointer to an array that contains the numbers of the meta switches".
+     @constant                  ArgumentResult    "If there is a path or other result expected for this switch's argument, it'll be here".
+     */
     typedef struct      CommandLineArgument       CommandLineArgument;
     
     typedef struct      CommandLineInterface      CommandLineInterface;
@@ -21,13 +37,13 @@ extern "C" {
      @return                                      "Returns a pointer to an initialized CommandLineInterface instance".
      @param             NumSwitches               "The number of CommandLineSwitch structures to initalize".
      */
-    CommandLineInterface *InitCommandLineOptions(const size_t NumSwitches);
+    CommandLineInterface *InitCommandLineInterface(const size_t NumSwitches);
     
     /*!
      @abstract                                    "Deallocates the instance of CommandLineInterface pointed to by CLI".
      @param             CLI                       "Pointer to the instance of CommandLineInterface you want to delete".
      */
-    void                CloseCommandLineOptions(CommandLineInterface *CLI);
+    void                CloseCommandLineInterface(CommandLineInterface *CLI);
     
     /*!
      @abstract                                    "Parses argv for switches matching the ones contained in CLI".
@@ -78,9 +94,9 @@ extern "C" {
      @remark                                      "If your program is closed source, do NOT use the License options, use the EULA functions".
      @param             CLI                       "Pointer to the instance of CommandLineInterface".
      @param             License                   "The license this program is licensed under".
-     @param             IsEULA                    "Is this program released under an open source license, or a EULA?"
+     @param             IsProprietary             "Is this program released under an open source license, or a EULA?"
      */
-    void                SetCLILicense(CommandLineInterface *CLI, const char *License, const bool IsEULA);
+    void                SetCLILicense(CommandLineInterface *CLI, const char *License, const bool IsProprietary);
     
     /*!
      @abstract                                    "Sets the URL for the license, in the main program banner".
@@ -141,11 +157,12 @@ extern "C" {
     const char         *GetCLISwitchResult(const CommandLineInterface *CLI, const uint64_t SwitchNum);
     
     /*!
-     @abstract                                    "Tells if a certain switch has been found".
-     @param             CLI                       "Pointer to CommandLineInterface instance".
-     @param             SwitchNum                 "The switch to check".
+     @abstract                                    "Sets MetaFlag switch as a meta flag for switch SwitchNum".
+     @param             CLI                       "Pointer to CommandLineInterface".
+     @param             SwitchNum                 "Which switch are you trying to say has a meta flag?".
+     @param             MetaFlag                  "Which flag number is a meta flag for SwitchNum?".
      */
-    bool                GetCLISwitchPresence(const CommandLineInterface *CLI, const uint64_t SwitchNum);
+    void                SetCLISwitchMetaFlag(const CommandLineInterface *CLI, const size_t SwitchNum, const size_t MetaFlag);
     
 #ifdef __cplusplus
 }

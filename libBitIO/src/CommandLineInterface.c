@@ -7,35 +7,69 @@
 extern "C" {
 #endif
     
-    struct CommandLineSwitch { // Users set each switches info, the arguments are internal.
-        bool               IsMetaSwitch; // If a switch is a meta switch, there is no result, and it's counted as part of the previous/following argument.
-        const char        *Flag;
-        size_t             FlagSize;
-        const char        *SwitchDescription;
-        const char        *SwitchResult;
+    /*!
+     @struct                 CommandLineSwitch
+     @abstract                                         "Contains the data to support a single switch".
+     @remark                                           "Should non-Meta switches be assumed to have a result by default?"
+     @constant               IsMetaSwitch              "Is this switch a meta switch?".
+     @constant               SwitchHasResult           "Does this switch have a result?".
+     @constant               Flag                      "What is this switch called, how do we identify it?".
+     @constant               FlagSize                  "What is the strlen of this switch (assuming ASCII, codeunits if UTF)".
+     @constant               SwitchDescription         "Describe to the user what this switch does".
+     @constant               NumMetaSwitches           "How many meta switches are part of this argument?".
+     @constant               MetaSwitches              "Pointer to an array that contains the numbers of the meta switches".
+     */
+    struct CommandLineSwitch {
+        bool                 IsMetaSwitch;
+        bool                 SwitchHasResult;
+        const char          *Flag;
+        size_t               FlagSize;
+        const char          *SwitchDescription;
+        uint64_t             NumMetaSwitches;
+        uint64_t            *MetaSwitches;
     };
     
+    /*! 
+     @struct                 CommandLineArgument
+     @abstract                                         "Contains the data to support a single argument".
+     @constant               SwitchNum                 "Which switch is this argument?".
+     @constant               ArgumentResult            "If there is a path or other result expected for this switch's argument, it'll be here".
+     */
     struct CommandLineArgument {
-        uint64_t           SwitchNum;
-        uint64_t           NumMetaSwitches;
-        uint64_t          *MetaSwitches;              // array of the meta switch numbers.
+        uint64_t             SwitchNum;
+        const char          *ArgumentResult;
     };
     
+    /*!
+     @struct                 CommandLineInterface
+     @abstract                                         "Contains all the information on the command line in an easy to understand format".
+     @constant               NumSwitches               "How many switches are there in CLI->Switches?".
+     @constant               MinSwitches               "The minimum number of switches to accept without dumping the help".
+     @constant               IsProprietary             "Is this program proprietary?".
+     @constant               ProgramName               "What is the name of this program?".
+     @constant               ProgramAuthor             "Who wrote this program?".
+     @constant               ProgramDescription        "What does this program do?".
+     @constant               ProgramVersion            "What is the version of this program?".
+     @constant               ProgramCopyright          "String containing the copyright years like "2015 - 2017"".
+     @constant               ProgramLicenseDescription "Describe the license or EULA".
+     @constant               ProgramLicenseURL         "URL for the EULA, ToS, or Open source license".
+     @constant               Switches                  "Pointer to an array of switches".
+     @constant               Arguments                 "Pointer to an array of arguments".
+     */
     struct CommandLineInterface {
-        size_t             NumSwitches;
-        size_t             MinSwitches;
-        bool               IsProprietary:1;           // IsOpenSource in the old version
-        const char        *ProgramName;               // Name in the old version
-        const char        *ProgramVersion;            // Version in the old version
-        const char        *ProgramDescription;        // Description in the old version
-        const char        *ProgramAuthor;             // Author in the old version
-        const char        *ProgramCopyright;          // Copyright in the old version; it's supposed to be a date range like "2015 - 2017"
-        const char        *ProgramLicenseDescription; // License in the old version
-        const char        *ProgramLicenseURL;         // LicenseURL in the old version
-        CommandLineSwitch *Arguments;                 // Pointer to an array of CommandLineSwitch, matches argv, except for unknown switches, those are ignored.
-        /*
-         So, that means that we need to include which switch was found in the switch, along with any meta flags
-         */
+        size_t               NumSwitches;
+        size_t               NumArguments;
+        size_t               MinSwitches;
+        bool                 IsProprietary:1;
+        const char          *ProgramName;
+        const char          *ProgramAuthor;
+        const char          *ProgramDescription;
+        const char          *ProgramVersion;
+        const char          *ProgramCopyright;
+        const char          *ProgramLicenseDescription;
+        const char          *ProgramLicenseURL;
+        CommandLineSwitch   *Switches;
+        CommandLineArgument *Arguments;
     };
     
     CommandLineInterface *InitCommandLineInterface(const size_t NumSwitches) {
@@ -44,29 +78,21 @@ extern "C" {
         if (errno != 0) {
             char *ErrnoError = (char*)calloc(1, 96);
             strerror_r(errno, ErrnoError, 96);
-            Log(LOG_ERR, "libBitIO", "InitCommandLineOptions", "Errno Initing CommandLineInterface: %s\n", ErrnoError);
+            Log(LOG_ERR, "libBitIO", "InitCommandLineInterface", "Errno Initing CommandLineInterface: %s\n", ErrnoError);
             free(ErrnoError);
+            errno = 0;
         }
-        errno = 0;
         CLI->NumSwitches        = NumSwitches;
         
-        size_t CLISize          = sizeof(CommandLineInterface);
-        size_t SwitchSize       = sizeof(CommandLineSwitch);
+        size_t ArgumentSize     = sizeof(CommandLineArgument);
         
-        CLI->Arguments             = (CommandLineSwitch*)calloc(NumSwitches, SwitchSize);
+        CLI->Arguments          = (CommandLineArgument*)calloc(NumSwitches, ArgumentSize);
         if (errno != 0) {
             char *ErrnoError    = (char*)calloc(1, 96);
             strerror_r(errno, ErrnoError, 96);
-            Log(LOG_ERR, "libBitIO", "InitCommandLineOptions", "Errno Initing CommandLineSwitch: %s\n", ErrnoError);
+            Log(LOG_ERR, "libBitIO", "InitCommandLineInterface", "Errno Initing CommandLineSwitch: %s\n", ErrnoError);
             free(ErrnoError);
-        }
-        errno                   = 0;
-        CLI->SwitchCount        = (uint8_t*)calloc(NumSwitches, sizeof(uint8_t));
-        if (errno != 0) {
-            char *ErrnoError    = (char*)calloc(1, 96);
-            strerror_r(errno, ErrnoError, 96);
-            Log(LOG_ERR, "libBitIO", "InitCommandLineOptions", "Errno Initing SwitchCount in CommandLineInterface: %s\n", ErrnoError);
-            free(ErrnoError);
+            errno               = 0;
         }
         
         return CLI;
@@ -74,22 +100,28 @@ extern "C" {
     
     void CloseCommandLineInterface(CommandLineInterface *CLI) {
         if (CLI == NULL) {
-            Log(LOG_ERR, "libBitIO", "CloseCommandLineOptions", "Pointer to CommandLineInterface is NULL\n");
+            Log(LOG_ERR, "libBitIO", "CloseCommandLineInterface", "Pointer to CommandLineInterface is NULL\n");
         } else {
-            /* Free CommandLineSwitch */
-            free(CLI->Arguments->DependsOn);
-            free(CLI->Arguments->Flag);
-            free(CLI->Arguments->SwitchDescription);
-            free(CLI->Arguments->SwitchResult);
+            /* Free CommandLineSwitches */
+            for (size_t Switch = 0; Switch < CLI->NumSwitches; Switch++) {
+                free(CLI->Switches[Switch].Flag);
+                free(CLI->Switches[Switch].SwitchDescription);
+            }
+            free(CLI->Switches);
+            /* Free CommandLineArguments */
+            for (size_t Arg = 0; Arg < CLI->NumArguments; Arg++) {
+                free(CLI->Arguments[Arg].ArgumentResult);
+                free(CLI->Arguments[Arg].MetaSwitches);
+            }
             free(CLI->Arguments);
             /* Free CommandLineInterface */
+            free(CLI->ProgramName);
             free(CLI->ProgramAuthor);
-            free(CLI->ProgramCopyright);
             free(CLI->ProgramDescription);
+            free(CLI->ProgramVersion);
+            free(CLI->ProgramCopyright);
             free(CLI->ProgramLicenseDescription);
             free(CLI->ProgramLicenseURL);
-            free(CLI->ProgramName);
-            free(CLI->ProgramVersion);
             free(CLI);
         }
     }
@@ -144,29 +176,29 @@ extern "C" {
         }
     }
     
-    void SetCLILicense(CommandLineInterface *CLI, const char *License, const bool IsEULA) {
+    void SetCLILicense(CommandLineInterface *CLI, const char *License, const bool IsProprietary) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLILicense", "Pointer to CommandLineInterface is NULL\n");
         } else if (License == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLILicense", "Pointer to License is NULL\n");
         } else {
-            CLI->ProgramLicenseDescription      = License;
-            if (IsEULA == true) {
-                CLI->IsProprietary = false;
+            CLI->ProgramLicenseDescription = License;
+            if (IsProprietary == true) {
+                CLI->IsProprietary         = false;
             } else {
-                CLI->IsProprietary = true;
+                CLI->IsProprietary         = true;
             }
         }
     }
     
-    void SetCLILicenseURL(CommandLineInterface *CLI, const char *LicenseURL, const bool IsEULA) {
+    void SetCLILicenseURL(CommandLineInterface *CLI, const char *LicenseURL, const bool IsProprietary) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLILicenseURL", "Pointer to CommandLineInterface is NULL\n");
         } else if (LicenseURL == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLILicenseURL", "Pointer to LicenseURL is NULL\n");
         } else {
             CLI->ProgramLicenseURL = LicenseURL;
-            if (IsEULA == true) {
+            if (IsProprietary == true) {
                 CLI->IsProprietary = false;
             } else {
                 CLI->IsProprietary = true;
@@ -190,8 +222,8 @@ extern "C" {
         } else if (SwitchNum > CLI->NumSwitches) {
             Log(LOG_ERR, "libBitIO", "SetCLISwitchFlag", "SwitchNum %d is too high, there are only %d switches\n", SwitchNum, CLI->NumSwitches);
         } else {
-            CLI->Arguments[SwitchNum].Flag     = Flag;
-            CLI->Arguments[SwitchNum].FlagSize = FlagSize + 1; // add one for the trailing NULL
+            CLI->Switches[SwitchNum].Flag     = Flag;
+            CLI->Switches[SwitchNum].FlagSize = FlagSize + 1; // add one for the trailing NULL
         }
     }
     
@@ -203,7 +235,7 @@ extern "C" {
         } else if (SwitchNum > CLI->NumSwitches) {
             Log(LOG_ERR, "libBitIO", "SetCLISwitchDescription", "SwitchNum %d is too high, there are only %d switches\n", SwitchNum, CLI->NumSwitches);
         } else {
-            CLI->Arguments[SwitchNum].SwitchDescription = Description;
+            CLI->Switches[SwitchNum].SwitchDescription = Description;
         }
     }
     
@@ -218,12 +250,6 @@ extern "C" {
             if (CLI->DependentSwitchesPresent == false) {
                 CLI->DependentSwitchesPresent  = true;
             }
-            /*
-             CLI->Arguments[SwitchNum].IsDependent = true;
-             CLI->Arguments[SwitchNum].DependsOn   = DependsOn;
-             
-             CLI->Arguments[DependsOn].IsDependedOn = true;
-             */
         }
     }
     
@@ -233,7 +259,7 @@ extern "C" {
         } else if (SwitchNum > CLI->NumSwitches) {
             Log(LOG_ERR, "libBitIO", "SetCLISwitchResultStatus", "SwitchNum: %d, should be between 0 and %d\n", SwitchNum, CLI->NumSwitches);
         } else {
-            CLI->Arguments[SwitchNum].IsThereAResult = IsThereAResult & 1;
+            CLI->Switches[SwitchNum].SwitchHasResult = IsThereAResult & 1;
         }
     }
     
@@ -244,21 +270,9 @@ extern "C" {
         } else if (SwitchNum > CLI->NumSwitches) {
             Log(LOG_ERR, "libBitIO", "GetCLISwitchResult", "SwitchNum: %d, should be between 0 and %d\n", SwitchNum, CLI->NumSwitches);
         } else {
-            Result = CLI->Arguments[SwitchNum].SwitchResult;
+            Result = CLI->Switches[SwitchNum].SwitchResult;
         }
         return Result;
-    }
-    
-    bool GetCLISwitchPresence(const CommandLineInterface *CLI, const uint64_t SwitchNum) {
-        bool Status = 0;
-        if (CLI == NULL) {
-            Log(LOG_ERR, "libBitIO", "GetCLISwitchPresence", "Pointer to CommandLineInterface is NULL\n");
-        } else if (SwitchNum > CLI->NumSwitches) { // - 1 so the hidden help option isn't exposed
-            Log(LOG_ERR, "libBitIO", "GetCLISwitchPresence", "SwitchNum: %d, should be between 0 and %d\n", SwitchNum, CLI->NumSwitches);
-        } else {
-            Status = CLI->Arguments[SwitchNum].SwitchFound;
-        }
-        return Status;
     }
     
     static void DisplayCLIHelp(const CommandLineInterface *CLI) {
@@ -267,16 +281,10 @@ extern "C" {
         } else {
             printf("Accepted prefixes: -, --, /\n");
             printf("Options: \n");
-            // It would be cool if we could visually distinguish which options depend on which ones as well.
-            
-            // In order to do that, we need to have an if statement that checks if CLI->DependentSwitchesPresent is true
-            
             /*
-             
              I'm thinking something like:
              
-             Accepted prefixes: -, --, /
-             Options:
+             Options: (-|--|/)
              Input: Input file or stdin with -
              Output: Output file or stdout with -
              Encode: Encode input to PNG
@@ -320,12 +328,31 @@ extern "C" {
         } else {
             printf("%s version %s by %s © %s: %s, ", CLI->ProgramName, CLI->ProgramVersion, CLI->ProgramAuthor, CLI->ProgramCopyright, CLI->ProgramDescription); // Generic part of the string.
             if (CLI->IsProprietary == true) {
-                printf("Released under the \"%s\" license: %s\n\n", CLI->ProgramLicenseDescription, CLI->ProgramLicenseDescriptionURL);
+                printf("Released under the \"%s\" license: %s\n\n", CLI->ProgramLicenseDescription, CLI->ProgramLicenseURL);
             } else {
-                printf("By using this software, you agree to the End User License Agreement %s, available at: %s\n\n", CLI->ProgramLicenseDescription, CLI->ProgramLicenseDescriptionURL);
+                printf("By using this software, you agree to the End User License Agreement %s, available at: %s\n\n", CLI->ProgramLicenseDescription, CLI->ProgramLicenseURL);
             }
-            
         }
+    }
+    
+    void SetCLISwitchMetaFlag(const CommandLineInterface *CLI, const size_t SwitchNum, const size_t MetaFlag) {
+        /*
+         So, SwitchNum's MetaFlags is incremented and it's Metaflag is set to MetaFlag.
+         */
+        if (CLI == NULL) {
+            Log(LOG_ERR, "libBitIO", "SetCLISwitchMetaFlag", "Pointer to CommandLineInterface is NULL\n");
+        } else {
+            CLI->Switches[SwitchNum].NumMetaSwitches += 1;
+            CLI->Switches[SwitchNum].MetaSwitches     = realloc(CLI->Switches[SwitchNum].MetaSwitches, sizeof(CLI->Switches[SwitchNum].MetaSwitches) + sizeof(uintptr_t));
+            CLI->Switches[SwitchNum].MetaSwitches[CLI->Switches[SwitchNum].NumMetaSwitches] = MetaFlag;
+        }
+    }
+    
+    void ParseCommandLineArguments2(const CommandLineInterface *CLI, const int argc, const char *argv[]) {
+        /*
+         Read Argv and CLI->Switches put everything into a nice easy way to understand it all.
+         So, we need to set which
+         */
     }
     
     void ParseCommandLineArguments(const CommandLineInterface *CLI, const int argc, const char *argv[]) {
