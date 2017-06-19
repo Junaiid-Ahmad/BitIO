@@ -43,7 +43,8 @@ extern "C" {
     /*!
      @struct                 CommandLineInterface
      @abstract                                         "Contains all the information on the command line in an easy to understand format".
-     @constant               NumSwitches               "How many switches are there in CLI->Switches?".
+     @constant               NumSwitches               "How many switches are there?".
+     @constant               NumArguments              "The number of arguments present in CLI->Arguments".
      @constant               MinSwitches               "The minimum number of switches to accept without dumping the help".
      @constant               IsProprietary             "Is this program proprietary?".
      @constant               ProgramName               "What is the name of this program?".
@@ -265,44 +266,38 @@ extern "C" {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "DisplayCLIHelp", "Pointer to CommandLineInterface is NULL\n");
         } else {
-            printf("Accepted prefixes: -, --, /\n");
-            printf("Options: \n");
+            printf("Options: (-|--|/)\n");
             /*
              I'm thinking something like:
              
              Options: (-|--|/)
              Input: Input file or stdin with -
+             	LeftEye: Meta flag that says this is the left eye.
+             	RightEye: Meta flag that says this is the right eye.
              Output: Output file or stdout with -
+            	LeftEye: Meta flag that says this is the left eye.
+             	RightEye: Meta flag that says this is the right eye.
              Encode: Encode input to PNG
              Resolution: Resolution in WidthxHeight format (if 3D specify the per eye resolution)
              Interlace: Resolution in WidthxHeight format (if 3D specify the per eye resolution)
              Optimize: Optimize the encoded PNG to be as small as possible (try all filter options)
-             Stereo3D: Encode an image as a single stereoscopic, 3D image (the first input should be the left eye)
              Decode: Decode PNG to output
              Split3D: Decode stereo PNG to 2 output files
-             
              */
             
-            if (CLI->DependentSwitchesPresent == true) {
-                // Well, logically we should iterate over each switch in numerical order, and if it has a dependent switch, we should print that first, then tab the dependency.
-                // But for that to work seamlessly, we need to have a flag on each dependenency that says if it's been printed or not.
-                // But why put that in the structs when it's only needed here?
-                bool *DependentSwitchPrinted = (bool*)calloc(CLI->NumSwitches, sizeof(bool));
-                // So, as we loop we need to check if a switch is dependent on anything, if it is, check if the dependent switch has been printed
+            for (size_t CurrentArgument = 0; CurrentArgument < CLI->NumArguments; CurrentArgument++) {
+                size_t CurrentSwitch = CLI->Arguments[CurrentArgument].SwitchNum;
                 
-                for (size_t DepSwitch = 0; DepSwitch < CLI->NumSwitches; DepSwitch++) {
-                    /*
-                     if (CLI->Arguments[DepSwitch].IsDependent == true && DependentSwitchPrinted[DepSwitch] == false) {
-                     // Print the dependent switch stored in Switch->DependsOn
-                     size_t DepSwitchDependsOn = CLI->Arguments[DepSwitch].DependsOn;
-                     printf("\t%s: %s\n", CLI->Arguments[DepSwitchDependsOn].Flag, CLI->Arguments[DepSwitchDependsOn].SwitchDescription);
-                     }
-                     */
-                }
-                free(DependentSwitchPrinted);
-            } else {
-                for (uint8_t SwitchNum = 0; SwitchNum < CLI->NumSwitches - 1; SwitchNum++) {
-                    printf("\t%s: %s\n", CLI->Arguments[SwitchNum].Flag, CLI->Arguments[SwitchNum].SwitchDescription);
+                if (CLI->Switches[CurrentSwitch].IsMetaSwitch == false) {
+                    // This switch is not a meta switch, so print it.
+                    printf("%s: %s", CLI->Switches[CurrentSwitch].Flag, CLI->Switches[CurrentSwitch].SwitchDescription);
+                    // Now we need to see if CurrentSwitch has any meta switches, and if so, prints them, but with a level of indentention.
+                    if (CLI->Switches[CurrentArgument].MetaSwitches != NULL) {
+                        for (size_t MetaSwitch = 0; MetaSwitch < CLI->Switches[CurrentSwitch].NumMetaSwitches; MetaSwitch++) {
+                            size_t CurrentMetaSwitch = CLI->Switches[CurrentSwitch].MetaSwitches[MetaSwitch];
+                            printf("\t%s: %s", CLI->Switches[CurrentMetaSwitch].Flag, CLI->Switches[CurrentMetaSwitch].SwitchDescription);
+                        }
+                    }
                 }
             }
         }
