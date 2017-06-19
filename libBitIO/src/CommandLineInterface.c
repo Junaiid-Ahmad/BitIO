@@ -98,7 +98,7 @@ extern "C" {
         return CLI;
     }
     
-    void CloseCommandLineInterface(CommandLineInterface *CLI) {
+    void CloseCommandLineInterface(const CommandLineInterface *CLI) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "CloseCommandLineInterface", "Pointer to CommandLineInterface is NULL\n");
         } else {
@@ -126,7 +126,7 @@ extern "C" {
         }
     }
     
-    void SetCLIName(CommandLineInterface *CLI, const char *Name) {
+    void SetCLIName(const CommandLineInterface *CLI, const char *Name) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLIName", "Pointer to CommandLineInterface is NULL\n");
         } else if (Name == NULL) {
@@ -136,7 +136,7 @@ extern "C" {
         }
     }
     
-    void SetCLIVersion(CommandLineInterface *CLI, const char *VersionString) {
+    void SetCLIVersion(const CommandLineInterface *CLI, const char *VersionString) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLIVersion", "Pointer to CommandLineInterface is NULL\n");
         } else if (VersionString == NULL) {
@@ -146,7 +146,7 @@ extern "C" {
         }
     }
     
-    void SetCLIDescription(CommandLineInterface *CLI, const char *Description) {
+    void SetCLIDescription(const CommandLineInterface *CLI, const char *Description) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLIDescription", "Pointer to CommandLineInterface is NULL\n");
         } else if (Description == NULL) {
@@ -156,7 +156,7 @@ extern "C" {
         }
     }
     
-    void SetCLIAuthor(CommandLineInterface *CLI, const char *Author) {
+    void SetCLIAuthor(const CommandLineInterface *CLI, const char *Author) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLIAuthor", "Pointer to CommandLineInterface is NULL\n");
         } else if (Author == NULL) {
@@ -166,7 +166,7 @@ extern "C" {
         }
     }
     
-    void SetCLICopyright(CommandLineInterface *CLI, const char *Copyright) {
+    void SetCLICopyright(const CommandLineInterface *CLI, const char *Copyright) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLICopyright", "Pointer to CommandLineInterface is NULL\n");
         } else if (Copyright == NULL) {
@@ -176,7 +176,7 @@ extern "C" {
         }
     }
     
-    void SetCLILicense(CommandLineInterface *CLI, const char *License, const bool IsProprietary) {
+    void SetCLILicense(const CommandLineInterface *CLI, const char *License, const bool IsProprietary) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLILicense", "Pointer to CommandLineInterface is NULL\n");
         } else if (License == NULL) {
@@ -191,7 +191,7 @@ extern "C" {
         }
     }
     
-    void SetCLILicenseURL(CommandLineInterface *CLI, const char *LicenseURL, const bool IsProprietary) {
+    void SetCLILicenseURL(const CommandLineInterface *CLI, const char *LicenseURL, const bool IsProprietary) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLILicenseURL", "Pointer to CommandLineInterface is NULL\n");
         } else if (LicenseURL == NULL) {
@@ -206,7 +206,7 @@ extern "C" {
         }
     }
     
-    void SetCLIMinSwitches(CommandLineInterface *CLI, const uint64_t MinSwitches) {
+    void SetCLIMinSwitches(const CommandLineInterface *CLI, const uint64_t MinSwitches) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLIMinSwitches", "Pointer to CommandLineInterface is NULL\n");
         } else {
@@ -214,7 +214,7 @@ extern "C" {
         }
     }
     
-    void SetCLISwitchFlag(CommandLineInterface *CLI, const uint64_t SwitchNum, const char *Flag, const size_t FlagSize) {
+    void SetCLISwitchFlag(const CommandLineInterface *CLI, const uint64_t SwitchNum, const char *Flag, const size_t FlagSize) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLISwitchFlag", "Pointer to CommandLineInterface is NULL\n");
         } else if (Flag == NULL) {
@@ -227,7 +227,7 @@ extern "C" {
         }
     }
     
-    void SetCLISwitchDescription(CommandLineInterface *CLI, const uint64_t SwitchNum, const char *Description) {
+    void SetCLISwitchDescription(const CommandLineInterface *CLI, const uint64_t SwitchNum, const char *Description) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLISwitchDescription", "Pointer to CommandLineInterface is NULL\n");
         } else if (Description == NULL) {
@@ -239,21 +239,7 @@ extern "C" {
         }
     }
     
-    void SetCLISwitchDependency(CommandLineInterface *CLI, const uint64_t SwitchNum, const uint64_t DependsOn) {
-        if (CLI == NULL) {
-            Log(LOG_ERR, "libBitIO", "SetCLISwitchDependency", "Pointer to CommandLineInterface is NULL\n");
-        } else if (SwitchNum > CLI->NumSwitches) {
-            Log(LOG_ERR, "libBitIO", "SetCLISwitchDependency", "SwitchNum: %d, should be between 0 and %d\n", SwitchNum, CLI->NumSwitches);
-        } else if (DependsOn > CLI->NumSwitches) {
-            Log(LOG_ERR, "libBitIO", "SetCLISwitchDependency", "DependsOn: %d, should be between 0 and %d\n", DependsOn, CLI->NumSwitches);
-        } else {
-            if (CLI->DependentSwitchesPresent == false) {
-                CLI->DependentSwitchesPresent  = true;
-            }
-        }
-    }
-    
-    void SetCLISwitchResultStatus(CommandLineInterface *CLI, const uint64_t SwitchNum, const bool IsThereAResult) {
+    void SetCLISwitchResultStatus(const CommandLineInterface *CLI, const uint64_t SwitchNum, const bool IsThereAResult) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLISwitchResultStatus", "Pointer to CommandLineInterface is NULL\n");
         } else if (SwitchNum > CLI->NumSwitches) {
