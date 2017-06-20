@@ -250,7 +250,8 @@ extern "C" {
         }
     }
     
-    const char *GetCLISwitchResult(const CommandLineInterface *CLI, const uint64_t SwitchNum) {
+    /* IDK how to actually do this just yet, becasue there may be multiple copies of a single switch in the argument list.
+    const char *GetCLISwitchResult(const CommandLineInterface *CLI, const uint64_t SwitchNum, ) {
         const char *Result = NULL;
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "GetCLISwitchResult", "Pointer to CommandLineInterface is NULL\n");
@@ -261,6 +262,7 @@ extern "C" {
         }
         return Result;
     }
+     */
     
     static void DisplayCLIHelp(const CommandLineInterface *CLI) {
         if (CLI == NULL) {
