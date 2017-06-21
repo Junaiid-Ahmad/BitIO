@@ -44,8 +44,8 @@ extern "C" {
      @struct                 CommandLineInterface
      @abstract                                         "Contains all the information on the command line in an easy to understand format".
      @constant               NumSwitches               "How many switches are there?".
-     @constant               NumArguments              "The number of arguments present in CLI->Arguments".
      @constant               MinSwitches               "The minimum number of switches to accept without dumping the help".
+     @constant               NumArguments              "The number of arguments present in argv, after extracting any meta switches".
      @constant               IsProprietary             "Is this program proprietary?".
      @constant               ProgramName               "What is the name of this program?".
      @constant               ProgramAuthor             "Who wrote this program?".
@@ -59,8 +59,8 @@ extern "C" {
      */
     struct CommandLineInterface {
         size_t               NumSwitches;
-        size_t               NumArguments;
         size_t               MinSwitches;
+        size_t               NumArguments;
         bool                 IsProprietary:1;
         const char          *ProgramName;
         const char          *ProgramAuthor;
@@ -77,31 +77,28 @@ extern "C" {
         errno = 0;
         CommandLineInterface *CLI = (CommandLineInterface*)calloc(1, sizeof(CommandLineInterface));
         if (errno != 0) {
-            char *ErrnoError = (char*)calloc(1, 96);
+            char *ErrnoError      = (char*)calloc(1, 96);
             strerror_r(errno, ErrnoError, 96);
             Log(LOG_ERR, "libBitIO", "InitCommandLineInterface", "Errno Initing CommandLineInterface: %s\n", ErrnoError);
             free(ErrnoError);
             errno = 0;
         }
-        CLI->NumSwitches        = NumSwitches;
-        
-        size_t ArgumentSize     = sizeof(CommandLineArgument);
-        
-        CLI->Arguments          = (CommandLineArgument*)calloc(NumSwitches, ArgumentSize);
+        CLI->NumSwitches          = NumSwitches;
+        size_t SwitchSize         = sizeof(CommandLineSwitch);
+        CLI->Switches             = (CommandLineSwitch*)calloc(NumSwitches, SwitchSize);
         if (errno != 0) {
-            char *ErrnoError    = (char*)calloc(1, 96);
+            char *ErrnoError      = (char*)calloc(1, 96);
             strerror_r(errno, ErrnoError, 96);
             Log(LOG_ERR, "libBitIO", "InitCommandLineInterface", "Errno Initing CommandLineSwitch: %s\n", ErrnoError);
             free(ErrnoError);
-            errno               = 0;
+            errno                 = 0;
         }
-        
         return CLI;
     }
     
-    void CloseCommandLineInterface(const CommandLineInterface *CLI) {
+    void DeinitCommandLineInterface(CommandLineInterface *CLI) {
         if (CLI == NULL) {
-            Log(LOG_ERR, "libBitIO", "CloseCommandLineInterface", "Pointer to CommandLineInterface is NULL\n");
+            Log(LOG_ERR, "libBitIO", "DeinitCommandLineInterface", "Pointer to CommandLineInterface is NULL\n");
         } else {
             /* Free CommandLineSwitches */
             for (size_t Switch = 0; Switch < CLI->NumSwitches; Switch++) {
@@ -111,8 +108,10 @@ extern "C" {
             free(CLI->Switches);
             /* Free CommandLineArguments */
             for (size_t Arg = 0; Arg < CLI->NumArguments; Arg++) {
-                free(CLI->Arguments[Arg].ArgumentResult);
-                free(CLI->Arguments[Arg].MetaSwitches);
+                for (size_t MetaSwitch = 0; MetaSwitch < CLI->Switches[Arg].NumMetaSwitches; MetaSwitch++) {
+                    free(CLI->Arguments[Arg].ArgumentResult);
+                    free(CLI->Arguments[Arg].MetaSwitches);
+                }
             }
             free(CLI->Arguments);
             /* Free CommandLineInterface */
@@ -127,7 +126,7 @@ extern "C" {
         }
     }
     
-    void SetCLIName(const CommandLineInterface *CLI, const char *Name) {
+    void SetCLIName(CommandLineInterface *CLI, const char *Name) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLIName", "Pointer to CommandLineInterface is NULL\n");
         } else if (Name == NULL) {
@@ -332,10 +331,38 @@ extern "C" {
     }
     
     void ParseCommandLineArguments2(const CommandLineInterface *CLI, const int argc, const char *argv[]) {
-        /*
-         Read Argv and CLI->Switches put everything into a nice easy way to understand it all.
-         So, we need to set which
-         */
+        if (CLI == NULL) {
+            Log(LOG_ERR, "libBitIO", "ParseCommandLineArguments2", "Pointer to CommandLineInterface is NULL\n");
+        } else if (argc == 1 || (argc < CLI->MinSwitches && CLI->MinSwitches > 1)) {
+            DisplayProgramBanner(CLI);
+            DisplayCLIHelp(CLI);
+        } else if (argc >= CLI->MinSwitches && CLI->MinSwitches > 1) {
+            DisplayProgramBanner(CLI);
+        } else {
+            errno = 0;
+            char *SingleDashFlag  = NULL;
+            char *DoubleDashFlag  = NULL;
+            char *SingleSlashFlag = NULL;
+            
+            // loop over argv looking for arguments
+            for (size_t ArgvArgument = 0; ArgvArgument < argc; ArgvArgument++) {
+                for (size_t CurrentSwitch = 0; CurrentSwitch < CLI->NumSwitches; CurrentSwitch++) {
+                    
+                    SingleDashFlag  = (char*) calloc(1, CLI->Switches[CurrentSwitch].FlagSize + 1);
+                    DoubleDashFlag  = (char*) calloc(1, CLI->Switches[CurrentSwitch].FlagSize + 2);
+                    SingleSlashFlag = (char*) calloc(1, CLI->Switches[CurrentSwitch].FlagSize + 1);
+                    
+                    snprintf(SingleDashFlag, CLI->Switches[CurrentSwitch].FlagSize + 1, "-%s", CLI->Switches[CurrentSwitch].Flag);
+                    snprintf(DoubleDashFlag, CLI->Switches[CurrentSwitch].FlagSize + 2, "--%s", CLI->Switches[CurrentSwitch].Flag);
+                    snprintf(SingleSlashFlag, CLI->Switches[CurrentSwitch].FlagSize + 1, "/%s", CLI->Switches[CurrentSwitch].Flag);
+                    
+                    if ((strcasecmp(argv[ArgvArgument], SingleDashFlag) == 0 || strcasecmp(argv[ArgvArgument], DoubleDashFlag) == 0 || strcasecmp(argv[ArgvArgument], SingleSlashFlag) == 0) && ArgvArgument == 1) { // This argument = a switch flag; There has to be a better way than ArgvArgument == 1 tho.
+                        
+                    // So, we set CLI->Arguments[ArgvArgument] to this, this is the easy part, we haven't run into meta switches yet.
+                    }
+                }
+            }
+        }
     }
     
     void ParseCommandLineArguments(const CommandLineInterface *CLI, const int argc, const char *argv[]) {

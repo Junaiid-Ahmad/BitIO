@@ -43,7 +43,7 @@ extern "C" {
      @abstract                                    "Deallocates the instance of CommandLineInterface pointed to by CLI".
      @param             CLI                       "Pointer to the instance of CommandLineInterface you want to delete".
      */
-    void                CloseCommandLineInterface(const CommandLineInterface *CLI);
+    void                DeinitCommandLineInterface(CommandLineInterface *CLI);
     
     /*!
      @abstract                                    "Parses argv for switches matching the ones contained in CLI".
