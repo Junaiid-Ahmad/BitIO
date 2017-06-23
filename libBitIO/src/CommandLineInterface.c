@@ -17,6 +17,7 @@ extern "C" {
      @constant               FlagSize                  "What is the strlen of this switch (assuming ASCII, codeunits if UTF)".
      @constant               SwitchDescription         "Describe to the user what this switch does".
      @constant               NumMetaSwitches           "How many meta switches are part of this argument?".
+     @constant               MaxMetaSwitches           "How many meta switches can be active at once?".
      @constant               MetaSwitches              "Pointer to an array that contains the numbers of the meta switches".
      */
     struct CommandLineSwitch {
@@ -26,6 +27,7 @@ extern "C" {
         size_t               FlagSize;
         const char          *SwitchDescription;
         uint64_t             NumMetaSwitches;
+        uint64_t             MaxMetaSwitches;
         uint64_t            *MetaSwitches;
     };
     
@@ -34,10 +36,14 @@ extern "C" {
      @abstract                                         "Contains the data to support a single argument".
      @constant               SwitchNum                 "Which switch is this argument?".
      @constant               ArgumentResult            "If there is a path or other result expected for this switch's argument, it'll be here".
+     @constant               NumMetaArgs               "How many meta arguments were found in this argument?".
+     @constant               MetaArgs                  "Array of meta argument numbers, to look up in CLI->Switches".
      */
     struct CommandLineArgument {
         uint64_t             SwitchNum;
         const char          *ArgumentResult;
+        uint64_t             NumMetaArgs;
+        uint64_t            *MetaArgs;
     };
     
     /*!
@@ -75,9 +81,9 @@ extern "C" {
     
     CommandLineInterface *InitCommandLineInterface(const size_t NumSwitches) {
         errno = 0;
-        CommandLineInterface *CLI = (CommandLineInterface*)calloc(1, sizeof(CommandLineInterface));
+        CommandLineInterface *CLI = (CommandLineInterface*) calloc(1, sizeof(CommandLineInterface));
         if (errno != 0) {
-            char *ErrnoError      = (char*)calloc(1, 96);
+            char *ErrnoError      = (char*) calloc(1, 96);
             strerror_r(errno, ErrnoError, 96);
             Log(LOG_ERR, "libBitIO", "InitCommandLineInterface", "Errno Initing CommandLineInterface: %s\n", ErrnoError);
             free(ErrnoError);
@@ -85,9 +91,9 @@ extern "C" {
         }
         CLI->NumSwitches          = NumSwitches;
         size_t SwitchSize         = sizeof(CommandLineSwitch);
-        CLI->Switches             = (CommandLineSwitch*)calloc(NumSwitches, SwitchSize);
+        CLI->Switches             = (CommandLineSwitch*) calloc(NumSwitches, SwitchSize);
         if (errno != 0) {
-            char *ErrnoError      = (char*)calloc(1, 96);
+            char *ErrnoError      = (char*) calloc(1, 96);
             strerror_r(errno, ErrnoError, 96);
             Log(LOG_ERR, "libBitIO", "InitCommandLineInterface", "Errno Initing CommandLineSwitch: %s\n", ErrnoError);
             free(ErrnoError);
@@ -394,9 +400,9 @@ extern "C" {
                         size_t DoubleDashSize                       = CLI->Arguments[SwitchNum].FlagSize + 2;
                         size_t SlashSize                            = CLI->Arguments[SwitchNum].FlagSize + 1;
                         
-                        SingleDash                                  = (char*)calloc(1, SingleDashSize);
+                        SingleDash                                  = (char*) calloc(1, SingleDashSize);
                         if (errno != 0) {
-                            char *ErrnoError = (char*)calloc(1, 96);
+                            char *ErrnoError = (char*) calloc(1, 96);
                             strerror_r(errno, ErrnoError, 96);
                             Log(LOG_ERR, "libBitIO", "ParseCommandLineArguments", "Errno SingleDash = %s, Arg = %d, Switch = %d, errno = %s", ErrnoError, Argument, SwitchNum);
                             free(ErrnoError);
@@ -405,9 +411,9 @@ extern "C" {
                             snprintf(SingleDash, SingleDashSize, "-%s", CLI->Arguments[SwitchNum].Flag);
                         }
                         
-                        DoubleDash                                  = (char*)calloc(1, DoubleDashSize);
+                        DoubleDash                                  = (char*) calloc(1, DoubleDashSize);
                         if (errno != 0) {
-                            char *ErrnoError = (char*)calloc(1, 96);
+                            char *ErrnoError = (char*) calloc(1, 96);
                             strerror_r(errno, ErrnoError, 96);
                             Log(LOG_ERR, "libBitIO", "ParseCommandLineArguments", "Errno DoubleDash = %s, Arg = %d, Switch = %d", ErrnoError, Argument, SwitchNum);
                             free(ErrnoError);
@@ -416,9 +422,9 @@ extern "C" {
                             snprintf(DoubleDash, DoubleDashSize, "--%s", CLI->Arguments[SwitchNum].Flag);
                         }
                         
-                        Slash                                       = (char*)calloc(1, SlashSize);
+                        Slash                                       = (char*) calloc(1, SlashSize);
                         if (errno != 0) {
-                            char *ErrnoError = (char*)calloc(1, 96);
+                            char *ErrnoError = (char*) calloc(1, 96);
                             strerror_r(errno, ErrnoError, 96);
                             Log(LOG_ERR, "libBitIO", "ParseCommandLineArguments", "Errno Slash = %s, Arg = %d, Switch = %d", ErrnoError, Argument, SwitchNum);
                             free(ErrnoError);
@@ -433,9 +439,9 @@ extern "C" {
                             
                             CLI->Arguments[SwitchNum].SwitchFound      = true;
                             if (CLI->Arguments[SwitchNum].IsThereAResult == true) {
-                                char *SwitchResult                  = (char*)calloc(1, ArgumentSize);
+                                char *SwitchResult                  = (char*) calloc(1, ArgumentSize);
                                 if (errno != 0) {
-                                    char *ErrnoError = (char*)calloc(1, 96);
+                                    char *ErrnoError = (char*) calloc(1, 96);
                                     strerror_r(errno, ErrnoError, 96);
                                     Log(LOG_ERR, "libBitIO", "ParseCommandLineArguments", "Errno SwitchResult = %s, Arg = %d, Switch = %d", ErrnoError, Argument, SwitchNum);
                                     free(ErrnoError);
