@@ -10,28 +10,26 @@ extern "C" {
     /*!
      @struct                 CommandLineSwitch
      @abstract                                         "Contains the data to support a single switch".
-     @remark                                           "Should non-Meta switches be assumed to have a result by default?"
-     @constant               IsMetaSwitch              "Is this switch a meta switch?".
+     @remark                                           "Any switch can be a meta switch of any other, we're not creating 2 classes of switch".
      @constant               SwitchHasResult           "Does this switch have a result?".
      @constant               Flag                      "What is this switch called, how do we identify it?".
-     @constant               FlagSize                  "What is the strlen of this switch (assuming ASCII, codeunits if UTF)".
+     @constant               FlagSize                  "What is the number of bytes (if ASCII)/ code points (if UTF) of this switch?".
      @constant               SwitchDescription         "Describe to the user what this switch does".
-     @constant               NumMetaSwitches           "How many meta switches are part of this argument?".
      @constant               MaxMetaSwitches           "How many meta switches can be active at once?".
+     @constant               NumMetaSwitches           "How many meta switches are there in MetaSwitches?".
      @constant               MetaSwitches              "Pointer to an array that contains the numbers of the meta switches".
      */
     struct CommandLineSwitch {
-        bool                 IsMetaSwitch;
         bool                 SwitchHasResult;
         const char          *Flag;
         size_t               FlagSize;
         const char          *SwitchDescription;
-        uint64_t             NumMetaSwitches;
         uint64_t             MaxMetaSwitches;
+        uint64_t             NumMetaSwitches;
         uint64_t            *MetaSwitches;
     };
     
-    /*! 
+    /*!
      @struct                 CommandLineArgument
      @abstract                                         "Contains the data to support a single argument".
      @constant               SwitchNum                 "Which switch is this argument?".
@@ -67,7 +65,7 @@ extern "C" {
         size_t               NumSwitches;
         size_t               MinSwitches;
         size_t               NumArguments;
-        bool                 IsProprietary:1;
+        bool                 IsProprietary;
         const char          *ProgramName;
         const char          *ProgramAuthor;
         const char          *ProgramDescription;
@@ -142,7 +140,7 @@ extern "C" {
         }
     }
     
-    void SetCLIVersion(const CommandLineInterface *CLI, const char *VersionString) {
+    void SetCLIVersion(CommandLineInterface *CLI, const char *VersionString) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLIVersion", "Pointer to CommandLineInterface is NULL\n");
         } else if (VersionString == NULL) {
@@ -152,7 +150,7 @@ extern "C" {
         }
     }
     
-    void SetCLIDescription(const CommandLineInterface *CLI, const char *Description) {
+    void SetCLIDescription(CommandLineInterface *CLI, const char *Description) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLIDescription", "Pointer to CommandLineInterface is NULL\n");
         } else if (Description == NULL) {
@@ -162,7 +160,7 @@ extern "C" {
         }
     }
     
-    void SetCLIAuthor(const CommandLineInterface *CLI, const char *Author) {
+    void SetCLIAuthor(CommandLineInterface *CLI, const char *Author) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLIAuthor", "Pointer to CommandLineInterface is NULL\n");
         } else if (Author == NULL) {
@@ -172,7 +170,7 @@ extern "C" {
         }
     }
     
-    void SetCLICopyright(const CommandLineInterface *CLI, const char *Copyright) {
+    void SetCLICopyright(CommandLineInterface *CLI, const char *Copyright) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLICopyright", "Pointer to CommandLineInterface is NULL\n");
         } else if (Copyright == NULL) {
@@ -182,7 +180,7 @@ extern "C" {
         }
     }
     
-    void SetCLILicense(const CommandLineInterface *CLI, const char *License, const bool IsProprietary) {
+    void SetCLILicense(CommandLineInterface *CLI, const char *License, const bool IsProprietary) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLILicense", "Pointer to CommandLineInterface is NULL\n");
         } else if (License == NULL) {
@@ -197,7 +195,7 @@ extern "C" {
         }
     }
     
-    void SetCLILicenseURL(const CommandLineInterface *CLI, const char *LicenseURL, const bool IsProprietary) {
+    void SetCLILicenseURL(CommandLineInterface *CLI, const char *LicenseURL, const bool IsProprietary) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLILicenseURL", "Pointer to CommandLineInterface is NULL\n");
         } else if (LicenseURL == NULL) {
@@ -212,7 +210,7 @@ extern "C" {
         }
     }
     
-    void SetCLIMinSwitches(const CommandLineInterface *CLI, const uint64_t MinSwitches) {
+    void SetCLIMinSwitches(CommandLineInterface *CLI, const uint64_t MinSwitches) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLIMinSwitches", "Pointer to CommandLineInterface is NULL\n");
         } else {
@@ -220,7 +218,7 @@ extern "C" {
         }
     }
     
-    void SetCLISwitchFlag(const CommandLineInterface *CLI, const uint64_t SwitchNum, const char *Flag, const size_t FlagSize) {
+    void SetCLISwitchFlag(CommandLineInterface *CLI, const uint64_t SwitchNum, const char *Flag, const size_t FlagSize) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLISwitchFlag", "Pointer to CommandLineInterface is NULL\n");
         } else if (Flag == NULL) {
@@ -256,17 +254,17 @@ extern "C" {
     }
     
     /* IDK how to actually do this just yet, becasue there may be multiple copies of a single switch in the argument list.
-    const char *GetCLISwitchResult(const CommandLineInterface *CLI, const uint64_t SwitchNum, ) {
-        const char *Result = NULL;
-        if (CLI == NULL) {
-            Log(LOG_ERR, "libBitIO", "GetCLISwitchResult", "Pointer to CommandLineInterface is NULL\n");
-        } else if (SwitchNum > CLI->NumSwitches) {
-            Log(LOG_ERR, "libBitIO", "GetCLISwitchResult", "SwitchNum: %d, should be between 0 and %d\n", SwitchNum, CLI->NumSwitches);
-        } else {
-            Result = CLI->Switches[SwitchNum].SwitchResult;
-        }
-        return Result;
-    }
+     const char *GetCLISwitchResult(const CommandLineInterface *CLI, const uint64_t SwitchNum, ) {
+     const char *Result = NULL;
+     if (CLI == NULL) {
+     Log(LOG_ERR, "libBitIO", "GetCLISwitchResult", "Pointer to CommandLineInterface is NULL\n");
+     } else if (SwitchNum > CLI->NumSwitches) {
+     Log(LOG_ERR, "libBitIO", "GetCLISwitchResult", "SwitchNum: %d, should be between 0 and %d\n", SwitchNum, CLI->NumSwitches);
+     } else {
+     Result = CLI->Switches[SwitchNum].SwitchResult;
+     }
+     return Result;
+     }
      */
     
     static void DisplayCLIHelp(const CommandLineInterface *CLI) {
@@ -274,36 +272,12 @@ extern "C" {
             Log(LOG_ERR, "libBitIO", "DisplayCLIHelp", "Pointer to CommandLineInterface is NULL\n");
         } else {
             printf("Options: (-|--|/)\n");
-            /*
-             I'm thinking something like:
-             
-             Options: (-|--|/)
-             Input: Input file or stdin with -
-             	LeftEye: Meta flag that says this is the left eye.
-             	RightEye: Meta flag that says this is the right eye.
-             Output: Output file or stdout with -
-            	LeftEye: Meta flag that says this is the left eye.
-             	RightEye: Meta flag that says this is the right eye.
-             Encode: Encode input to PNG
-             Resolution: Resolution in WidthxHeight format (if 3D specify the per eye resolution)
-             Interlace: Resolution in WidthxHeight format (if 3D specify the per eye resolution)
-             Optimize: Optimize the encoded PNG to be as small as possible (try all filter options)
-             Decode: Decode PNG to output
-             Split3D: Decode stereo PNG to 2 output files
-             */
-            
-            for (size_t CurrentArgument = 0; CurrentArgument < CLI->NumArguments; CurrentArgument++) {
-                size_t CurrentSwitch = CLI->Arguments[CurrentArgument].SwitchNum;
-                
-                if (CLI->Switches[CurrentSwitch].IsMetaSwitch == false) {
-                    // This switch is not a meta switch, so print it.
-                    printf("%s: %s", CLI->Switches[CurrentSwitch].Flag, CLI->Switches[CurrentSwitch].SwitchDescription);
-                    // Now we need to see if CurrentSwitch has any meta switches, and if so, prints them, but with a level of indentention.
-                    if (CLI->Switches[CurrentArgument].MetaSwitches != NULL) {
-                        for (size_t MetaSwitch = 0; MetaSwitch < CLI->Switches[CurrentSwitch].NumMetaSwitches; MetaSwitch++) {
-                            size_t CurrentMetaSwitch = CLI->Switches[CurrentSwitch].MetaSwitches[MetaSwitch];
-                            printf("\t%s: %s", CLI->Switches[CurrentMetaSwitch].Flag, CLI->Switches[CurrentMetaSwitch].SwitchDescription);
-                        }
+            for (size_t CurrentSwitch = 0; CurrentSwitch < CLI->NumSwitches; CurrentSwitch++) {
+                printf("%s: %s\n", CLI->Switches[CurrentSwitch].Flag, CLI->Switches[CurrentSwitch].SwitchDescription);
+                if (CLI->Switches[CurrentSwitch].NumMetaSwitches > 0) {
+                    for (size_t MetaSwitch = 0; MetaSwitch < CLI->Switches[CurrentSwitch].NumMetaSwitches; MetaSwitch++) {
+                        size_t CurrentMetaSwitch = CLI->Switches[CurrentSwitch].MetaSwitches[MetaSwitch];
+                        printf("\t %s: %s\n", CLI->Switches[CurrentMetaSwitch].Flag, CLI->Switches[CurrentMetaSwitch].SwitchDescription);
                     }
                 }
             }
@@ -358,13 +332,13 @@ extern "C" {
                     DoubleDashFlag  = (char*) calloc(1, CLI->Switches[CurrentSwitch].FlagSize + 2);
                     SingleSlashFlag = (char*) calloc(1, CLI->Switches[CurrentSwitch].FlagSize + 1);
                     
-                    snprintf(SingleDashFlag, CLI->Switches[CurrentSwitch].FlagSize + 1, "-%s", CLI->Switches[CurrentSwitch].Flag);
-                    snprintf(DoubleDashFlag, CLI->Switches[CurrentSwitch].FlagSize + 2, "--%s", CLI->Switches[CurrentSwitch].Flag);
-                    snprintf(SingleSlashFlag, CLI->Switches[CurrentSwitch].FlagSize + 1, "/%s", CLI->Switches[CurrentSwitch].Flag);
+                    snprintf(SingleDashFlag,  CLI->Switches[CurrentSwitch].FlagSize + 1,  "-%s", CLI->Switches[CurrentSwitch].Flag);
+                    snprintf(DoubleDashFlag,  CLI->Switches[CurrentSwitch].FlagSize + 2, "--%s", CLI->Switches[CurrentSwitch].Flag);
+                    snprintf(SingleSlashFlag, CLI->Switches[CurrentSwitch].FlagSize + 1,  "/%s", CLI->Switches[CurrentSwitch].Flag);
                     
                     if ((strcasecmp(argv[ArgvArgument], SingleDashFlag) == 0 || strcasecmp(argv[ArgvArgument], DoubleDashFlag) == 0 || strcasecmp(argv[ArgvArgument], SingleSlashFlag) == 0) && ArgvArgument == 1) { // This argument = a switch flag; There has to be a better way than ArgvArgument == 1 tho.
                         
-                    // So, we set CLI->Arguments[ArgvArgument] to this, this is the easy part, we haven't run into meta switches yet.
+                        // So, we set CLI->Arguments[ArgvArgument] to this, this is the easy part, we haven't run into meta switches yet.
                     }
                 }
             }
@@ -396,9 +370,9 @@ extern "C" {
                         // Make sure the switch dependency was found before the depedent one.
                         // So, idk how to add this...
                         
-                        size_t SingleDashSize                       = CLI->Arguments[SwitchNum].FlagSize + 1;
-                        size_t DoubleDashSize                       = CLI->Arguments[SwitchNum].FlagSize + 2;
-                        size_t SlashSize                            = CLI->Arguments[SwitchNum].FlagSize + 1;
+                        size_t SingleDashSize                       = CLI->Switches[SwitchNum].FlagSize + 1;
+                        size_t DoubleDashSize                       = CLI->Switches[SwitchNum].FlagSize + 2;
+                        size_t SlashSize                            = CLI->Switches[SwitchNum].FlagSize + 1;
                         
                         SingleDash                                  = (char*) calloc(1, SingleDashSize);
                         if (errno != 0) {
@@ -408,7 +382,7 @@ extern "C" {
                             free(ErrnoError);
                             errno = 0;
                         } else {
-                            snprintf(SingleDash, SingleDashSize, "-%s", CLI->Arguments[SwitchNum].Flag);
+                            snprintf(SingleDash, SingleDashSize, "-%s", CLI->Switches[SwitchNum].Flag);
                         }
                         
                         DoubleDash                                  = (char*) calloc(1, DoubleDashSize);
@@ -419,7 +393,7 @@ extern "C" {
                             free(ErrnoError);
                             errno = 0;
                         } else {
-                            snprintf(DoubleDash, DoubleDashSize, "--%s", CLI->Arguments[SwitchNum].Flag);
+                            snprintf(DoubleDash, DoubleDashSize, "--%s", CLI->Switches[SwitchNum].Flag);
                         }
                         
                         Slash                                       = (char*) calloc(1, SlashSize);
@@ -430,16 +404,16 @@ extern "C" {
                             free(ErrnoError);
                             errno = 0; // Here to reset to catch errors with the strcmp stuff below
                         } else {
-                            snprintf(Slash, SlashSize, "/%s", CLI->Arguments[SwitchNum].Flag);
+                            snprintf(Slash, SlashSize, "/%s", CLI->Switches[SwitchNum].Flag);
                         }
                         
                         if (strcasecmp(SingleDash, argv[Argument]) == 0 || strcasecmp(DoubleDash, argv[Argument]) == 0 || strcasecmp(Slash, argv[Argument]) == 0) {
                             
                             size_t ArgumentSize = strlen(argv[Argument + 1]) + 1;
                             
-                            CLI->Arguments[SwitchNum].SwitchFound      = true;
-                            if (CLI->Arguments[SwitchNum].IsThereAResult == true) {
-                                char *SwitchResult                  = (char*) calloc(1, ArgumentSize);
+                            CLI->Switches[SwitchNum].SwitchFound        = true;
+                            if (CLI->Switches[SwitchNum].IsThereAResult == true) {
+                                char *SwitchResult                      = (char*) calloc(1, ArgumentSize);
                                 if (errno != 0) {
                                     char *ErrnoError = (char*) calloc(1, 96);
                                     strerror_r(errno, ErrnoError, 96);
