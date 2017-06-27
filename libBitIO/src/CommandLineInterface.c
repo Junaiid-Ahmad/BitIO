@@ -73,6 +73,7 @@ extern "C" {
         const char          *ProgramCopyright;
         const char          *ProgramLicenseDescription;
         const char          *ProgramLicenseURL;
+        uint64_t            *NumSwitchArguments; // Array that says switch (the index) has X arguments
         CommandLineSwitch   *Switches;
         CommandLineArgument *Arguments;
     };
@@ -114,7 +115,6 @@ extern "C" {
             for (size_t Arg = 0; Arg < CLI->NumArguments; Arg++) {
                 for (size_t MetaSwitch = 0; MetaSwitch < CLI->Switches[Arg].NumMetaSwitches; MetaSwitch++) {
                     free(CLI->Arguments[Arg].ArgumentResult);
-                    free(CLI->Arguments[Arg].MetaSwitches);
                 }
             }
             free(CLI->Arguments);
@@ -253,6 +253,20 @@ extern "C" {
         }
     }
     
+    bool GetCLISwitchPresence(const CommandLineInterface *CLI, const uint64_t SwitchNum) {
+        bool SwitchFound = false;
+        if (CLI == NULL) {
+            Log(LOG_ERR, "libBitIO", "GetCLISwitchPresence", "Pointer to CommandLineInterface is NULL\n");
+        } else {
+            for (size_t Argument = 0; Argument < CLI->NumArguments; Argument++) {
+                if (CLI->Arguments[Argument].SwitchNum == SwitchNum) {
+                    SwitchFound = true;
+                }
+            }
+        }
+        return SwitchFound;
+    }
+    
     /* IDK how to actually do this just yet, becasue there may be multiple copies of a single switch in the argument list.
      const char *GetCLISwitchResult(const CommandLineInterface *CLI, const uint64_t SwitchNum, ) {
      const char *Result = NULL;
@@ -345,6 +359,21 @@ extern "C" {
         }
     }
     
+    void FindCLIArgument(CommandLineInterface *CLI, const uint64_t Switch, const ,uint64_t NumMetaSwitches, const uint64_t *MetaSwitches) {
+        // So the gist is we search CLI->Arguments looking for Switch with Metaswitches, and return that argument.
+        // What should the error code be tho? just return NULL?
+        for (size_t Argument = 0; Argument < CLI->NumArguments; Argument++) {
+            for (size_t MetaSwitch = 0; MetaSwitch < NumMetaSwitches; MetaSwitch++) {
+                for (size_t ArgMetaSwitch = 0; ArgMetaSwitch < CLI->Arguments[Argument].NumMetaArgs; ArgMetaSwitch++) {
+                    if (CLI->Arguments[Argument].SwitchNum == Switch && MetaSwitches[MetaSwitch] == CLI->Arguments[Argument].MetaArgs) {
+                        
+                    }
+                }
+            }
+        }
+    }
+    
+    /*
     void ParseCommandLineArguments(const CommandLineInterface *CLI, const int argc, const char *argv[]) {
         // TODO : Scan for equals signs as well, if found, after the equal sign is the result, everything before is the switch.
         // TODO : add support for generating the short versions of the flags.
@@ -436,6 +465,7 @@ extern "C" {
             }
         }
     }
+     */
     
 #ifdef __cplusplus
 }

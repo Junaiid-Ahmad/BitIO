@@ -157,6 +157,13 @@ extern "C" {
      */
     const char           *GetCLISwitchResult(const CommandLineInterface *CLI, const uint64_t SwitchNum);
     
+    /*!
+     @abstract                                      "Tells if SwitchNum was found in the CommandLineArguments".
+     @param               CLI                       "Pointer to the instance of CommandLineInterface".
+     @param               SwitchNum                 "The switch to check".
+     */
+    bool                  GetCLISwitchPresence(const CommandLineInterface *CLI, const uint64_t SwitchNum);
+    
 #ifdef __cplusplus
 }
 #endif
