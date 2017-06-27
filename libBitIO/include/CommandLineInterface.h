@@ -168,9 +168,10 @@ extern "C" {
      @abstract                                      "Finds the argument that has MetaSwitchNum present"
      @return                                        "If no argument is found with that switch set, 0xFFFFFFFFFFFFFFFF is returned as the invalid result".
      @param               CLI                       "Pointer to the instance of CommandLineInterface".
+     @param               SwitchNum                 "The switch MetaSwitch should be in"
      @param               MetaSwitchNum             "MetaSwitch to find in the arguments"
      */
-    uint64_t              GetCLIMetaSwitchArgument(const CommandLineInterface *CLI, const uint64_t MetaSwitchNum);
+    uint64_t              GetCLIMetaSwitchArgument(const CommandLineInterface *CLI, const uint64_t SwitchNum, const uint64_t MetaSwitchNum);
     
 #ifdef __cplusplus
 }

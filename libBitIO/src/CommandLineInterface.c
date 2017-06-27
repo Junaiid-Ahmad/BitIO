@@ -267,14 +267,14 @@ extern "C" {
         return SwitchFound;
     }
     
-    uint64_t GetCLIMetaSwitchArgument(const CommandLineInterface *CLI, const uint64_t MetaSwitchNum) {
+    uint64_t GetCLIMetaSwitchArgument(const CommandLineInterface *CLI, const uint64_t SwitchNum, const uint64_t MetaSwitchNum) {
         uint64_t SwitchContainingMetaArg = 0xFFFFFFFFFFFFFFFF;
         if (CLI == NULL) {
-           Log(LOG_ERR, "libBitIO", "GetCLIMetaSwitchArgument", "Pointer to CommandLineInterface is NULL\n");
+            Log(LOG_ERR, "libBitIO", "GetCLIMetaSwitchArgument", "Pointer to CommandLineInterface is NULL\n");
         } else {
             for (size_t Argument = 0; Argument < CLI->NumArguments; Argument++) {
                 for (size_t MetaArg = 0; MetaArg < CLI->Arguments[Argument].NumMetaArgs; MetaArg++) {
-                    if (CLI->Arguments[Argument].MetaArgs[MetaArg] == MetaSwitchNum) {
+                    if (CLI->Arguments[Argument].MetaArgs[MetaArg] == MetaSwitchNum && CLI->Arguments[Argument].SwitchNum == SwitchNum) {
                         SwitchContainingMetaArg = Argument;
                     }
                 }
