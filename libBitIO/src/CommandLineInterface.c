@@ -292,7 +292,7 @@ extern "C" {
         } else {
             Result = CLI->Arguments[ArgumentNum].ArgumentResult;
         }
-        return 0;
+        return Result;
     }
     
     static void DisplayCLIHelp(const CommandLineInterface *CLI) {
