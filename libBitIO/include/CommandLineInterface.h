@@ -153,9 +153,9 @@ extern "C" {
      @abstract                                      "Gets the data contained in Switch->Result"
      @return                                        "Returns the data after the switch, if the switch is resultless it will return 0"
      @param               CLI                       "Pointer to the instance of CommandLineInterface".
-     @param               SwitchNum                 "The switch to check".
+     @param               ArgumentNum               "The argument's result to return".
      */
-    const char           *GetCLISwitchResult(const CommandLineInterface *CLI, const uint64_t SwitchNum);
+    const char           *GetCLIArgumentResult(const CommandLineInterface *CLI, const uint64_t ArgumentNum);
     
     /*!
      @abstract                                      "Tells if SwitchNum was found in the CommandLineArguments".

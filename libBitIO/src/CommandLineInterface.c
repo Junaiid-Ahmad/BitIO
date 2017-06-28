@@ -283,19 +283,17 @@ extern "C" {
         return SwitchContainingMetaArg;
     }
     
-    /* IDK how to actually do this just yet, becasue there may be multiple copies of a single switch in the argument list.
-     const char *GetCLISwitchResult(const CommandLineInterface *CLI, const uint64_t SwitchNum, ) {
-     const char *Result = NULL;
-     if (CLI == NULL) {
-     Log(LOG_ERR, "libBitIO", "GetCLISwitchResult", "Pointer to CommandLineInterface is NULL\n");
-     } else if (SwitchNum > CLI->NumSwitches) {
-     Log(LOG_ERR, "libBitIO", "GetCLISwitchResult", "SwitchNum: %d, should be between 0 and %d\n", SwitchNum, CLI->NumSwitches);
-     } else {
-     Result = CLI->Switches[SwitchNum].SwitchResult;
-     }
-     return Result;
-     }
-     */
+    const char *GetCLIArgumentResult(const CommandLineInterface *CLI, const uint64_t ArgumentNum) {
+        const char *Result = NULL;
+        if (CLI == NULL) {
+            Log(LOG_ERR, "libBitIO", "GetCLIArgumentResult", "Pointer to CommandLineInterface is NULL\n");
+        } else if (ArgumentNum > CLI->NumArguments) {
+            Log(LOG_ERR, "libBitIO", "GetCLIArgumentResult", "ArgumentNum is greater than there are arguments");
+        } else {
+            Result = CLI->Arguments[ArgumentNum].ArgumentResult;
+        }
+        return 0;
+    }
     
     static void DisplayCLIHelp(const CommandLineInterface *CLI) {
         if (CLI == NULL) {
