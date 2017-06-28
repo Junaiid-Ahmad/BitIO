@@ -375,7 +375,7 @@ extern "C" {
         }
     }
     
-    void FindCLIArgument(CommandLineInterface *CLI, const uint64_t Switch, const ,uint64_t NumMetaSwitches, const uint64_t *MetaSwitches) {
+    void FindCLIArgument(CommandLineInterface *CLI, const uint64_t Switch, uint64_t NumMetaSwitches, const uint64_t *MetaSwitches) {
         // So the gist is we search CLI->Arguments looking for Switch with Metaswitches, and return that argument.
         // What should the error code be tho? just return NULL?
         for (size_t Argument = 0; Argument < CLI->NumArguments; Argument++) {
