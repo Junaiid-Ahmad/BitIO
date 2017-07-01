@@ -1,7 +1,7 @@
-PACKAGE_NAME        := BitIO
+PACKAGE_NAME        := libBitIO
 CC                  := $(shell whereis cc)
 CURDIR              := $(shell "pwd")
-DEBUG_CFLAGS        := -DDEBUG -fsanitize=address,undefined -Wformat -Werror=format-security -Werror=array-bounds -g -O0
+DEBUG_CFLAGS        := -DDEBUG -fsanitize="address,undefined" -Wformat -Werror=format-security -Werror=array-bounds -g -O0
 RELEASE_CFLAGS      := -DNODEBUG -fvectorize -loop-vectorize -funroll-loops -Os
 UNAME_ARCH          := $(shell uname -m)
 
@@ -16,27 +16,31 @@ endif
 CFLAGS              := -std=c11 -ferror-limit=1024 -Wall -pedantic -march=$(ARCH) $($(BUILDTYPE)_CFLAGS)
 LDFLAGS             := -flto=thin
 
-BUILD_DIR            = $(CURDIR)/BUILD/$(ARCH)
+BUILD_DIR            = $(CURDIR)/BUILD/$(ARCH)/$(BUILDTYPE)
 LIBBITIO_SOURCES    := $(wildcard CURDIR/libBitIO/src/*.c)
 LIBBITIO_HEADERS    := $(wildcard CURDIR/libBitIO/include/*.h)
-LIBBITIO_OBJECTS    := $(wildcard $(BUILD_DIR)/CURDIR/libBitIO/src/*.c:.o)
+LIBBITIO_OBJECTS    := $(patsubst %.c,%.o,$(LIBBITIO_SOURCES))
+LIBBITIO_DEPENDS    := $(patsubst %.c,%.d,$(LIBBITIO_SOURCES))
 LIBBITIO_STATICLIB  := $(BUILD_DIR)/libBitIO.a
 
-.DEFAULT_GOAL: $(all)
+.DEFAULT_GOAL: all
 
 .PHONY: all clean
 
-# OLD below
+all: $(LIBBITIO_SOURCES) $(LIBBITIO_STATICLIB)
 
-all: $(LIBBITIO_OBJECTS) $(LIBBITIO_STATICLIB)
-
-$(LIBBITIO_STATICLIB): $(LIBBITIO_OBJECTS); $(LIBBITIO_HEADERS)
-	ar -crsu $@ $<
-	ranlib -sf $@
+$(LIBBITIO_DEPENDS): $(LIBBITIO_SOURCES) $(LIBBITIO_HEADERS)
+	$(CC) $(LIBBITIO_SOURCES) $(LIBBITIO_HEADERS) -c $< -o $@
 
 $(LIBBITIO_OBJECTS): $(LIBBITIO_SOURCES) $(LIBBITIO_HEADERS)
 	mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@ $(LDFLAGS) -lm
+	$(CC) $(CFLAGS) -c $(LIBBITIO_SOURCES) -o $(LIBBITIO_OBJECTS) $(LDFLAGS) -lm
+
+$(LIBBITIO_STATICLIB): $(LIBBITIO_OBJECTS)
+	ar -crsu $@ $<
+	ranlib -sf $@
+
+-include $(LIBBITIO_DEPENDS)
 
 clean: $(LIBBITIO_STATICLIB) $(LIBBITIO_OBJECTS)
 	rm -f -v -r $(LIBBITIO_OBJECTS)
