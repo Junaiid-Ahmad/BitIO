@@ -53,7 +53,7 @@ extern "C" {
      @param               argc                      "Main's argc, for the number of arguments entered".
      @param               argv                      "Main's argv, for the actual arguments the user has entered".
      */
-    void                  ParseCommandLineArguments(const CommandLineInterface *CLI, int argc, const char *argv[]);
+    void                  ParseCommandLineArguments(CommandLineInterface *CLI, int argc, const char *argv[]);
     
     /*!
      @abstract                                      "Sets the name of the program".

@@ -89,8 +89,7 @@ extern "C" {
             errno = 0;
         }
         CLI->NumSwitches          = NumSwitches;
-        size_t SwitchSize         = sizeof(CommandLineSwitch);
-        CLI->Switches             = (CommandLineSwitch*) calloc(NumSwitches, SwitchSize);
+        CLI->Switches             = (CommandLineSwitch*) calloc(NumSwitches, sizeof(CommandLineSwitch));
         if (errno != 0) {
             char *ErrnoError      = (char*) calloc(1, 96);
             strerror_r(errno, ErrnoError, 96);
@@ -284,7 +283,7 @@ extern "C" {
     }
     
     const char *GetCLIArgumentResult(const CommandLineInterface *CLI, const uint64_t ArgumentNum) {
-        const char *Result = NULL;
+        char *Result = NULL;
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "GetCLIArgumentResult", "Pointer to CommandLineInterface is NULL\n");
         } else if (ArgumentNum > CLI->NumArguments) {
@@ -338,7 +337,7 @@ extern "C" {
         }
     }
     
-    void ParseCommandLineArguments(const CommandLineInterface *CLI, const int argc, const char *argv[]) {
+    void ParseCommandLineArguments(CommandLineInterface *CLI, const int argc, const char *argv[]) {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "ParseCommandLineArguments2", "Pointer to CommandLineInterface is NULL\n");
         } else if (argc == 1 || (argc < CLI->MinSwitches && CLI->MinSwitches > 1)) {
@@ -355,6 +354,10 @@ extern "C" {
             // loop over argv looking for arguments
             for (size_t ArgvArgument = 0; ArgvArgument < argc; ArgvArgument++) {
                 for (size_t CurrentSwitch = 0; CurrentSwitch < CLI->NumSwitches; CurrentSwitch++) {
+                    // Once we find a matching switch here, we need to iterate over argv again, along with the meta switches.
+                    
+                    
+                    
                     
                     SingleDashFlag  = (char*) calloc(1, CLI->Switches[CurrentSwitch].FlagSize + 1);
                     DoubleDashFlag  = (char*) calloc(1, CLI->Switches[CurrentSwitch].FlagSize + 2);
@@ -367,6 +370,13 @@ extern "C" {
                     if ((strcasecmp(argv[ArgvArgument], SingleDashFlag) == 0 || strcasecmp(argv[ArgvArgument], DoubleDashFlag) == 0 || strcasecmp(argv[ArgvArgument], SingleSlashFlag) == 0) && ArgvArgument == 1) { // This argument = a switch flag; There has to be a better way than ArgvArgument == 1 tho.
                         
                         // So, we set CLI->Arguments[ArgvArgument] to this, this is the easy part, we haven't run into meta switches yet.
+                        
+                        for (size_t MetaSwitch = 0; MetaSwitch < CLI->Switches[CurrentSwitch].NumMetaSwitches; MetaSwitch++) {
+                            // Here is where we check if the next argument matches any of the meta switches.
+                            if (strcasecmp(argv[ArgvArgument + 1], CLI->Switches[CLI->Switches[CurrentSwitch].MetaSwitches[MetaSwitch]].Flag) == 0) {
+                                // If we're here, the next argv argument has been found as a meta switch, now the only problem is dickering in multiple meta switches.
+                            }
+                        }
                     }
                 }
             }
