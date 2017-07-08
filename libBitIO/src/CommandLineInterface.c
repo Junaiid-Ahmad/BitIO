@@ -339,7 +339,7 @@ extern "C" {
     
     void ParseCommandLineArguments(CommandLineInterface *CLI, const int argc, const char *argv[]) {
         if (CLI == NULL) {
-            Log(LOG_ERR, "libBitIO", "ParseCommandLineArguments2", "Pointer to CommandLineInterface is NULL\n");
+            Log(LOG_ERR, "libBitIO", "ParseCommandLineArguments", "Pointer to CommandLineInterface is NULL\n");
         } else if (argc == 1 || (argc < CLI->MinSwitches && CLI->MinSwitches > 1)) {
             DisplayProgramBanner(CLI);
             DisplayCLIHelp(CLI);
@@ -353,11 +353,7 @@ extern "C" {
             
             // loop over argv looking for arguments
             for (size_t ArgvArgument = 0; ArgvArgument < argc; ArgvArgument++) {
-                for (size_t CurrentSwitch = 0; CurrentSwitch < CLI->NumSwitches; CurrentSwitch++) {
-                    // Once we find a matching switch here, we need to iterate over argv again, along with the meta switches.
-                    
-                    
-                    
+                for (size_t CurrentSwitch = 0; CurrentSwitch < CLI->NumSwitches; CurrentSwitch++) { // For each argument, it checks each switch for a match, makes sense.
                     
                     SingleDashFlag  = (char*) calloc(1, CLI->Switches[CurrentSwitch].FlagSize + 1);
                     DoubleDashFlag  = (char*) calloc(1, CLI->Switches[CurrentSwitch].FlagSize + 2);
@@ -378,6 +374,9 @@ extern "C" {
                             }
                         }
                     }
+                    free(SingleDashFlag);
+                    free(DoubleDashFlag);
+                    free(SingleSlashFlag);
                 }
             }
         }
