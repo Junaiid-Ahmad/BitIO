@@ -15,24 +15,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\libBitIO\src\MD5.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\libBitIO\src\BitIO.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\libBitIO\src\BWSTransform.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\libBitIO\src\CommandLineInterface.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\libBitIO\include\MD5.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\libBitIO\include\BitIO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\libBitIO\include\BWSTransform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libBitIO\include\CommandLineInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
