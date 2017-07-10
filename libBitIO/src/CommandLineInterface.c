@@ -343,29 +343,34 @@ extern "C" {
         } else if (argc == 1 || (argc < CLI->MinSwitches && CLI->MinSwitches > 1)) {
             DisplayProgramBanner(CLI);
             DisplayCLIHelp(CLI);
-        } else if (argc >= CLI->MinSwitches && CLI->MinSwitches > 1) {
-            DisplayProgramBanner(CLI);
         } else {
-            errno = 0;
-            char *SingleDashFlag  = NULL;
-            char *DoubleDashFlag  = NULL;
-            char *SingleSlashFlag = NULL;
+            DisplayProgramBanner(CLI);
+            errno                    = 0;
+            char    *SingleDashFlag  = NULL;
+            char    *DoubleDashFlag  = NULL;
+            char    *SingleSlashFlag = NULL;
+            uint64_t NumArguments    = 0;
             
             // loop over argv looking for arguments
-            for (size_t ArgvArgument = 0; ArgvArgument < argc; ArgvArgument++) {
+            for (size_t ArgvArgument = 1; ArgvArgument < argc; ArgvArgument++) { // No point in scanning the program's path
+                printf("ArgvArgument: %zu\n", ArgvArgument);
                 for (size_t CurrentSwitch = 0; CurrentSwitch < CLI->NumSwitches; CurrentSwitch++) { // For each argument, it checks each switch for a match, makes sense.
+                    printf("CurrentSwitch: %zu\n", CurrentSwitch);
                     
-                    SingleDashFlag  = (char*) calloc(1, CLI->Switches[CurrentSwitch].FlagSize + 1);
-                    DoubleDashFlag  = (char*) calloc(1, CLI->Switches[CurrentSwitch].FlagSize + 2);
-                    SingleSlashFlag = (char*) calloc(1, CLI->Switches[CurrentSwitch].FlagSize + 1);
+                    size_t FlagSize  = CLI->Switches[CurrentSwitch].FlagSize;
+                    SingleDashFlag   = (char*) calloc(1, FlagSize + 1); // Wait, you have to free these after each and every argument...
+                    DoubleDashFlag   = (char*) calloc(1, FlagSize + 2);
+                    SingleSlashFlag  = (char*) calloc(1, FlagSize + 1);
                     
-                    snprintf(SingleDashFlag,  CLI->Switches[CurrentSwitch].FlagSize + 1,  "-%s", CLI->Switches[CurrentSwitch].Flag);
-                    snprintf(DoubleDashFlag,  CLI->Switches[CurrentSwitch].FlagSize + 2, "--%s", CLI->Switches[CurrentSwitch].Flag);
-                    snprintf(SingleSlashFlag, CLI->Switches[CurrentSwitch].FlagSize + 1,  "/%s", CLI->Switches[CurrentSwitch].Flag);
+                    snprintf(SingleDashFlag,  FlagSize + 1,  "-%s", CLI->Switches[CurrentSwitch].Flag);
+                    snprintf(DoubleDashFlag,  FlagSize + 2, "--%s", CLI->Switches[CurrentSwitch].Flag);
+                    snprintf(SingleSlashFlag, FlagSize + 1,  "/%s", CLI->Switches[CurrentSwitch].Flag);
                     
-                    if ((strcasecmp(argv[ArgvArgument], SingleDashFlag) == 0 || strcasecmp(argv[ArgvArgument], DoubleDashFlag) == 0 || strcasecmp(argv[ArgvArgument], SingleSlashFlag) == 0) && ArgvArgument == 1) { // This argument = a switch flag; There has to be a better way than ArgvArgument == 1 tho.
+                    if (strcasecmp(argv[ArgvArgument], SingleDashFlag) == 0 || strcasecmp(argv[ArgvArgument], DoubleDashFlag) == 0 || strcasecmp(argv[ArgvArgument], SingleSlashFlag) == 0) { // This argument = a switch flag; There has to be a better way than ArgvArgument == 1 tho; Yeah, maybe you want to know if it's even, but that still assumes that there's only up to 1 meta flag
                         
                         // So, we set CLI->Arguments[ArgvArgument] to this, this is the easy part, we haven't run into meta switches yet.
+                        
+                        realloc(CLI->Arguments, sizeof(CommandLineArgument) * NumArguments);
                         
                         for (size_t MetaSwitch = 0; MetaSwitch < CLI->Switches[CurrentSwitch].NumMetaSwitches; MetaSwitch++) {
                             // Here is where we check if the next argument matches any of the meta switches.
