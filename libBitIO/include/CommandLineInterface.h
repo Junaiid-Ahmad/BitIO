@@ -177,4 +177,4 @@ extern "C" {
 }
 #endif
 
-#endif  //LIBBITIO_COMMANDLINEINTERFACE_H
+#endif /* LIBBITIO_COMMANDLINEINTERFACE_H */
