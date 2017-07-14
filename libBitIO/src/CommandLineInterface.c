@@ -106,25 +106,25 @@ extern "C" {
         } else {
             /* Free CommandLineSwitches */
             for (size_t Switch = 0; Switch < CLI->NumSwitches; Switch++) {
-                free(CLI->Switches[Switch].Flag);
-                free(CLI->Switches[Switch].SwitchDescription);
+                free((char*)CLI->Switches[Switch].Flag);
+                free((char*)CLI->Switches[Switch].SwitchDescription);
             }
-            free(CLI->Switches);
             /* Free CommandLineArguments */
             for (size_t Arg = 0; Arg < CLI->NumArguments; Arg++) {
                 for (size_t MetaSwitch = 0; MetaSwitch < CLI->Switches[Arg].NumMetaSwitches; MetaSwitch++) {
-                    free(CLI->Arguments[Arg].ArgumentResult);
+                    free((char*)CLI->Arguments[Arg].ArgumentResult);
                 }
             }
+            free(CLI->Switches);
             free(CLI->Arguments);
             /* Free CommandLineInterface */
-            free(CLI->ProgramName);
-            free(CLI->ProgramAuthor);
-            free(CLI->ProgramDescription);
-            free(CLI->ProgramVersion);
-            free(CLI->ProgramCopyright);
-            free(CLI->ProgramLicenseDescription);
-            free(CLI->ProgramLicenseURL);
+            free((char*)CLI->ProgramName);
+            free((char*)CLI->ProgramAuthor);
+            free((char*)CLI->ProgramDescription);
+            free((char*)CLI->ProgramVersion);
+            free((char*)CLI->ProgramCopyright);
+            free((char*)CLI->ProgramLicenseDescription);
+            free((char*)CLI->ProgramLicenseURL);
             free(CLI);
         }
     }
