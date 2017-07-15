@@ -283,7 +283,7 @@ extern "C" {
     }
     
     const char *GetCLIArgumentResult(const CommandLineInterface *CLI, const uint64_t ArgumentNum) {
-        char *Result = NULL;
+        const char *Result = NULL;
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "GetCLIArgumentResult", "Pointer to CommandLineInterface is NULL\n");
         } else if (ArgumentNum > CLI->NumArguments) {
