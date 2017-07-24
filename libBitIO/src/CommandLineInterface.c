@@ -1,4 +1,5 @@
 #include <errno.h>
+#include <stdio.h>
 
 #include "../include/BitIO.h"
 #include "../include/CommandLineInterface.h"
@@ -15,33 +16,33 @@ extern "C" {
      @constant               Flag                      "What is this switch called, how do we identify it?".
      @constant               FlagSize                  "What is the number of bytes (if ASCII)/ code points (if UTF) of this switch?".
      @constant               SwitchDescription         "Describe to the user what this switch does".
-     @constant               MaxMetaSwitches           "How many meta switches can be active at once?".
-     @constant               NumMetaSwitches           "How many meta switches are there in MetaSwitches?".
-     @constant               MetaSwitches              "Pointer to an array that contains the numbers of the meta switches".
+     @constant               MaxChildSwitches          "How many meta switches can be active at once?".
+     @constant               NumChildSwitches          "How many meta switches are there in ChildSwitches?".
+     @constant               ChildSwitches             "Pointer to an array that contains the numbers of the meta switches".
      */
     struct CommandLineSwitch {
         bool                 SwitchHasResult;
         const char          *Flag;
         size_t               FlagSize;
         const char          *SwitchDescription;
-        uint64_t             MaxMetaSwitches;
-        uint64_t             NumMetaSwitches;
-        uint64_t            *MetaSwitches;
+        uint64_t             MaxChildSwitches;
+        uint64_t             NumChildSwitches;
+        uint64_t            *ChildSwitches;
     };
     
     /*!
      @struct                 CommandLineArgument
      @abstract                                         "Contains the data to support a single argument".
-     @constant               SwitchNum                 "Which switch is this argument?".
+     @constant               ParentSwitchNum           "Which switch is this argument?".
      @constant               ArgumentResult            "If there is a path or other result expected for this switch's argument, it'll be here".
-     @constant               NumMetaArgs               "How many meta arguments were found in this argument?".
-     @constant               MetaArgs                  "Array of meta argument numbers, to look up in CLI->Switches".
+     @constant               NumChildSwitches          "How many meta arguments were found in this argument?".
+     @constant               ChildSwitches             "Array of meta argument numbers, to look up in CLI->Switches".
      */
     struct CommandLineArgument {
-        uint64_t             SwitchNum;
+        uint64_t             ParentSwitchNum;
         const char          *ArgumentResult;
-        uint64_t             NumMetaArgs;
-        uint64_t            *MetaArgs;
+        uint64_t             NumChildArgs;
+        uint64_t            *ChildSwitches;
     };
     
     /*!
@@ -111,7 +112,7 @@ extern "C" {
             }
             /* Free CommandLineArguments */
             for (size_t Arg = 0; Arg < CLI->NumArguments; Arg++) {
-                for (size_t MetaSwitch = 0; MetaSwitch < CLI->Switches[Arg].NumMetaSwitches; MetaSwitch++) {
+                for (size_t MetaSwitch = 0; MetaSwitch < CLI->Switches[Arg].NumChildSwitches; MetaSwitch++) {
                     free((char*)CLI->Arguments[Arg].ArgumentResult);
                 }
             }
@@ -258,7 +259,7 @@ extern "C" {
             Log(LOG_ERR, "libBitIO", "GetCLISwitchPresence", "Pointer to CommandLineInterface is NULL\n");
         } else {
             for (size_t Argument = 0; Argument < CLI->NumArguments; Argument++) {
-                if (CLI->Arguments[Argument].SwitchNum == SwitchNum) {
+                if (CLI->Arguments[Argument].ParentSwitchNum == SwitchNum) {
                     SwitchFound = true;
                 }
             }
@@ -266,14 +267,14 @@ extern "C" {
         return SwitchFound;
     }
     
-    uint64_t GetCLIMetaSwitchArgument(const CommandLineInterface *CLI, const uint64_t SwitchNum, const uint64_t MetaSwitchNum) {
+    uint64_t GetCLIChildSwitchArgument(const CommandLineInterface *CLI, const uint64_t ParentSwitch, const uint64_t ChildSwitch) { // GetCLIMetaSwitchArgument
         uint64_t SwitchContainingMetaArg = 0xFFFFFFFFFFFFFFFF;
         if (CLI == NULL) {
-            Log(LOG_ERR, "libBitIO", "GetCLIMetaSwitchArgument", "Pointer to CommandLineInterface is NULL\n");
+            Log(LOG_ERR, "libBitIO", "GetCLIChildSwitchArgument", "Pointer to CommandLineInterface is NULL\n");
         } else {
-            for (size_t Argument = 0; Argument < CLI->NumArguments; Argument++) {
-                for (size_t MetaArg = 0; MetaArg < CLI->Arguments[Argument].NumMetaArgs; MetaArg++) {
-                    if (CLI->Arguments[Argument].MetaArgs[MetaArg] == MetaSwitchNum && CLI->Arguments[Argument].SwitchNum == SwitchNum) {
+            for (size_t Argument = 0; Argument < CLI->NumArguments; Argument++) { // Actual arguments
+                for (size_t ChildArg = 0; ChildArg < CLI->Arguments[Argument].NumChildArgs; ChildArg++) {
+                    if (CLI->Arguments[Argument].ChildSwitches[ChildArg] == ChildSwitch && CLI->Arguments[Argument].ParentSwitchNum == ParentSwitch) {
                         SwitchContainingMetaArg = Argument;
                     }
                 }
@@ -301,9 +302,9 @@ extern "C" {
             printf("Options: (-|--|/)\n");
             for (size_t CurrentSwitch = 0; CurrentSwitch < CLI->NumSwitches; CurrentSwitch++) {
                 printf("%s: %s\n", CLI->Switches[CurrentSwitch].Flag, CLI->Switches[CurrentSwitch].SwitchDescription);
-                if (CLI->Switches[CurrentSwitch].NumMetaSwitches > 0) {
-                    for (size_t MetaSwitch = 0; MetaSwitch < CLI->Switches[CurrentSwitch].NumMetaSwitches; MetaSwitch++) {
-                        size_t CurrentMetaSwitch = CLI->Switches[CurrentSwitch].MetaSwitches[MetaSwitch];
+                if (CLI->Switches[CurrentSwitch].NumChildSwitches > 0) {
+                    for (size_t MetaSwitch = 0; MetaSwitch < CLI->Switches[CurrentSwitch].NumChildSwitches; MetaSwitch++) {
+                        size_t CurrentMetaSwitch = CLI->Switches[CurrentSwitch].ChildSwitches[MetaSwitch];
                         printf("\t %s: %s\n", CLI->Switches[CurrentMetaSwitch].Flag, CLI->Switches[CurrentMetaSwitch].SwitchDescription);
                     }
                 }
@@ -324,16 +325,18 @@ extern "C" {
         }
     }
     
-    void SetCLISwitchMetaFlag(const CommandLineInterface *CLI, const size_t SwitchNum, const size_t MetaFlag) {
+    void SetCLISwitchMetaFlag(const CommandLineInterface *CLI, const size_t ParentSwitch, const size_t ChildSwitch) {
+        // Switch is the switch to set as a meta flag of the other switch, but it should be specified the other way.
+        // So that we first specify the switch that has the dependent flag, then which flag is dependent on current switch.
         /*
          So, SwitchNum's MetaFlags is incremented and it's Metaflag is set to MetaFlag.
          */
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLISwitchMetaFlag", "Pointer to CommandLineInterface is NULL\n");
         } else {
-            CLI->Switches[SwitchNum].NumMetaSwitches += 1;
-            CLI->Switches[SwitchNum].MetaSwitches     = realloc(CLI->Switches[SwitchNum].MetaSwitches, sizeof(CLI->Switches[SwitchNum].MetaSwitches) + sizeof(uintptr_t));
-            CLI->Switches[SwitchNum].MetaSwitches[CLI->Switches[SwitchNum].NumMetaSwitches] = MetaFlag;
+            CLI->Switches[ParentSwitch].NumChildSwitches += 1;
+            CLI->Switches[ParentSwitch].ChildSwitches     = realloc(CLI->Switches[ParentSwitch].ChildSwitches, sizeof(CLI->Switches[ParentSwitch].ChildSwitches) + sizeof(uintptr_t));
+            CLI->Switches[ParentSwitch].ChildSwitches[CLI->Switches[ParentSwitch].NumChildSwitches] = ChildSwitch;
         }
     }
     
@@ -372,9 +375,9 @@ extern "C" {
                         
                         realloc(CLI->Arguments, sizeof(CommandLineArgument) * NumArguments);
                         
-                        for (size_t MetaSwitch = 0; MetaSwitch < CLI->Switches[CurrentSwitch].NumMetaSwitches; MetaSwitch++) {
+                        for (size_t MetaSwitch = 0; MetaSwitch < CLI->Switches[CurrentSwitch].NumChildSwitches; MetaSwitch++) {
                             // Here is where we check if the next argument matches any of the meta switches.
-                            if (strcasecmp(argv[ArgvArgument + 1], CLI->Switches[CLI->Switches[CurrentSwitch].MetaSwitches[MetaSwitch]].Flag) == 0) {
+                            if (strcasecmp(argv[ArgvArgument + 1], CLI->Switches[CLI->Switches[CurrentSwitch].ChildSwitches[MetaSwitch]].Flag) == 0) {
                                 // If we're here, the next argv argument has been found as a meta switch, now the only problem is dickering in multiple meta switches.
                             }
                         }
@@ -387,18 +390,20 @@ extern "C" {
         }
     }
     
-    void FindCLIArgument(CommandLineInterface *CLI, const uint64_t Switch, uint64_t NumMetaSwitches, const uint64_t *MetaSwitches) {
-        // So the gist is we search CLI->Arguments looking for Switch with Metaswitches, and return that argument.
+    uint64_t FindCLIArgument(CommandLineInterface *CLI, const uint64_t Switch, uint64_t NumChildSwitches, const uint64_t *ChildSwitches) {
+        // So the gist is we search CLI->Arguments looking for Switch with ChildSwitches, and return that argument.
         // What should the error code be tho? just return NULL?
+        uint64_t FoundArgument = 0;
         for (size_t Argument = 0; Argument < CLI->NumArguments; Argument++) {
-            for (size_t MetaSwitch = 0; MetaSwitch < NumMetaSwitches; MetaSwitch++) {
-                for (size_t ArgMetaSwitch = 0; ArgMetaSwitch < CLI->Arguments[Argument].NumMetaArgs; ArgMetaSwitch++) {
-                    if (CLI->Arguments[Argument].SwitchNum == Switch && MetaSwitches[MetaSwitch] == CLI->Arguments[Argument].MetaArgs) {
-                        
+            for (size_t MetaSwitch = 0; MetaSwitch < NumChildSwitches; MetaSwitch++) {
+                for (size_t ArgChildSwitch = 0; ArgChildSwitch < CLI->Arguments[Argument].NumChildArgs; ArgChildSwitch++) {
+                    if (CLI->Arguments[Argument].ParentSwitchNum == Switch && ChildSwitches[MetaSwitch] == CLI->Arguments[Argument].ChildSwitches[ArgChildSwitch]) {
+                        FoundArgument = Argument;
                     }
                 }
             }
         }
+        return FoundArgument;
     }
     
     /*

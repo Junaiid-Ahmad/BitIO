@@ -25,8 +25,8 @@ extern "C" {
      @typedef             CommandLineArgument
      @abstract                                      "Contains the data to support a single switch".
      @constant            SwitchNum                 "Which switch is this argument?".
-     @constant            NumMetaSwitches           "How many meta switches are part of this argument?".
-     @constant            MetaSwitches              "Pointer to an array that contains the numbers of the meta switches".
+     @constant            NumChildSwitches           "How many meta switches are part of this argument?".
+     @constant            ChildSwitches              "Pointer to an array that contains the numbers of the meta switches".
      @constant            ArgumentResult            "If there is a path or other result expected for this switch's argument, it'll be here".
      */
     typedef struct        CommandLineArgument       CommandLineArgument;
@@ -128,10 +128,10 @@ extern "C" {
     /*!
      @abstract                                      "Sets MetaFlag switch as a meta flag for switch SwitchNum".
      @param               CLI                       "Pointer to CommandLineInterface".
-     @param               SwitchNum                 "Which switch are you trying to say has a meta flag?".
-     @param               MetaFlag                  "Which flag number is a meta flag for SwitchNum?".
+     @param               ParentSwitch              "Which switch does the child/meta switch depend on?".
+     @param               ChildSwitch               "Which switch is the child switch?".
      */
-    void                  SetCLISwitchMetaFlag(const CommandLineInterface *CLI, const size_t SwitchNum, const size_t MetaFlag);
+    void                  SetCLISwitchMetaFlag(const CommandLineInterface *CLI, const size_t ParentSwitch, const size_t ChildSwitch);
     
     /*!
      @abstract                                      "Sets SwitchDescription's flag in the CommandLineInterface instance pointed by CLI".
@@ -165,13 +165,15 @@ extern "C" {
     bool                  GetCLISwitchPresence(const CommandLineInterface *CLI, const uint64_t SwitchNum);
     
     /*!
-     @abstract                                      "Finds the argument that has MetaSwitchNum present"
+     @abstract                                      "Finds the argument that has both ParentSwitch and ChildSwitch present"
      @return                                        "If no argument is found with that switch set, 0xFFFFFFFFFFFFFFFF is returned as the invalid result".
      @param               CLI                       "Pointer to the instance of CommandLineInterface".
-     @param               SwitchNum                 "The switch MetaSwitch should be in"
-     @param               MetaSwitchNum             "MetaSwitch to find in the arguments"
+     @param               ParentSwitch              "The switch MetaSwitch should be in"
+     @param               ChildSwitch               "MetaSwitch to find in the arguments"
      */
-    uint64_t              GetCLIMetaSwitchArgument(const CommandLineInterface *CLI, const uint64_t SwitchNum, const uint64_t MetaSwitchNum);
+    uint64_t              GetCLIChildSwitchArgument(const CommandLineInterface *CLI, const uint64_t ParentSwitch, const uint64_t ChildSwitch);
+    
+    uint64_t              FindCLIArgument(CommandLineInterface *CLI, const uint64_t Switch, uint64_t NumChildSwitches, const uint64_t *ChildSwitches);
     
 #ifdef __cplusplus
 }
