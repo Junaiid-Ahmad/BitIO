@@ -345,8 +345,12 @@ extern "C" {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "SetCLISwitchMetaFlag", "Pointer to CommandLineInterface is NULL\n");
         } else {
-            CLI->Switches[ParentSwitch].NumChildSwitches += 1;
-            CLI->Switches[ParentSwitch].ChildSwitches     = realloc(CLI->Switches[ParentSwitch].ChildSwitches, sizeof(CLI->Switches[ParentSwitch].ChildSwitches) + sizeof(uintptr_t));
+            CLI->Switches[ParentSwitch].NumChildSwitches  += 1;
+            if (CLI->Switches[ParentSwitch].ChildSwitches == NULL) {
+                CLI->Switches[ParentSwitch].ChildSwitches = calloc(1, sizeof(uint64_t));
+            } else {
+                CLI->Switches[ParentSwitch].ChildSwitches = realloc(CLI->Switches[ParentSwitch].ChildSwitches, CLI->Switches[ParentSwitch].NumChildSwitches * sizeof(uint64_t));
+            }
             CLI->Switches[ParentSwitch].ChildSwitches[CLI->Switches[ParentSwitch].NumChildSwitches] = ChildSwitch;
         }
     }
