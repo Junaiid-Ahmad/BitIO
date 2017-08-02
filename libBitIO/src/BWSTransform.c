@@ -8,7 +8,7 @@ extern "C" {
         
     }
     
-    void RotateArray(const size_t DataSize, int64_t *Data, const uint64_t NumRotations, const bool RotateRight) {
+    void RotateArray(const uint64_t DataSize, int64_t *Data, const uint64_t NumRotations, const bool RotateRight) {
         // Theoretical speed up: just edit the Pointer to each array element, and increment or decrement it by  NumRotation.
         if (RotateRight == true) {
             for (uint64_t Rotation = 0; Rotation < NumRotations; Rotation++) {
