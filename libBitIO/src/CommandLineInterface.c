@@ -299,16 +299,27 @@ extern "C" {
         if (CLI == NULL) {
             Log(LOG_ERR, "libBitIO", "DisplayCLIHelp", "Pointer to CommandLineInterface is NULL\n");
         } else {
+            bool *IsChildSwitch = calloc(CLI->NumSwitches, sizeof(bool));
+            for (size_t CurrentSwitch = 0; CurrentSwitch < CLI->NumSwitches; CurrentSwitch++) {
+                // make an array of all the switches that are child switches
+                for (uint64_t ChildSwitch = 0; ChildSwitch < CLI->Switches[CurrentSwitch].NumChildSwitches; ChildSwitch++) {
+                    IsChildSwitch[CLI->Switches[CurrentSwitch].ChildSwitches[ChildSwitch]] = true;
+                }
+            }
+            // Now, loop through the switches and print the ones that aren't in IsChildSwitch
             printf("Options: (-|--|/)\n");
             for (size_t CurrentSwitch = 0; CurrentSwitch < CLI->NumSwitches; CurrentSwitch++) {
-                printf("%s: %s\n", CLI->Switches[CurrentSwitch].Flag, CLI->Switches[CurrentSwitch].SwitchDescription);
-                if (CLI->Switches[CurrentSwitch].NumChildSwitches > 0) {
-                    for (size_t MetaSwitch = 0; MetaSwitch < CLI->Switches[CurrentSwitch].NumChildSwitches; MetaSwitch++) {
-                        size_t CurrentMetaSwitch = CLI->Switches[CurrentSwitch].ChildSwitches[MetaSwitch];
-                        printf("\t %s: %s\n", CLI->Switches[CurrentMetaSwitch].Flag, CLI->Switches[CurrentMetaSwitch].SwitchDescription);
+                if (IsChildSwitch[CurrentSwitch] == false) {
+                    printf("%s: %s\n", CLI->Switches[CurrentSwitch].Flag, CLI->Switches[CurrentSwitch].SwitchDescription);
+                    if (CLI->Switches[CurrentSwitch].NumChildSwitches > 0) {
+                        for (size_t MetaSwitch = 0; MetaSwitch < CLI->Switches[CurrentSwitch].NumChildSwitches; MetaSwitch++) {
+                            size_t CurrentMetaSwitch = CLI->Switches[CurrentSwitch].ChildSwitches[MetaSwitch];
+                            printf("\t %s: %s\n", CLI->Switches[CurrentMetaSwitch].Flag, CLI->Switches[CurrentMetaSwitch].SwitchDescription);
+                        }
                     }
                 }
             }
+            free(IsChildSwitch);
         }
     }
     
