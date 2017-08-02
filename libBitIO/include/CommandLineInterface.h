@@ -38,7 +38,7 @@ extern "C" {
      @return                                        "Returns a pointer to an initialized CommandLineInterface instance".
      @param               NumSwitches               "The number of CommandLineSwitch structures to initalize".
      */
-    CommandLineInterface *InitCommandLineInterface(const size_t NumSwitches);
+    CommandLineInterface *InitCommandLineInterface(const uint64_t NumSwitches);
     
     /*!
      @abstract                                      "Deallocates the instance of CommandLineInterface pointed to by CLI".
@@ -104,9 +104,8 @@ extern "C" {
      @remark                                        "If your program is closed source, do NOT use the License options, use the EULA functions".
      @param               CLI                       "Pointer to the instance of CommandLineInterface".
      @param               LicenseURL                "the actual URL for the license".
-     @param               IsEULA                    "Is this program released under an open source license, or a EULA?"
      */
-    void                  SetCLILicenseURL(CommandLineInterface *CLI, const char *LicenseURL, const bool IsEULA);
+    void                  SetCLILicenseURL(CommandLineInterface *CLI, const char *LicenseURL);
     
     /*!
      @abstract                                      "What is the minimum number of switches your program needs to operate?".
@@ -123,7 +122,7 @@ extern "C" {
      @param               Flag                      "The flag to identify an option with".
      @param               FlagSize                  "Size of the flag string".
      */
-    void                  SetCLISwitchFlag(CommandLineInterface *CLI, const uint64_t SwitchNum, const char *Flag, const size_t FlagSize);
+    void                  SetCLISwitchFlag(CommandLineInterface *CLI, const uint64_t SwitchNum, const char *Flag, const uint64_t FlagSize);
     
     /*!
      @abstract                                      "Sets MetaFlag switch as a meta flag for switch SwitchNum".
@@ -131,7 +130,7 @@ extern "C" {
      @param               ParentSwitch              "Which switch does the child/meta switch depend on?".
      @param               ChildSwitch               "Which switch is the child switch?".
      */
-    void                  SetCLISwitchMetaFlag(const CommandLineInterface *CLI, const size_t ParentSwitch, const size_t ChildSwitch);
+    void                  SetCLISwitchMetaFlag(const CommandLineInterface *CLI, const uint64_t ParentSwitch, const uint64_t ChildSwitch);
     
     /*!
      @abstract                                      "Sets SwitchDescription's flag in the CommandLineInterface instance pointed by CLI".
