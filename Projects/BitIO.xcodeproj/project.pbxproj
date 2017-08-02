@@ -245,15 +245,17 @@
 					"-funroll-loops",
 					"-ferror-limit=1024",
 					"-Wall",
+					"-Wextra",
 					"-pedantic",
+					"-Weverything",
 				);
 				PLIST_FILE_OUTPUT_FORMAT = binary;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = macosx;
 				SEPARATE_STRIP = YES;
 				STRINGS_FILE_OUTPUT_ENCODING = binary;
-				SUPPORTED_PLATFORMS = "macosx ios";
-				VALID_ARCHS = "aarch64 x86_64";
+				SUPPORTED_PLATFORMS = "macosx iphoneos";
+				VALID_ARCHS = "AArch64 x86_64";
 			};
 			name = Debug;
 		};
@@ -336,15 +338,17 @@
 					"-funroll-loops",
 					"-ferror-limit=1024",
 					"-Wall",
+					"-Wextra",
 					"-pedantic",
+					"-Weverything",
 				);
 				PLIST_FILE_OUTPUT_FORMAT = binary;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = macosx;
 				SEPARATE_STRIP = YES;
 				STRINGS_FILE_OUTPUT_ENCODING = binary;
-				SUPPORTED_PLATFORMS = "macosx ios";
-				VALID_ARCHS = "aarch64 x86_64";
+				SUPPORTED_PLATFORMS = "macosx iphoneos";
+				VALID_ARCHS = "AArch64 x86_64";
 			};
 			name = Release;
 		};
@@ -356,6 +360,7 @@
 				EXECUTABLE_PREFIX = "";
 				OTHER_CFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "AArch64 x86_64";
 			};
 			name = Debug;
 		};
@@ -367,6 +372,7 @@
 				EXECUTABLE_PREFIX = "";
 				OTHER_CFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "AArch64 x86_64";
 			};
 			name = Release;
 		};
