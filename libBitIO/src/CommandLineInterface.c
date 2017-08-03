@@ -384,19 +384,14 @@ extern "C" {
             char    *ChildSingleSlashFlag = NULL;
             
             for (int Argument = 1; Argument < argc; Argument++) { // No point in scanning the program's path
-                printf("Argument: %d\n", Argument);
                 for (uint64_t CurrentSwitch = 0; CurrentSwitch < CLI->NumSwitches; CurrentSwitch++) {
-                    printf("CurrentSwitch: %llu\n", CurrentSwitch);
-                    
                     uint64_t FlagSize  = CLI->Switches[CurrentSwitch].FlagSize;
                     SingleDashFlag   = (char*) calloc(1, FlagSize + 1);
                     DoubleDashFlag   = (char*) calloc(1, FlagSize + 2);
                     SingleSlashFlag  = (char*) calloc(1, FlagSize + 1);
-                    
                     snprintf(SingleDashFlag,  FlagSize + 1,  "-%s", CLI->Switches[CurrentSwitch].Flag);
                     snprintf(DoubleDashFlag,  FlagSize + 2, "--%s", CLI->Switches[CurrentSwitch].Flag);
                     snprintf(SingleSlashFlag, FlagSize + 1,  "/%s", CLI->Switches[CurrentSwitch].Flag);
-                    
                     if (strcasecmp(argv[Argument], SingleDashFlag) == 0 || strcasecmp(argv[Argument], DoubleDashFlag) == 0 || strcasecmp(argv[Argument], SingleSlashFlag) == 0) {
                         if (CLI->NumArguments == 0) {
                             CLI->Arguments = calloc(1, sizeof(CommandLineArgument));
@@ -415,11 +410,18 @@ extern "C" {
                             snprintf(ChildSingleDashFlag,  ChildFlagSize + 1,  "-%s", CLI->Switches[CurrentSwitch + 1].Flag);
                             snprintf(ChildDoubleDashFlag,  ChildFlagSize + 2, "--%s", CLI->Switches[CurrentSwitch + 1].Flag);
                             snprintf(ChildSingleSlashFlag, ChildFlagSize + 1,  "/%s", CLI->Switches[CurrentSwitch + 1].Flag);
-                            if (strcasecmp(argv[Argument + 1], ChildSingleDashFlag) == 0 || strcasecmp(argv[Argument + 1], ChildDoubleDashFlag) == 0 || strcasecmp(argv[Argument + 1], ChildSingleSlashFlag) == 0) {
+                            if (strcasecmp(argv[Argument + ChildSwitch], ChildSingleDashFlag) == 0 || strcasecmp(argv[Argument + ChildSwitch], ChildDoubleDashFlag) == 0 || strcasecmp(argv[Argument + ChildSwitch], ChildSingleSlashFlag) == 0) {
                                 CLI->Arguments[ChildSwitch].NumChildArguments += 1;
                                 CLI->Arguments[ChildSwitch].ChildArguments     = GetCLISwitchNumFromFlag(CLI, argv[Argument + 1]);
                                 /*
                                  TODO: What I really need to do tho, is loop over the remaining arguments to be sure I catch any and ALL child arguments, and just do it right, but this'll work for now.
+                                 
+                                 How do I structure that tho?
+                                 
+                                 Well, have 4 loops, the first loops over argc from 1, the second loops over the first to the end of argc, the 3rd loops over all the switches, and the 4th loops over all of it's child switches
+                                 
+                                 for each switch, load up
+                                 
                                  */
                             }
                             free(ChildSingleDashFlag);
