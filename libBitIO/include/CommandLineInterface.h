@@ -60,35 +60,35 @@ extern "C" {
      @param               CLI                       "Pointer to the instance of CommandLineInterface".
      @param               Name                      "Pointer to a C string containing the name of the program you're building"
      */
-    void                  SetCLIName(CommandLineInterface *CLI, const char *Name);
+    void                  SetCLIName(CommandLineInterface *CLI, char *Name);
     
     /*!
      @abstract                                      "Sets the name of the program".
      @param               CLI                       "Pointer to the instance of CommandLineInterface".
      @param               VersionString             "Pointer to a C string contining the version of the program you're building"
      */
-    void                  SetCLIVersion(CommandLineInterface *CLI, const char *VersionString);
+    void                  SetCLIVersion(CommandLineInterface *CLI, char *VersionString);
     
     /*!
      @abstract                                      "Sets the description of the program".
      @param               CLI                       "Pointer to the instance of CommandLineInterface".
      @param               Description               "Description of what the program does".
      */
-    void                  SetCLIDescription(CommandLineInterface *CLI, const char *Description);
+    void                  SetCLIDescription(CommandLineInterface *CLI, char *Description);
     
     /*!
      @abstract                                      "Sets the author of the program".
      @param               CLI                       "Pointer to the instance of CommandLineInterface".
      @param               Author                    "Author of this program".
      */
-    void                  SetCLIAuthor(CommandLineInterface *CLI, const char *Author);
+    void                  SetCLIAuthor(CommandLineInterface *CLI, char *Author);
     
     /*!
      @abstract                                      "Sets the copyright years of the program".
      @param               CLI                       "Pointer to the instance of CommandLineInterface".
      @param               Copyright                 "The starting year this program was written dash (CURRENTYEAR)".
      */
-    void                  SetCLICopyright(CommandLineInterface *CLI, const char *Copyright);
+    void                  SetCLICopyright(CommandLineInterface *CLI, char *Copyright);
     
     /*!
      @abstract                                      "Sets the license of the program".
@@ -97,7 +97,7 @@ extern "C" {
      @param               License                   "The license this program is licensed under".
      @param               IsProprietary             "Is this program released under an open source license, or a EULA?"
      */
-    void                  SetCLILicense(CommandLineInterface *CLI, const char *License, const bool IsProprietary);
+    void                  SetCLILicense(CommandLineInterface *CLI, char *License, const bool IsProprietary);
     
     /*!
      @abstract                                      "Sets the URL for the license, in the main program banner".
@@ -105,7 +105,7 @@ extern "C" {
      @param               CLI                       "Pointer to the instance of CommandLineInterface".
      @param               LicenseURL                "the actual URL for the license".
      */
-    void                  SetCLILicenseURL(CommandLineInterface *CLI, const char *LicenseURL);
+    void                  SetCLILicenseURL(CommandLineInterface *CLI, char *LicenseURL);
     
     /*!
      @abstract                                      "What is the minimum number of switches your program needs to operate?".
@@ -122,7 +122,7 @@ extern "C" {
      @param               Flag                      "The flag to identify an option with".
      @param               FlagSize                  "Size of the flag string".
      */
-    void                  SetCLISwitchFlag(CommandLineInterface *CLI, const uint64_t SwitchNum, const char *Flag, const uint64_t FlagSize);
+    void                  SetCLISwitchFlag(CommandLineInterface *CLI, const uint64_t SwitchNum, char *Flag, const uint64_t FlagSize);
     
     /*!
      @abstract                                      "Sets MetaFlag switch as a meta flag for switch SwitchNum".
@@ -130,7 +130,7 @@ extern "C" {
      @param               ParentSwitch              "Which switch does the child/meta switch depend on?".
      @param               ChildSwitch               "Which switch is the child switch?".
      */
-    void                  SetCLISwitchMetaFlag(const CommandLineInterface *CLI, const uint64_t ParentSwitch, const uint64_t ChildSwitch);
+    void                  SetCLISwitchAsChild(CommandLineInterface *CLI, const uint64_t ParentSwitch, const uint64_t ChildSwitch);
     
     /*!
      @abstract                                      "Sets SwitchDescription's flag in the CommandLineInterface instance pointed by CLI".
@@ -138,7 +138,7 @@ extern "C" {
      @param               SwitchNum                 "The switch to set".
      @param               Description               "Pointer to a C string containing the description of what this program does"
      */
-    void                  SetCLISwitchDescription(const CommandLineInterface *CLI, const uint64_t SwitchNum, const char *Description);
+    void                  SetCLISwitchDescription(CommandLineInterface *CLI, const uint64_t SwitchNum, char *Description);
     
     /*!
      @abstract                                      "Sets SwitchResult's flag in the CommandLineInterface instance pointed by CLI".
@@ -146,7 +146,7 @@ extern "C" {
      @param               SwitchNum                 "The switch to set".
      @param               IsThereAResult            "Are you expecting this switch to contain data, or are you just testing for it's presence?".
      */
-    void                  SetCLISwitchResultStatus(const CommandLineInterface *CLI, const uint64_t SwitchNum, const bool IsThereAResult);
+    void                  SetCLISwitchResultStatus(CommandLineInterface *CLI, const uint64_t SwitchNum, const bool IsThereAResult);
     
     /*!
      @abstract                                      "Gets the data contained in Switch->Result"
@@ -154,14 +154,14 @@ extern "C" {
      @param               CLI                       "Pointer to the instance of CommandLineInterface".
      @param               ArgumentNum               "The argument's result to return".
      */
-    const char           *GetCLIArgumentResult(const CommandLineInterface *CLI, const uint64_t ArgumentNum);
+    char                 *GetCLIArgumentResult(CommandLineInterface *CLI, const uint64_t ArgumentNum);
     
     /*!
      @abstract                                      "Tells if SwitchNum was found in the CommandLineArguments".
      @param               CLI                       "Pointer to the instance of CommandLineInterface".
      @param               SwitchNum                 "The switch to check".
      */
-    bool                  GetCLISwitchPresence(const CommandLineInterface *CLI, const uint64_t SwitchNum);
+    bool                  GetCLISwitchPresence(CommandLineInterface *CLI, const uint64_t SwitchNum);
     
     /*!
      @abstract                                      "Finds the argument that has both ParentSwitch and ChildSwitch present"
@@ -170,9 +170,12 @@ extern "C" {
      @param               ParentSwitch              "The switch MetaSwitch should be in"
      @param               ChildSwitch               "MetaSwitch to find in the arguments"
      */
-    uint64_t              GetCLIChildSwitchArgument(const CommandLineInterface *CLI, const uint64_t ParentSwitch, const uint64_t ChildSwitch);
+    uint64_t              GetCLIChildSwitchArgument(CommandLineInterface *CLI, const uint64_t ParentSwitch, const uint64_t ChildSwitch);
     
-    uint64_t              FindCLIArgument(CommandLineInterface *CLI, const uint64_t Switch, uint64_t NumChildSwitches, const uint64_t *ChildSwitches);
+    /*!
+     @return     Returns the switch number if it was found, if it was not, it returns 0xFFFFFFFFFFFFFFFF
+     */
+    uint64_t              GetCLISwitchNumFromFlag(CommandLineInterface *CLI, const char *Flag);
     
 #ifdef __cplusplus
 }
