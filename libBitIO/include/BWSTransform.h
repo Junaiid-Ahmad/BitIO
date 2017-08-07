@@ -2,8 +2,8 @@
 
 #pragma once
 
-#ifndef LIBBITIO_BWSTRANSFORM_H
-#define LIBBITIO_BWSTRANSFORM_H
+#ifndef LIBBITIO_BWSTransform_H
+#define LIBBITIO_BWSTransform_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -17,4 +17,4 @@ extern "C" {
 }
 #endif
 
-#endif /* LIBBITIO_BWSTRANSFORM_H */
+#endif /* LIBBITIO_BWSTransform_H */
