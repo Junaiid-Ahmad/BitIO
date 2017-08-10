@@ -1,5 +1,7 @@
 #include "../include/BitIO.h"
 
+#include <stdlib.h>
+
 #pragma once
 
 #ifndef LIBBITIO_BWSTransform_H
