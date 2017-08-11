@@ -1,3 +1,11 @@
+/*!
+ @header    BWSTransform.h
+ @author    Marcus Johnson aka BumbleBritches57
+ @copyright 2017, Marcus Johnson
+ @version   0.1.0
+ @brief     This header contains code related to reading and writing BWS (Burrows-Wheeler-Scott) codes
+ */
+
 #include "../include/BitIO.h"
 
 #include <stdlib.h>
