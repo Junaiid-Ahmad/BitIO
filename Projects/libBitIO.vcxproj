@@ -21,12 +21,12 @@
   <ItemGroup>
     <ClCompile Include="..\libBitIO\src\BitIO.c" />
     <ClCompile Include="..\libBitIO\src\BWSTransform.c" />
-    <ClCompile Include="..\libBitIO\src\CommandLineInterface.c" />
+    <ClCompile Include="..\libBitIO\src\CommandLineIO.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libBitIO\include\BitIO.h" />
     <ClInclude Include="..\libBitIO\include\BWSTransform.h" />
-    <ClInclude Include="..\libBitIO\include\CommandLineInterface.h" />
+    <ClInclude Include="..\libBitIO\include\CommandLineIO.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -83,8 +83,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(ProjectDir)..\BUILD\$(Platform)\</OutDir>
-    <IntDir>$(OutDir)Intermediate\</IntDir>
+    <OutDir>$(MSBuildStartupDirectory)\..\BUILD\$(Platform)\</OutDir>
+    <IntDir>$(OutDir)$(Configuration)\Intermediate\</IntDir>
     <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>C:\Program Files (x86)\Visual Studio 2017\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -93,16 +93,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
-    <OutDir>$(ProjectDir)..\BUILD\$(Platform)\</OutDir>
-    <IntDir>$(OutDir)Intermediate\</IntDir>
+    <OutDir>$(MSBuildStartupDirectory)\..\BUILD\$(Platform)\</OutDir>
+    <IntDir>$(OutDir)$(Configuration)\Intermediate\</IntDir>
     <CodeAnalysisRuleSet>C:\Program Files (x86)\Visual Studio 2017\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <EnableCppCoreCheck>true</EnableCppCoreCheck>
     <ExtensionsToDeleteOnClean>*.bi;*.bsc;*.cache;*.cdf;*.exp;*.idb;*.ilk;*.iobj;*.ipdb;*.lib;*.lib.intermediate.manifest;*.lib.manifest;*.manifest;*.meta;*.metagen;*.obj;*.obj.enc;*.pch;*.pdb;*.pgc;*.pgd;*.rep;*.res;*.resources;*.rsp;*.sbr;*.tlb;*.tlh;*.tli;*.tlog;*.tmp;*.xdc;*.xml;*_manifest.rc</ExtensionsToDeleteOnClean>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(ProjectDir)..\BUILD\$(Platform)\</OutDir>
-    <IntDir>$(OutDir)Intermediate\</IntDir>
+    <OutDir>$(MSBuildStartupDirectory)\..\BUILD\$(Platform)\</OutDir>
+    <IntDir>$(OutDir)$(Configuration)\Intermediate\</IntDir>
     <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>C:\Program Files (x86)\Visual Studio 2017\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -111,8 +111,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
-    <OutDir>$(ProjectDir)..\BUILD\$(Platform)\</OutDir>
-    <IntDir>$(OutDir)Intermediate\</IntDir>
+    <OutDir>$(MSBuildStartupDirectory)\..\BUILD\$(Platform)\</OutDir>
+    <IntDir>$(OutDir)$(Configuration)\Intermediate\</IntDir>
     <CodeAnalysisRuleSet>C:\Program Files (x86)\Visual Studio 2017\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <EnableCppCoreCheck>true</EnableCppCoreCheck>
@@ -168,10 +168,10 @@
     </ProjectReference>
     <Lib>
       <SubSystem>Console</SubSystem>
-      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <TargetMachine>MachineX64</TargetMachine>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <Verbose>true</Verbose>
       <Name>libBitIO</Name>
+      <ErrorReporting>SendErrorReport</ErrorReporting>
     </Lib>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -227,9 +227,10 @@
     </ProjectReference>
     <Lib>
       <SubSystem>Console</SubSystem>
-      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <Verbose>true</Verbose>
       <Name>libBitIO</Name>
+      <ErrorReporting>SendErrorReport</ErrorReporting>
     </Lib>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -287,11 +288,11 @@
     </ProjectReference>
     <Lib>
       <SubSystem>Console</SubSystem>
-      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <Verbose>true</Verbose>
       <Name>libBitIO</Name>
       <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
-      <TargetMachine>MachineX64</TargetMachine>
+      <ErrorReporting>SendErrorReport</ErrorReporting>
     </Lib>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -349,9 +350,10 @@
     </ProjectReference>
     <Lib>
       <SubSystem>Console</SubSystem>
-      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <Verbose>true</Verbose>
       <Name>libBitIO</Name>
+      <ErrorReporting>SendErrorReport</ErrorReporting>
     </Lib>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>

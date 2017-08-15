@@ -21,7 +21,7 @@
     <ClCompile Include="..\libBitIO\src\BWSTransform.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\libBitIO\src\CommandLineInterface.c">
+    <ClCompile Include="..\libBitIO\src\CommandLineIO.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,7 +32,7 @@
     <ClInclude Include="..\libBitIO\include\BWSTransform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\libBitIO\include\CommandLineInterface.h">
+    <ClInclude Include="..\libBitIO\include\CommandLineIO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
