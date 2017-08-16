@@ -119,8 +119,6 @@ extern "C" {
      */
     typedef struct      BitOutput                 BitOutput;
     
-    typedef struct      HuffmanTree               HuffmanTree;
-    
     /*!
      @abstract                                    "Initializes a BitInput structure".
      @return                                      "Returns a pointer to said BitInput structure".
@@ -432,23 +430,6 @@ extern "C" {
      @param             PrecomputedCRC            "The precomputed resulting CRC of Data2CRC, to compare the generated CRC with".
      */
     bool                VerifyCRC(const uint8_t *Data2CRC, const uint64_t Data2CRCSize, const uint64_t ReciprocalPoly, const uint8_t PolySize, const uint64_t PolyInit, const uint64_t PrecomputedCRC);
-    
-    /*!
-     @abstract                                    "Creates Adler32 checksum from input data".
-     @return                                      "Returns the Adler32 data from the data input".
-     @param             Data                      "Pointer to the data to generate the Adler hash from".
-     @param             DataSize                  "Size of data".
-     */
-    uint32_t            GenerateAdler32(const uint8_t *Data, const uint64_t DataSize);
-    
-    /*!
-     @abstract                                    "Generates Adler32 from the input data, and compares it to the submitted checksum".
-     @return                                      "Returns whether the input data matched the provided checksum or not".
-     @param             Data                      "Pointer to the data to generate the Adler hash from".
-     @param             DataSize                  "Size of data".
-     @param             EmbeddedAdler32           "Embedded Adler32 to compare the generated one to".
-     */
-    bool                VerifyAdler32(const uint8_t *Data, const uint64_t DataSize, const uint32_t EmbeddedAdler32);
     
     /*!
      @abstract                                    "Reads raw UUID/GUID from the bitstream".
