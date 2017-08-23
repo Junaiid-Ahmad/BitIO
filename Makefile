@@ -1,51 +1,46 @@
-PACKAGE_NAME        := libBitIO
-CC                  := $(shell whereis cc)
-CURDIR              := $(shell "pwd")
-DEBUG_CFLAGS        := -DDEBUG -fsanitize="address,undefined" -Wformat -Werror=format-security -Werror=array-bounds -g -O0
-RELEASE_CFLAGS      := -DNODEBUG -fvectorize -loop-vectorize -funroll-loops -Os
-UNAME_ARCH          := $(shell uname -m)
+PACKAGE_NAME          = $(shell basename $(shell pwd))
+DEBUG_CFLAGS         ::= -DDEBUG -fsanitize="address,undefined" -Werror="format-security,array-bounds" -Wformat -g -O0
+RELEASE_CFLAGS       ::= -DNODEBUG -fvectorize -loop-vectorize -funroll-loops -Os
+CC                    = $(shell whereis cc)
+CURDIR                = $(shell pwd)
+CFLAGS               += -std=c11 -ferror-limit=1024 -Wall -pedantic -fcolor-diagnostics -ffreestanding -arch=$(ARCH) $(BUILDTYPE_CFLAGS)
+LDFLAGS              += -flto=thin
+BUILD_DIR             = $(CURDIR)/BUILD/$(BUILDTYPE)/$(ARCH)
+LIBBITIO_SOURCE_FLDR  = $(CURDIR)/libBitIO/src
+LIBBITIO_STATICLIB    = $(BUILD_DIR)/libBitIO.a
+LIBBITIO_SOURCES      = $(wildcard $(CURDIR)/libBitIO/src/*.c)
+LIBBITIO_NAMES        = $(notdir $(LIBBITIO_SOURCES))
+LIBBITIO_OBJECTS      = $(patsubst $(notdir $(LIBBITIO_SOURCES)), $(BUILD_DIR)/%.o, $(LIBBITIO_SOURCES))
 
-ifeq ($(BUILDTYPE), "")
-BUILDTYPE = RELEASE
-endif
+#ifeq ($(BYTEORDER),$(filter $(BYTEORDER),LittleEndian,LSByte))
+#	LIBBITIO_BYTEORDER = 1
+#elif ($(BYTEORDER),$(filter $(BYTEORDER),BigEndian,MSByte))
+#	LIBBITIO_BYTEORDER = 2
+#else
+#	LIBBITIO_BYTEORDER = 1 # Default to LSByte
+#endif
+#ifeq ($(BITORDER),LSBit)
+#	LIBBITIO_BITORDER = 1
+#elif ($(BITORDER),MSBit)
+#	LIBBITIO_BITORDER = 2
+#else
+#	LIBBITIO_BITORDER = 1 #Default to LSBit
+#endif
 
-ifeq ($(ARCH), "")
-ARCH = $(UNAME_ARCH)
-endif
+# wait why are we doing it this way? why not just extract it from the arch triple?
 
-CFLAGS              := -std=c11 -ferror-limit=1024 -Wall -pedantic -march=$(ARCH) $($(BUILDTYPE)_CFLAGS)
-LDFLAGS             := -flto=thin
+vpath: %.c $(LIBBITIO_SOURCE_FLDR)
 
-BUILD_DIR            = $(CURDIR)/BUILD/$(ARCH)/$(BUILDTYPE)
-LIBBITIO_SOURCES    := $(wildcard CURDIR/libBitIO/src/*.c)
-LIBBITIO_HEADERS    := $(wildcard CURDIR/libBitIO/include/*.h)
-LIBBITIO_OBJECTS    := $(patsubst %.c,%.o,$(LIBBITIO_SOURCES))
-LIBBITIO_DEPENDS    := $(patsubst %.c,%.d,$(LIBBITIO_SOURCES))
-LIBBITIO_STATICLIB  := $(BUILD_DIR)/libBitIO.a
+.PHONY: all clean CURDIR BUILD_DIR LIBBITIO_SOURCE_FLDR LIBBITIO_STATICLIB LIBBITIO_SOURCES LIBBITIO_OBJECTS
 
-.DEFAULT_GOAL: all
+.DEFAULT_GOAL        ::= $(BUILD_DIR/%.d)
 
-.PHONY: all clean
-
-all: $(LIBBITIO_SOURCES) $(LIBBITIO_STATICLIB)
-
-$(LIBBITIO_DEPENDS): $(LIBBITIO_SOURCES) $(LIBBITIO_HEADERS)
-	$(CC) $(LIBBITIO_SOURCES) $(LIBBITIO_HEADERS) -c $< -o $@
-
-$(LIBBITIO_OBJECTS): $(LIBBITIO_SOURCES) $(LIBBITIO_HEADERS)
+$(BUILD_DIR)/%.d : %.c
 	mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) -c $(LIBBITIO_SOURCES) -o $(LIBBITIO_OBJECTS) $(LDFLAGS) -lm
-
-$(LIBBITIO_STATICLIB): $(LIBBITIO_OBJECTS)
+	$(CC) -MP -o $@ -c $<
+$(BUILD_DIR)/$(LIBBITIO_NAMES).o : $(BUILD_DIR)/%.d
+	$(CC) $(CFLAGS) -o $@ -c $< $(LDFLAGS)
+LIBBITIO_STATICLIB(%.o) : $(BUILD_DIR)/$(LIBBITIO_NAMES).o
+	ar -c $(LIBBITIO_STATICLIB)
 	ar -crsu $@ $<
 	ranlib -sf $@
-
--include $(LIBBITIO_DEPENDS)
-
-clean: $(LIBBITIO_STATICLIB) $(LIBBITIO_OBJECTS)
-	rm -f -v -r $(LIBBITIO_OBJECTS)
-	rm -f -v -r *.a
-	rm -f -v -r .DS_Store
-	rm -f -v -r Thumbs.db
-	rm -f -v -r desktop.ini
-	rmdir $(BUILD_DIR)
