@@ -1,10 +1,13 @@
-PACKAGE_NAME          = $(shell basename $(shell pwd))
+.POSIX:
+.SUFFIXES:
+.PHONY: all clean BUILD_DIR LIBBITIO_SOURCE_FLDR LIBBITIO_STATICLIB LIBBITIO_SOURCES LIBBITIO_NAMES LIBBITIO_OBJECTS
 DEBUG_CFLAGS          = -DDEBUG -fsanitize="address,undefined" -Werror="format-security,array-bounds" -Wformat -g -O0
 RELEASE_CFLAGS        = -DNODEBUG -fvectorize -loop-vectorize -funroll-loops -Os
 CC                    = $(shell whereis cc)
 CURDIR                = $(shell pwd)
 CFLAGS               += -std=c11 -ferror-limit=1024 -Wall -pedantic -fcolor-diagnostics -ffreestanding -arch=$(ARCH) $(BUILDTYPE_CFLAGS)
 LDFLAGS              += -flto=thin
+LDLIBS                = -lm
 BUILD_DIR             = $(CURDIR)/BUILD/$(BUILDTYPE)/$(ARCH)
 LIBBITIO_SOURCE_FLDR  = $(CURDIR)/libBitIO/src
 LIBBITIO_STATICLIB    = $(BUILD_DIR)/libBitIO.a
@@ -29,15 +32,13 @@ LIBBITIO_OBJECTS      = $(patsubst $(notdir $(LIBBITIO_SOURCES)), $(BUILD_DIR)/%
 
 # wait why are we doing it this way? why not just extract it from the arch triple?
 
-.PHONY: all clean CURDIR BUILD_DIR LIBBITIO_SOURCE_FLDR LIBBITIO_STATICLIB LIBBITIO_SOURCES LIBBITIO_OBJECTS
-
 all : $(wildcard BUILD_DIR/%.d)
 
 $(wildcard BUILD_DIR/%.d) : $(LIBBITIO_SOURCE_FLDR/*.c)
 	mkdir -p $(BUILD_DIR)
 	$(CC) -MP -o $@ -c $<
 $(BUILD_DIR)/$(LIBBITIO_NAMES.o) : $(BUILD_DIR)/%.d
-	$(CC) $(CFLAGS) -o $@ -c $< $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $@ -c $< $(LDFLAGS) $(LDLIBS)
 LIBBITIO_STATICLIB(wildcard *.o) : $(BUILD_DIR)/$(LIBBITIO_NAMES.o)
 	ar -c $(LIBBITIO_STATICLIB)
 	ar -crsu $@ $<
