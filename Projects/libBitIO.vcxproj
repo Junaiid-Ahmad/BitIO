@@ -20,12 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\libBitIO\src\BitIO.c" />
-    <ClCompile Include="..\libBitIO\src\BWSTransform.c" />
     <ClCompile Include="..\libBitIO\src\CommandLineIO.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libBitIO\include\BitIO.h" />
-    <ClInclude Include="..\libBitIO\include\BWSTransform.h" />
     <ClInclude Include="..\libBitIO\include\CommandLineIO.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

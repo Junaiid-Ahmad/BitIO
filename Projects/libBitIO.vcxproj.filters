@@ -18,18 +18,12 @@
     <ClCompile Include="..\libBitIO\src\BitIO.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\libBitIO\src\BWSTransform.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\libBitIO\src\CommandLineIO.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libBitIO\include\BitIO.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libBitIO\include\BWSTransform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\libBitIO\include\CommandLineIO.h">
