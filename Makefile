@@ -36,7 +36,7 @@ all : $(wildcard BUILD_DIR/%.d)
 
 $(wildcard BUILD_DIR/%.d) : $(LIBBITIO_SOURCE_FLDR/*.c)
 	mkdir -p $(BUILD_DIR)
-	$(CC) -MP -o $@ -c $<
+	$(CC) -MT -o $@ -c $<
 $(BUILD_DIR)/$(LIBBITIO_NAMES.o) : $(BUILD_DIR)/%.d
 	$(CC) $(CFLAGS) -o $@ -c $< $(LDFLAGS) $(LDLIBS)
 LIBBITIO_STATICLIB(wildcard *.o) : $(BUILD_DIR)/$(LIBBITIO_NAMES.o)
