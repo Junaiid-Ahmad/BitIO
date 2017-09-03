@@ -361,6 +361,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_STYLE = all;
 				VALID_ARCHS = "arm64 x86_64";
 			};
 			name = Debug;
@@ -379,6 +380,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_STYLE = all;
 				VALID_ARCHS = "arm64 x86_64";
 			};
 			name = Release;
