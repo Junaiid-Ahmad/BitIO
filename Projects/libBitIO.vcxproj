@@ -81,7 +81,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(MSBuildStartupDirectory)\..\BUILD\$(Platform)\</OutDir>
+    <OutDir>$(MSBuildProjectDirectory)\..\BUILD\$(Platform)\$(Target)</OutDir>
     <IntDir>$(OutDir)$(Configuration)\Intermediate\</IntDir>
     <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>C:\Program Files (x86)\Visual Studio 2017\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -91,7 +91,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
-    <OutDir>$(MSBuildStartupDirectory)\..\BUILD\$(Platform)\</OutDir>
+    <OutDir>$(MSBuildProjectDirectory)\..\BUILD\$(Platform)\$(Target)</OutDir>
     <IntDir>$(OutDir)$(Configuration)\Intermediate\</IntDir>
     <CodeAnalysisRuleSet>C:\Program Files (x86)\Visual Studio 2017\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -99,7 +99,7 @@
     <ExtensionsToDeleteOnClean>*.bi;*.bsc;*.cache;*.cdf;*.exp;*.idb;*.ilk;*.iobj;*.ipdb;*.lib;*.lib.intermediate.manifest;*.lib.manifest;*.manifest;*.meta;*.metagen;*.obj;*.obj.enc;*.pch;*.pdb;*.pgc;*.pgd;*.rep;*.res;*.resources;*.rsp;*.sbr;*.tlb;*.tlh;*.tli;*.tlog;*.tmp;*.xdc;*.xml;*_manifest.rc</ExtensionsToDeleteOnClean>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(MSBuildStartupDirectory)\..\BUILD\$(Platform)\</OutDir>
+    <OutDir>$(MSBuildProjectDirectory)\..\BUILD\$(Platform)\$(Target)</OutDir>
     <IntDir>$(OutDir)$(Configuration)\Intermediate\</IntDir>
     <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>C:\Program Files (x86)\Visual Studio 2017\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -109,7 +109,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
-    <OutDir>$(MSBuildStartupDirectory)\..\BUILD\$(Platform)\</OutDir>
+    <OutDir>$(MSBuildProjectDirectory)\..\BUILD\$(Platform)\$(Target)</OutDir>
     <IntDir>$(OutDir)$(Configuration)\Intermediate\</IntDir>
     <CodeAnalysisRuleSet>C:\Program Files (x86)\Visual Studio 2017\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
