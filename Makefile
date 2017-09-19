@@ -1,12 +1,13 @@
 .POSIX:
 .SUFFIXES:
 .PHONY: all clean BUILD_DIR LIBBITIO_SOURCE_FLDR LIBBITIO_STATICLIB LIBBITIO_SOURCES LIBBITIO_NAMES LIBBITIO_OBJECTS
-DEBUG_CFLAGS          = -DDEBUG -fsanitize="address,undefined" -Werror="format-security,array-bounds" -Wformat -g -O0
-RELEASE_CFLAGS        = -DNODEBUG -fvectorize -loop-vectorize -funroll-loops -Os
+
 CC                    = $(shell whereis cc)
 CURDIR                = $(shell pwd)
-CFLAGS               += -std=c11 -ferror-limit=1024 -Wall -pedantic -fcolor-diagnostics -ffreestanding -arch=$(ARCH) $(BUILDTYPE_CFLAGS)
-LDFLAGS              += -flto=thin
+DEBUG_CFLAGS          = -DDEBUG -fsanitize="address,memory,leak,undefined" -Werror="format-security,array-bounds" -Wformat -g -O0
+RELEASE_CFLAGS        = -DNODEBUG -fshort-enums -vectorize-loops -funroll-loops -Os
+CFLAGS               += -std=c11 -ferror-limit 1024 -Weverything -fcolor-diagnostics -fno-gnu-inline-asm -fconst-strings $(BUILDTYPE_CFLAGS) -arch=$(ARCH)
+LDFLAGS              += -flto
 LDLIBS                = -lm
 BUILD_DIR             = $(CURDIR)/BUILD/$(BUILDTYPE)/$(ARCH)
 LIBBITIO_SOURCE_FLDR  = $(CURDIR)/libBitIO/src
